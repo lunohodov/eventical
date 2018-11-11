@@ -3,10 +3,12 @@
 Instant iCal subscriptions for your EVE Online calendar.
 
 A web-application, which given access to an EVE Online calendar provides you
-with an auto-updating `.ical` feed of all upcoming calendar events.
+with an auto-updating `.ical` feed of all upcoming events. The feed can be
+used with Outlook, Apple Calendar, Google Calendar, and most smart phones.
 
-The feed can be then used with Outlook, Apple Calendar, Google Calendar as
-also most smart phones.
+[Try it](https://eveonline-calendar-feeds.herokuapp.com).
+
+**WARNING**: Still work in progress, and there may be occasional errors.
 
 ## [TODO] Screenshots
 
