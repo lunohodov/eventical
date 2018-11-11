@@ -27,9 +27,11 @@ also most smart phones.
 - [PostgreSQL](http://www.postgresql.org/) &mdash; Main data store is in Postgres.
 - [Redis](http://redis.io/) &mdash; Redis as a cache and for transient data.
 
+[![CircleCI](https://circleci.com/gh/lunohodov/evecal.svg?style=svg&circle-token=b79e0b14abfe04bb761c1e6008af3f7e33b2fb99)](https://circleci.com/gh/lunohodov/evecal)
+
 ## Authors
 
-* **Devas Weddo** (in-game character) - Initial work
+* **Devas Weddo** (in-game character, currently retired) - Initial work
 
 See also the list of [contributors](https://github.com/lunohodov/evecal/graphs/contributors) who participated in this project.
 

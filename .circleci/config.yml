@@ -1,0 +1,53 @@
+---
+default_job: &default_job
+  working_directory: ~/evecal
+  steps:
+    - checkout
+
+    # Restore Cached Dependencies
+    - type: cache-restore
+      name: Restore bundle cache
+      key: evecal-{{ checksum "Gemfile.lock" }}
+
+    # Bundle install dependencies
+    - run: bundle install --path vendor/bundle
+
+    # Cache Dependencies
+    - type: cache-save
+      name: Store bundle cache
+      key: evecal-{{ checksum "Gemfile.lock" }}
+      paths:
+        - vendor/bundle
+
+    # Wait for DB
+    - run: dockerize -wait tcp://localhost:5432 -timeout 1m
+
+    # Setup the environment
+    - run: cp .sample.env .env
+
+    # Setup the database
+    - run: bundle exec rake db:setup
+
+    # Run the tests
+    - run: bundle exec rake
+
+jobs:
+  ruby-2.5:
+    <<: *default_job
+    docker:
+      - image: circleci/ruby:2.5.3-node-browsers
+        environment:
+          PGHOST: localhost
+          PGUSER: evecal
+          RAILS_ENV: test
+      - image: postgres:10.1-alpine
+        environment:
+          POSTGRES_USER: evecal
+          POSTGRES_DB: ruby25
+          POSTGRES_PASSWORD: ""
+
+workflows:
+  version: 2
+  multiple-rubies:
+    jobs:
+      - ruby-2.5
