@@ -1,4 +1,4 @@
-# EVE Cal
+# EVE Cal [![CircleCI](https://circleci.com/gh/lunohodov/evecal.svg?style=svg&circle-token=b79e0b14abfe04bb761c1e6008af3f7e33b2fb99)](https://circleci.com/gh/lunohodov/evecal)
 
 Instant feeds for your EVE Online calendar(s).
 
@@ -30,8 +30,6 @@ Additional fine-grained sharing options allow you choose who to share with and h
 - [Ruby on Rails](https://github.com/rails/rails) &mdash; The back end API is a Rails app
 - [PostgreSQL](http://www.postgresql.org/) &mdash; Main data store is in Postgres.
 - [Redis](http://redis.io/) &mdash; Redis as a cache and for transient data.
-
-[![CircleCI](https://circleci.com/gh/lunohodov/evecal.svg?style=svg&circle-token=b79e0b14abfe04bb761c1e6008af3f7e33b2fb99)](https://circleci.com/gh/lunohodov/evecal)
 
 ## Authors
 
