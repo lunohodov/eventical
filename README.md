@@ -19,8 +19,9 @@ or the occasional roam keeps everyone on the same page.
 #### You're always in control
 
 You decide who to share with - individual characters, everyone in a corporation
-or alliance, or the whole Universe. Or course, no one but yourself is also
-an option.
+or alliance, or the whole Universe.
+
+Sharing can be stopped at anytime.
 
 ---
 
