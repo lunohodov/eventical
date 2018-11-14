@@ -1,18 +1,34 @@
 # EVE Cal [![CircleCI](https://circleci.com/gh/lunohodov/evecal.svg?style=svg&circle-token=b79e0b14abfe04bb761c1e6008af3f7e33b2fb99)](https://circleci.com/gh/lunohodov/evecal)
 
-Instant feeds for your EVE Online calendar(s).
+Instant iCal feeds for your EVE Online calendar(s).
 
-A web-application, which given access to an EVE Online calendar, provides an
-auto-updating `.ical` feed of upcoming events. The feed can be used with Outlook,
-Apple Calendar, Google Calendar, and most smart phones.
+## How It Works
 
-Additional fine-grained sharing options allow you choose who to share with and how.
+#### Convenient out-of-game access
+
+Use your favourite calendar app on the desktop or mobile. Outlook,
+Apple Calendar, Google Calendar, or phone's native - you choose.
+
+Times are adjusted and shown in your own time-zone. No more missed events!
+
+#### Keep everyone in the loop
+
+Having a single location for scheduled incursion runs, mining operations,
+or the occasional roam keeps everyone on the same page.
+
+#### You're always in control
+
+You decide who to share with. A variety of options allow for fine-grained
+sharing with individual characters, everyone in a corporation or alliance,
+or just the whole Universe.
+
+Or course, sharing can be stopped at any time.
+
+---
 
 [Try it](https://eveonline-calendar-feeds.herokuapp.com).
 
 **WARNING**: Still work in progress, and there may be occasional errors.
-
-## [TODO] Screenshots
 
 ## [TODO] Development
 
