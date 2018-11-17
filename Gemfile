@@ -20,6 +20,7 @@ group :development, :test do
   # a debugger console
   gem "byebug", platforms: %i[mri mingw x64_mingw]
   gem "dotenv-rails"
+  gem "rspec-rails", "~> 3.0"
 end
 
 group :development do
