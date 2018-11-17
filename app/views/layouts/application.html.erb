@@ -2,14 +2,26 @@
 <html>
   <head>
     <title>Evecal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body>
-    <%= yield %>
+  <body class="bg-light">
+    <div class="container">
+      <div class="row-fluid">
+        <%= yield %>
+      </div>
+      <footer class="my-5 pt-5 text-muted text-center text-small">
+        <ul class="list-inline">
+          <li class="list-inline-item"><a href="/ccp-copyright-notice">CCP copyright notice</a></li>
+          <li class="list-inline-item"><a href="/privacy">Privacy policy</a></li>
+          <li class="list-inline-item"><a href="/help">Help</a></li>
+        </ul>
+        <p class="mb-1">&copy; <%= Date.today.year %> evecal</p>
+      </footer>
+    </div>
   </body>
 </html>
