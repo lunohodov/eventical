@@ -20,6 +20,7 @@ group :development, :test do
   # a debugger console
   gem "byebug", platforms: %i[mri mingw x64_mingw]
   gem "dotenv-rails"
+  gem "factory_bot_rails"
   gem "rspec-rails", "~> 3.0"
 end
 
@@ -33,6 +34,7 @@ end
 group :test do
   gem "capybara", ">= 2.15"
   gem "chromedriver-helper"
+  gem "database_cleaner"
   gem "selenium-webdriver"
 end
 
