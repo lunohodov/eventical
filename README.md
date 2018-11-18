@@ -1,4 +1,4 @@
-# EVE Cal [![CircleCI](https://circleci.com/gh/lunohodov/evecal.svg?style=svg&circle-token=b79e0b14abfe04bb761c1e6008af3f7e33b2fb99)](https://circleci.com/gh/lunohodov/evecal)
+# eventical [![CircleCI](https://circleci.com/gh/lunohodov/eventical.svg?style=svg&circle-token=b79e0b14abfe04bb761c1e6008af3f7e33b2fb99)](https://circleci.com/gh/lunohodov/eventical)
 
 Instant iCal feeds for your EVE Online calendar(s).
 
@@ -50,7 +50,7 @@ Sharing can be stopped at anytime.
 
 * **Devas Weddo** (in-game character, currently retired) - Initial work
 
-See also the list of [contributors](https://github.com/lunohodov/evecal/graphs/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/lunohodov/eventical/graphs/contributors) who participated in this project.
 
 ## Licence
 

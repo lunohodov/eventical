@@ -41,7 +41,7 @@ Rails.application.configure do # rubocop:disable Metrics/BlockLength
 
   # Use a queuing backend for Active Job (and separate queues per environment)
   # config.active_job.queue_adapter     = :resque
-  # config.active_job.queue_name_prefix = "evecal_#{Rails.env}"
+  # config.active_job.queue_name_prefix = "eventical_#{Rails.env}"
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
