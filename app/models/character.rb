@@ -1,4 +1,6 @@
 class Character < ApplicationRecord
+  has_many :events
+
   validates :name, presence: true
   validates :owner_hash, presence: true
   validates :refresh_token, presence: true

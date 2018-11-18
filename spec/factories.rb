@@ -1,6 +1,15 @@
 require "securerandom"
 
 FactoryBot.define do
+  factory :event do
+    character
+    importance { nil }
+    response { %w[attending declined tentative].sample }
+    starts_at { Time.current }
+    title { Faker::Name.name }
+    uid { SecureRandom.uuid }
+  end
+
   factory :character do
     name { Faker::Name.name }
     owner_hash { Faker::Crypto.sha1 }
