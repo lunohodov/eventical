@@ -1,13 +1,16 @@
 require "securerandom"
 
 FactoryBot.define do
+  sequence :character_uid
+  sequence :event_uid
+
   factory :event do
     character
     importance { nil }
     response { %w[attending declined tentative].sample }
     starts_at { Time.current }
     title { Faker::Name.name }
-    uid { SecureRandom.uuid }
+    uid { generate :event_uid }
   end
 
   factory :character do
@@ -18,7 +21,7 @@ FactoryBot.define do
     token { Faker::Crypto.sha1 }
     token_expires_at { Time.current }
     token_type { "Bearer" }
-    uid { SecureRandom.uuid }
+    uid { generate :character_uid }
 
     trait :with_scopes do
       scopes { "esi-calendar.read_calendar_events.v1" }
