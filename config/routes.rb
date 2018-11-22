@@ -1,3 +1,3 @@
 Rails.application.routes.draw do
-  get "/", to: "about#index"
+  get "/", to: "pages#index"
 end
