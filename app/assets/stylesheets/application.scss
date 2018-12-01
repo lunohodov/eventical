@@ -1,1 +1,60 @@
- @import "bootstrap";
+@import "bootstrap";
+
+body {
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.content {
+  max-width: 42em;
+}
+
+.masthead {
+  margin-bottom: 1rem;
+
+  .avatar {
+    height: 48px;
+    width: 48px;
+  }
+}
+
+.pages-index {
+  .masthead {
+    margin-bottom: 5rem;
+  }
+}
+
+.calendars-show {
+  main.inner {
+    text-align: left;
+  }
+}
+
+.cover {
+  padding: 0 1.5rem;
+
+  .btn-lg {
+    font-weight: 700;
+    padding: 0.75rem 1.25rem;
+  }
+}
+
+.cover-feature {
+  margin-top: 5rem;
+
+  h4 {
+    margin-bottom: 1rem;
+  }
+
+  p {
+    text-align: justify;
+  }
+}
+
+.cover-try {
+  margin-top: 5rem;
+}
+
+.mastfoot {
+  margin-top: 5em;
+}

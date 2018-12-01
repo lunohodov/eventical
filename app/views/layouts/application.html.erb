@@ -9,18 +9,39 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body class="bg-light">
-    <div class="container">
-      <div class="row-fluid">
+  <body class="<%= body_class %> text-center">
+    <div class="content d-flex w-100 h-100 p-3 mx-auto flex-column">
+      <header class="masthead d-flex justify-content-between">
+        <h3 class="masthead-brand">
+          <a href="/" title="eventical">eventical</a>
+        </h3>
+        <% if signed_in? %>
+          <img src="https://image.eveonline.com/Character/91473836_256.jpg"
+               class="rounded avatar"
+               title="Devas Weddo"
+               alt="Devas Weddo"/>
+        <% else %>
+          <a class="nav-link" href="/login">
+            <img src="https://web.ccpgamescdn.com/eveonlineassets/developers/eve-sso-login-black-small.png"
+                 alt="Login with EVE Online"/>
+          </a>
+        <% end %>
+      </header>
+
+      <main role="main" class="inner">
         <%= yield %>
-      </div>
-      <footer class="my-5 pt-5 text-muted text-center text-small">
-        <ul class="list-inline">
-          <li class="list-inline-item"><a href="/ccp-copyright-notice">CCP copyright notice</a></li>
-          <li class="list-inline-item"><a href="/privacy">Privacy policy</a></li>
-          <li class="list-inline-item"><a href="/help">Help</a></li>
-        </ul>
-        <p class="mb-1">&copy; <%= Date.today.year %> eventical</p>
+      </main>
+
+      <footer class="mastfoot">
+        <div class="inner">
+          <ul class="list-inline">
+            <% if signed_in? %>
+              <li class="list-inline-item"><a href="/logout">Sign out</a></li>
+            <% end %>
+            <li class="list-inline-item"><a href="/about">About</a></li>
+          </ul>
+          <p class="mb-1">&copy; <%= Date.today.year %> eventical. <a href="/ccp-copyright-notice">CCP copyright notice</a>.</p>
+        </div>
       </footer>
     </div>
   </body>
