@@ -1,0 +1,42 @@
+#!/usr/bin/env sh
+
+# Run this script to deploy the app to Heroku.
+
+set -e
+
+if ! command -v open >/dev/null; then
+  open() {
+    $BROWSER "$@"
+  }
+fi
+
+if printenv | grep CIRCLE_BRANCH > /dev/null; then
+  branch=$CIRCLE_BRANCH
+else
+  branch="$(basename "$(git symbolic-ref HEAD)")"
+fi
+
+if [ -z "$1" ]; then
+  printf "You must provide an environment (staging|production).\n"
+  exit 1
+else
+  git push --force "$1" "$branch:master"
+  heroku run rake db:migrate --remote "$1"
+  heroku restart --remote "$1"
+
+  if [ "$1" = "staging" ]; then
+    current_sha="$(git log --oneline -1)"
+    heroku config:set \
+      CURRENT_BRANCH="$branch" \
+      CURRENT_SHA="$current_sha" \
+      --remote "$1"
+  fi
+
+  if [ "$1" = "production" ]; then
+    open https://eventical-production.herokuapp.com
+
+    if command -v watch >/dev/null; then
+      watch heroku ps --remote "$1"
+    fi
+  fi
+fi
