@@ -1,0 +1,46 @@
+<section class="my-2">
+  <h3 class="h4">Calendar feeds</h3>
+  <form action="#" method="post" accept-charset="utf-8">
+    <div class="form-row">
+      <div class="col">
+        <div class="form-group">
+          <label class="" for="calendar-private-uri">Secret address in iCal format</label>
+          <input class="form-control"
+                 type="text" readonly
+                 name=""
+                 value="https://eventful-production.herokuapp.com/calendar/private-90ad9dd6-0840-4cf5-977a-ecee311e1925/basic.ical"
+                 id="calendar-private-uri">
+          <span class="form-text text-muted">
+            Use this address to access this calendar from other applications without making it public.
+            <strong>Never share this with anyone.</strong>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-sm-6 col-md-8">
+        <p>You can reset this address and make the current one invalid.</p>
+      </div>
+      <div class="col-sm-6 col-md-4">
+        <button class="btn btn-outline-danger btn-block" type="submit">Reset secret address</button>
+      </div>
+    </div>
+  </form>
+</section>
+
+<!--section class="my-4">
+  <h3 class="h4">Settings</h3>
+  <form action="#" method="post" accept-charset="utf-8">
+    <div class="form-group">
+      <label for="select-timezone">Preferred time zone</label>
+      <select name="time-zone" id="select-timezone" class="form-control">
+        <option value="">(GMT+01:00) Central European Time - Amsterdam</option>
+        <option value="">UTC+2</option>
+      </select>
+      <span class="form-text text-muted">
+        Event times will be adjusted and shown in the specified time-zone.
+      </span>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+  </form>
+</section-->
