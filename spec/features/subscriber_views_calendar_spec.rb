@@ -6,7 +6,7 @@ feature "user views calendar", type: :feature do
 
     visit character_calendar_path(owner)
 
-    expect(page).to have_field('calendar-private-uri', type: :text, with: /basic\.ical/)
+    expect(page).to have_field("calendar-private-uri", with: /basic\.ical/)
   end
 
   scenario "and sees a button to reset the private address" do
@@ -14,6 +14,6 @@ feature "user views calendar", type: :feature do
 
     visit character_calendar_path(owner)
 
-    expect(page).to have_button('Reset secret address')
+    expect(page).to have_button("Reset secret address")
   end
 end
