@@ -79,6 +79,7 @@ GEM
     chromedriver-helper (2.1.0)
       archive-zip (~> 0.10)
       nokogiri (~> 1.8)
+    coderay (1.1.2)
     concurrent-ruby (1.1.3)
     crass (1.0.4)
     database_cleaner (1.7.0)
@@ -146,6 +147,14 @@ GEM
       omniauth (~> 1.2)
     pg (1.1.3)
     popper_js (1.14.5)
+    pry (0.12.2)
+      coderay (~> 1.1.0)
+      method_source (~> 0.9.0)
+    pry-byebug (3.6.0)
+      byebug (~> 10.0)
+      pry (~> 0.10)
+    pry-rails (0.3.7)
+      pry (>= 0.10.4)
     public_suffix (3.0.3)
     puma (3.12.0)
     rack (2.0.6)
@@ -270,6 +279,8 @@ DEPENDENCIES
   omniauth
   omniauth-eve_online-sso
   pg
+  pry-byebug
+  pry-rails
   puma (~> 3.11)
   rails (~> 5.2.1)
   rails-controller-testing
