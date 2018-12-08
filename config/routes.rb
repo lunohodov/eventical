@@ -1,7 +1,12 @@
 Rails.application.routes.draw do
+  root "pages#index"
+
   get "/", to: "pages#index"
 
-  resources :character do
-    resource :calendar
-  end
+  get "/auth/eve_online_sso/callback", to: "sessions#create"
+  get "/logout", to: "sessions#destroy", as: :logout
+  get "/login", to: redirect("/auth/eve_online_sso"), as: :login
+  get "/auth/failure", to: redirect("/")
+
+  resource :calendar, only: %i[show]
 end

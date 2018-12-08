@@ -26,4 +26,29 @@ FactoryBot.define do
       scopes { "esi-calendar.read_calendar_events.v1" }
     end
   end
+
+  factory :oauth_hash, class: "OmniAuth::AuthHash" do
+    skip_create
+
+    transient do
+      character { build(:character) }
+    end
+
+    initialize_with do
+      new(
+        provider: "eve_online_sso",
+        uid: character.uid,
+        info: {
+          character_id: character.uid,
+          character_owner_hash: character.owner_hash,
+          name: character.name,
+          token_type: character.token_type,
+        },
+        credentials: {
+          token: character.token,
+          expires_at: character.token_expires_at,
+        },
+      )
+    end
+  end
 end

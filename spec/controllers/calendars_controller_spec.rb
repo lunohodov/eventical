@@ -1,11 +1,13 @@
 require "rails_helper"
 
 describe CalendarsController, type: :controller do
+  include StubCurrentCharacterHelper
+
   describe "#show" do
     it "renders the view" do
-      character = create(:character)
+      stub_current_character
 
-      get :show, params: { character_id: character.id }
+      get :show
 
       expect(response).to render_template("show")
     end

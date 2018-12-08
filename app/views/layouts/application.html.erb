@@ -16,12 +16,12 @@
           <a href="/" title="eventical">eventical</a>
         </h3>
         <% if signed_in? %>
-          <img src="https://image.eveonline.com/Character/91473836_256.jpg"
+          <img src="https://image.eveonline.com/Character/<%= current_character.uid %>_256.jpg"
                class="rounded avatar"
-               title="Devas Weddo"
-               alt="Devas Weddo"/>
+               title="<%= current_character.name %>"
+               alt="<%= current_character.name %>"/>
         <% else %>
-          <a class="nav-link" href="/login">
+          <a class="nav-link" href="/auth/eve_online_sso">
             <img src="https://web.ccpgamescdn.com/eveonlineassets/developers/eve-sso-login-black-small.png"
                  alt="Login with EVE Online"/>
           </a>

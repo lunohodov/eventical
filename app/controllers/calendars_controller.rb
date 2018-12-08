@@ -1,11 +1,5 @@
 class CalendarsController < ApplicationController
-  def show
-    @character = require_character
-  end
+  before_action :authorize
 
-  private
-
-  def require_character
-    Character.find(params[:character_id])
-  end
+  def show; end
 end
