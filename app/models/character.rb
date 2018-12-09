@@ -3,7 +3,6 @@ class Character < ApplicationRecord
 
   validates :name, presence: true
   validates :owner_hash, presence: true
-  validates :refresh_token, presence: true
   validates :token, presence: true
 
   def token_expired?

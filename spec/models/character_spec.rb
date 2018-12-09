@@ -4,7 +4,6 @@ describe Character, type: :model do
   describe "validations" do
     it { should validate_presence_of(:name) }
     it { should validate_presence_of(:token) }
-    it { should validate_presence_of(:refresh_token) }
     it { should validate_presence_of(:owner_hash) }
   end
 
