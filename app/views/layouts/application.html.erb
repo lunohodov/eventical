@@ -21,10 +21,7 @@
                title="<%= current_character.name %>"
                alt="<%= current_character.name %>"/>
         <% else %>
-          <a class="nav-link" href="/auth/eve_online_sso">
-            <img src="https://web.ccpgamescdn.com/eveonlineassets/developers/eve-sso-login-black-small.png"
-                 alt="Login with EVE Online"/>
-          </a>
+          <%= eve_online_sso_button(:small) %>
         <% end %>
       </header>
 

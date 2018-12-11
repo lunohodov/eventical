@@ -12,7 +12,13 @@ describe "home index page" do
   it "links to login page" do
     visit "/"
 
-    expect(find_link("Log in with EVE Online")).to be_visible
+    within(".cover-try") do
+      expect(find_link("Log in with EVE Online")).to be_visible
+    end
+
+    within(".masthead") do
+      expect(find_link("Log in with EVE Online")).to be_visible
+    end
   end
 
   it "links to CCP's copyright notice" do
