@@ -25,6 +25,10 @@
 
   <section class="cover-try">
     <h2>Try it</h2>
-    <%= eve_online_sso_button(:large) %>
+    <% if signed_in? %>
+      <%= link_to "Go to calendar", calendar_url %>
+    <% else %>
+      <%= eve_online_sso_button(:large) %>
+    <% end %>
   </section>
 </div>
