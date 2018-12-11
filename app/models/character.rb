@@ -1,6 +1,7 @@
 class Character < ApplicationRecord
   has_many :events
 
+  validates :uid, presence: true
   validates :name, presence: true
   validates :owner_hash, presence: true
   validates :token, presence: true

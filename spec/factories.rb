@@ -46,6 +46,7 @@ FactoryBot.define do
         },
         credentials: {
           token: character.token,
+          refresh_token: character.refresh_token,
           expires_at: character.token_expires_at,
         },
       )

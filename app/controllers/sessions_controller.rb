@@ -4,26 +4,14 @@ class SessionsController < ApplicationController
 
     auth_hash = request.env["omniauth.auth"]
 
-    character = Character.where(uid: auth_hash.dig(:info, :character_id)).first
+    character = Eve::SignIn.new(auth_hash).call
 
-    unless character.present?
-      character = Character.create!(
-        uid: auth_hash.dig(:info, :character_id),
-        name: auth_hash.dig(:info, :name),
-        owner_hash: auth_hash.dig(:info, :character_owner_hash),
-        token_type: auth_hash.dig(:info, :token_type),
-        token: auth_hash.dig(:credentials, :token),
-        refresh_token: "...",
-        scopes: "...",
-        token_expires_at: Time.zone.at(
-          auth_hash.dig(:credentials, :expires_at),
-        ),
-      )
+    if character.present?
+      session[:character_id] = character.id
+      redirect_next
+    else
+      redirect_to login_url
     end
-
-    session[:character_id] = character.id
-
-    redirect_next
   end
 
   def destroy
