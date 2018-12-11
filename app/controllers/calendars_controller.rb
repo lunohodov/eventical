@@ -1,5 +1,5 @@
 class CalendarsController < ApplicationController
-  before_action :authorize
+  before_action :authenticate
 
   def show; end
 end
