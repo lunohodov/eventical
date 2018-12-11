@@ -33,3 +33,14 @@ environment ENV.fetch("RAILS_ENV") { "development" }
 
 # Allow puma to be restarted by `rails restart` command.
 plugin :tmp_restart
+
+# Log low-level errors to Sentry
+lowlevel_error_handler do |ex, env|
+  Raven.capture_exception(
+    ex,
+    message: ex.message,
+    extra: { puma: env },
+    transaction: "Puma",
+  )
+  [500, {}, ["An error has occurred, and engineers have been informed."]]
+end
