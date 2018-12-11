@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
 
     if character.present?
       session[:character_id] = character.id
-      redirect_next
+      redirect_to calendar_url
     else
       redirect_to login_url
     end
@@ -17,11 +17,5 @@ class SessionsController < ApplicationController
   def destroy
     reset_session
     redirect_to root_url
-  end
-
-  private
-
-  def redirect_next
-    redirect_to request.env["omniauth.origin"].presence || calendar_url
   end
 end
