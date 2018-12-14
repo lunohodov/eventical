@@ -7,6 +7,10 @@ class Character < ApplicationRecord
   validates :token, presence: true
 
   def token_expired?
-    token_expires_at.present? && Time.now > token_expires_at
+    token_expires_at?(Time.current)
+  end
+
+  def token_expires_at?(time)
+    token_expires_at.nil? || time >= token_expires_at
   end
 end
