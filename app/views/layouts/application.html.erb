@@ -16,10 +16,12 @@
           <a href="/" title="eventical">eventical</a>
         </h3>
         <% if signed_in? %>
-          <img src="https://image.eveonline.com/Character/<%= current_character.uid %>_256.jpg"
-               class="rounded avatar"
-               title="<%= current_character.name %>"
-               alt="<%= current_character.name %>"/>
+          <%= link_to calendar_url do %>
+            <img src="https://image.eveonline.com/Character/<%= current_character.uid %>_256.jpg"
+                class="rounded avatar"
+                title="<%= current_character.name %>"
+                alt="<%= current_character.name %>"/>
+          <% end %>
         <% else %>
           <%= eve_online_sso_button(:small) %>
         <% end %>
