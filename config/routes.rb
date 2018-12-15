@@ -9,4 +9,8 @@ Rails.application.routes.draw do
   get "/auth/failure", to: redirect("/")
 
   resource :calendar, only: %i[show]
+  resources :calendars,
+    controller: :calendar_feeds,
+    only: %i[show],
+    as: :calendar_feeds
 end

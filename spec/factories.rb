@@ -1,4 +1,5 @@
 require "securerandom"
+require "ostruct"
 
 FactoryBot.define do
   factory :event do
@@ -24,6 +25,21 @@ FactoryBot.define do
 
     trait :with_scopes do
       scopes { "esi-calendar.read_calendar_events.v1" }
+    end
+  end
+
+  factory :calendar_access_token, class: "OpenStruct" do
+    skip_create
+
+    transient do
+      scope { %w[private public].sample }
+      character { build(:character) }
+    end
+
+    initialize_with do
+      new(
+        value: "#{scope}-#{SecureRandom.uuid}",
+      )
     end
   end
 

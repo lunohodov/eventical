@@ -7,8 +7,8 @@
           <label class="" for="calendar-private-uri">Secret address in iCal format</label>
           <input class="form-control"
                  type="text" readonly
-                 name=""
-                 value="https://eventful-production.herokuapp.com/calendar/private-90ad9dd6-0840-4cf5-977a-ecee311e1925/basic.ical"
+                 name="calendar-private-uri"
+                 value="<%= calendar_feed_url(id: SecureRandom.uuid, format: :ical) %>"
                  id="calendar-private-uri">
           <span class="form-text text-muted">
             Use this address to access this calendar from other applications without making it public.

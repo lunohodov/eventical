@@ -6,7 +6,7 @@ feature "user views calendar", type: :feature do
 
     visit calendar_path
 
-    expect(page).to have_field("calendar-private-uri", with: /basic\.ical/)
+    expect(page).to have_field("calendar-private-uri", with: /\.ical$/)
   end
 
   scenario "and sees a button to reset the private address" do
