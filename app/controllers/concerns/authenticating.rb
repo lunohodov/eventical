@@ -14,7 +14,7 @@ module Authenticating
 
   def current_character
     @current_character ||= if session[:character_id]
-                             Character.find(session[:character_id])
+                             Character.find_by(id: session[:character_id])
                            end
   end
 
