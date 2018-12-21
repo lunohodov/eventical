@@ -10,10 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_18_170219) do
+ActiveRecord::Schema.define(version: 2018_12_25_070754) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "access_tokens", force: :cascade do |t|
+    t.bigint "issuer_id"
+    t.string "grantee_type"
+    t.bigint "grantee_id"
+    t.string "token"
+    t.datetime "expires_at"
+    t.datetime "revoked_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["grantee_type", "grantee_id"], name: "index_access_tokens_on_grantee_type_and_grantee_id"
+    t.index ["issuer_id"], name: "index_access_tokens_on_issuer_id"
+    t.index ["token"], name: "index_access_tokens_on_token"
+  end
 
   create_table "characters", force: :cascade do |t|
     t.bigint "uid", null: false

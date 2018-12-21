@@ -1,5 +1,7 @@
 class Character < ApplicationRecord
   has_many :events
+  has_many :issued_access_tokens, as: :issuer
+  has_many :granted_access_tokens, as: :grantee
 
   validates :uid, presence: true
   validates :name, presence: true

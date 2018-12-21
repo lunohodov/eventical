@@ -4,11 +4,11 @@
     <div class="form-row">
       <div class="col">
         <div class="form-group">
-          <label class="" for="calendar-private-uri">Secret address in iCal format</label>
+          <label class="" for="calendar-private-uri">Secret address</label>
           <input class="form-control"
                  type="text" readonly
                  name="calendar-private-uri"
-                 value="<%= calendar_feed_url(id: SecureRandom.uuid, format: :ical) %>"
+                 value="<%= calendar_feed_url(@personal_token) %>"
                  id="calendar-private-uri">
           <span class="form-text text-muted">
             Use this address to access this calendar from other applications without making it public.

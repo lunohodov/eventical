@@ -2,20 +2,23 @@ require "rails_helper"
 
 describe CalendarFeedsController, type: :controller do
   describe "#show" do
-    before { create(:event) }
+    before do
+      event = create(:event)
+      stub_current_character_with(event.character)
+    end
 
     it "has a HTTP OK status" do
-      token = build(:calendar_access_token)
+      access_token = stub_access_token
 
-      get :show, params: { id: token.value }
+      get :show, params: { id: access_token.token }
 
       expect(response).to have_http_status(:ok)
     end
 
     it "responds with cache headers" do
-      token = build(:calendar_access_token)
+      access_token = stub_access_token
 
-      get :show, params: { id: token.value }
+      get :show, params: { id: access_token.token }
 
       expect(response.headers["Cache-Control"]).to eq "no-cache, no-store"
       expect(response.headers["Pragma"]).to eq "no-cache"
@@ -24,24 +27,30 @@ describe CalendarFeedsController, type: :controller do
     end
 
     it "responds with content headers" do
-      token = build(:calendar_access_token)
+      access_token = stub_access_token
 
-      get :show, params: { id: token.value }
+      get :show, params: { id: access_token.token }
 
       expect(response.headers["Content-Type"]).to eq "text/html; charset=utf-8"
     end
 
-    context "with :ical format" do
-      it "responds with content headers" do
-        token = build(:calendar_access_token)
+    it "responds with '404 Not found' when access token is invalid" do
+      access_token = create(:access_token)
 
-        get :show, params: { id: token.value, format: :ical }
+      get :show, params: { id: access_token.token }
 
-        expect(response.headers["Content-Type"]).to eq "text/calendar; charset=utf-8"
-        expect(response.headers["Content-Transfer-Encoding"]).to eq "binary"
-        expect(response.headers["Content-Disposition"]).
-          to match(/^inline; filename=.*/i)
-      end
+      expect(response).to have_http_status(:not_found)
+    end
+
+    def stub_access_token(grantee: nil)
+      # FIXME: Don't call private methods
+      issuer = controller.send(:current_character)
+
+      create(
+        :access_token,
+        issuer: issuer,
+        grantee: grantee.presence || issuer,
+      )
     end
   end
 end

@@ -28,21 +28,6 @@ FactoryBot.define do
     end
   end
 
-  factory :calendar_access_token, class: "OpenStruct" do
-    skip_create
-
-    transient do
-      scope { %w[private public].sample }
-      character { build(:character) }
-    end
-
-    initialize_with do
-      new(
-        value: "#{scope}-#{SecureRandom.uuid}",
-      )
-    end
-  end
-
   factory :oauth_hash, class: "OmniAuth::AuthHash" do
     skip_create
 
@@ -66,6 +51,19 @@ FactoryBot.define do
           expires_at: character.token_expires_at,
         },
       )
+    end
+  end
+
+  factory :access_token do
+    issuer { create(:character) }
+    grantee { create(:character) }
+    token { nil }
+    expires_at { 1.month.from_now }
+    revoked_at { nil }
+
+    trait :personal do
+      issuer { create(:character) }
+      grantee { issuer }
     end
   end
 end

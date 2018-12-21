@@ -1,0 +1,21 @@
+<tbody class="event-list" data-date="<%= date.iso8601 %>">
+  <tr class="<%= date.today? ? "text-light bg-dark" : "table-active" %> event-list__header">
+    <th colspan="3"><%= date.strftime("%a %d %b") %></th>
+  </tr>
+  <% events.each do |event| %>
+    <tr class="event" data-event-id="<%= event.uid %>">
+      <td class="event__time--local">
+        <span title="<%= event.starts_at.utc.strftime("%Y-%m-%d %H:%M %Z") %>">
+          <%= event.starts_at.strftime("%H:%M") %>
+        </span>
+      </td>
+      <td class="event__title"><%= event.title %></td>
+      <td class="event__time--eve">
+        <small class="text-muted text-monospace">
+          <%= event.starts_at.utc.strftime("%Y-%m-%d %H:%M") %>
+          <abbr title="EVE Online Time" class="initialism">EVE</abbr>
+        </small>
+      </td>
+    </tr>
+  <% end %>
+</tbody>
