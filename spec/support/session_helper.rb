@@ -12,7 +12,7 @@ module SessionHelper
 
     stub_valid_oauth_hash(@current_character)
 
-    visit root_path(as: @current_character)
+    visit auth_eve_online_sso_callback_path(as: @current_character)
   end
 
   def current_character
