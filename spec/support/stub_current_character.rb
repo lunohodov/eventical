@@ -10,3 +10,7 @@ module StubCurrentCharacterHelper
     end
   end
 end
+
+RSpec.configure do |config|
+  config.include StubCurrentCharacterHelper, type: :controller
+end
