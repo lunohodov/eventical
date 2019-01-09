@@ -4,15 +4,15 @@ feature "subscriber views upcoming events", type: :feature do
   scenario "events are grouped by date" do
     sign_in
 
-    access_token = create_access_token
-    event_dates = [
-      create(:event, character: current_character, starts_at: Date.current),
-      create(:event, character: current_character, starts_at: Date.tomorrow),
-    ].map(&:starts_at)
+    events = [
+      create(:event, starts_at: Time.current),
+      create(:event, starts_at: 1.day.from_now),
+    ]
+    stub_calendar(character: current_character, events: events)
 
-    visit calendar_feed_path(id: access_token.token)
+    visit_calendar_feed_path
 
-    event_dates.each do |date|
+    events.map(&:starts_at).each do |date|
       within(event_list_selector(date)) do
         expect(page).to have_css("tr:first", text: date.strftime("%a %d %b"))
         expect(page).to have_css("tr.event", count: 1)
@@ -23,10 +23,10 @@ feature "subscriber views upcoming events", type: :feature do
   scenario "and sees event details" do
     sign_in
 
-    access_token = create_access_token
-    event = create(:event, character: current_character, starts_at: Date.tomorrow)
+    event = create(:event, starts_at: 1.day.from_now)
+    stub_calendar(character: current_character, events: [event])
 
-    visit calendar_feed_path(id: access_token.token)
+    visit_calendar_feed_path
 
     within("tr.event") do
       expect(page).to have_content(event.starts_at.strftime("%H:%M"))
@@ -40,11 +40,25 @@ feature "subscriber views upcoming events", type: :feature do
   scenario "and sees informative test, when there are no upcoming events" do
     sign_in
 
-    access_token = create_access_token
+    stub_calendar(character: current_character, events: [])
 
-    visit calendar_feed_path(id: access_token.token)
+    visit_calendar_feed_path
 
     expect(page).to have_content("There are no upcoming events")
+  end
+
+  def visit_calendar_feed_path
+    visit calendar_feed_path(id: create_access_token.token)
+  end
+
+  def stub_calendar(character:, events: [])
+    agenda = create(:agenda, events: events)
+
+    double("calendar", agenda: agenda).tap do |calendar|
+      allow(Calendar).to receive(:new).
+        with(character).
+        and_return(calendar)
+    end
   end
 
   def create_access_token

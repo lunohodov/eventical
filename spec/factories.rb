@@ -1,15 +1,37 @@
 require "securerandom"
 require "ostruct"
 
+EVENT_RESPONSES = %w[attending declined tentative].freeze
+
 FactoryBot.define do
+  factory :esi_event, class: "OpenStruct" do
+    skip_create
+
+    sequence(:event_id)
+
+    title { "Event #{event_id}" }
+    event_date { Time.current }
+    event_response { EVENT_RESPONSES.sample }
+  end
+
   factory :event do
+    sequence(:uid)
+
     character
     importance { nil }
-    response { %w[attending declined tentative].sample }
-    starts_at { Time.current }
+    response { EVENT_RESPONSES.sample }
+    starts_at { rand(4).day.from_now }
     title { Faker::Name.name }
+  end
 
-    sequence(:uid)
+  factory :agenda, class: "Agenda" do
+    skip_create
+
+    events { create_list(:event, 2) }
+
+    initialize_with do
+      new(events: events)
+    end
   end
 
   factory :character do
@@ -18,7 +40,7 @@ FactoryBot.define do
     refresh_token { Faker::Crypto.sha256 }
     scopes { nil }
     token { Faker::Crypto.sha1 }
-    token_expires_at { Time.current }
+    token_expires_at { 1.day.from_now }
     token_type { "Bearer" }
 
     sequence(:uid)

@@ -1,7 +1,13 @@
-<section class="text-left">
-  <table class="table">
-    <% @calendar.agenda_by_date.each do |agenda| %>
-      <%= render "event_list", date: agenda.date, events: agenda.events %>
-    <% end %>
-  </table>
-</section>
+<% unless @agenda.empty? %>
+  <section class="text-left">
+    <table class="table">
+      <% @agenda.each do |entry| %>
+        <%= render "event_list", date: entry.date, events: entry.events %>
+      <% end %>
+    </table>
+  </section>
+<% else %>
+  <section class="text-center">
+    <h3>There are no upcoming events.</h3>
+  </section>
+<% end %>

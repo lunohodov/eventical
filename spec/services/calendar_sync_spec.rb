@@ -1,0 +1,84 @@
+require "rails_helper"
+
+describe CalendarSync do
+  describe "initialization" do
+    it "uses ESI's character calendar, when no source given" do
+      character = build(:character)
+
+      allow(Eve::Esi).to receive(:character_calendar)
+
+      CalendarSync.new(character: character)
+
+      expect(Eve::Esi).to have_received(:character_calendar).with(character)
+    end
+  end
+
+  describe "#call" do
+    it "fetches events from specified source" do
+      character = build(:character)
+      source = stub_event_source
+
+      CalendarSync.new(character: character, source: source).call
+
+      expect(source).to have_received(:events)
+    end
+
+    it "saves new event" do
+      character = create(:character)
+      new_event = build(:event, character: character)
+      source = stub_event_source([new_event])
+
+      CalendarSync.new(character: character, source: source).call
+
+      expect(Event.find_by(uid: new_event.uid)).to be_present
+    end
+
+    it "updates title of existing event" do
+      character = create(:character)
+      event = create(:event, character: character, title: "old")
+      source = stub_event_source(
+        [
+          build(:event, uid: event.uid, title: "new"),
+        ],
+      )
+
+      expect { CalendarSync.new(character: character, source: source).call }.
+        to change { event.reload.title }.from("old").to("new")
+    end
+
+    it "updates time of existing event" do
+      character = create(:character)
+      event = create(:event, character: character, starts_at: Time.at(0))
+      source = stub_event_source([build(:event, uid: event.uid)])
+
+      expect { CalendarSync.new(character: character, source: source).call }.
+        to change { event.reload.starts_at }.from(Time.at(0))
+    end
+
+    it "updates response of existing event" do
+      character = create(:character)
+      event = create(:event, character: character, response: :attending)
+      source = stub_event_source(
+        [build(:event, uid: event.uid, response: :tentative)],
+      )
+
+      expect { CalendarSync.new(character: character, source: source).call }.
+        to change { event.reload.response }.from("attending").to("tentative")
+    end
+
+    it "updates importance of existing event" do
+      character = create(:character)
+      event = create(:event, character: character, importance: "low")
+      source = stub_event_source(
+        [build(:event, uid: event.uid, importance: "high")],
+      )
+
+      expect { CalendarSync.new(character: character, source: source).call }.
+        to change { event.reload.importance }.from("low").to("high")
+    end
+
+    def stub_event_source(events = [])
+      double("event_source", events: events)
+    end
+  end
+end

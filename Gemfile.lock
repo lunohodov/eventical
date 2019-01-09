@@ -89,6 +89,10 @@ GEM
       dotenv (= 2.5.0)
       railties (>= 3.2, < 6.0)
     erubi (1.7.1)
+    eve_online (0.20.0)
+      activesupport (>= 4.2.0)
+      json
+      memoist
     execjs (2.7.0)
     factory_bot (4.11.1)
       activesupport (>= 3.0.0)
@@ -107,6 +111,7 @@ GEM
     jbuilder (2.8.0)
       activesupport (>= 4.2.0)
       multi_json (>= 1.2)
+    json (2.1.0)
     jwt (2.1.0)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
@@ -119,6 +124,7 @@ GEM
       mini_mime (>= 0.1.1)
     marcel (0.3.3)
       mimemagic (~> 0.3.2)
+    memoist (0.16.0)
     method_source (0.9.1)
     mimemagic (0.3.2)
     mini_mime (1.0.1)
@@ -274,6 +280,7 @@ DEPENDENCIES
   chromedriver-helper
   database_cleaner
   dotenv-rails
+  eve_online
   factory_bot_rails
   faker!
   jbuilder (~> 2.5)

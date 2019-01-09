@@ -6,9 +6,17 @@ class CharacterAccessToken
     @esi = esi
   end
 
+  def value
+    character.token
+  end
+
   def refresh!
     update_token(request_new_token)
     value
+  end
+
+  def refresh
+    refresh! if expired?
   end
 
   def expires_at?(time)

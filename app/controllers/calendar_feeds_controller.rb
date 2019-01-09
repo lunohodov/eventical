@@ -4,24 +4,36 @@ class CalendarFeedsController < ApplicationController
   before_action :authenticate
 
   def show
-    access_token = require_valid_access_token!
+    # TODO: Pull this out of here
+    ensure_valid_character_access_token
+    # TODO: Pull this out of here
+    ensure_synchronized_calendar(access_token.issuer)
+
+    @agenda = character_agenda(access_token.issuer)
 
     render_headers
-
-    @calendar = Calendar.new(access_token.issuer)
-
-    if @calendar.empty?
-      render "empty"
-    end
   end
 
   private
 
-  def require_valid_access_token!
-    AccessToken.find_granted_by_slug!(
+  def character_agenda(character)
+    Calendar.new(character).agenda
+  end
+
+  def access_token
+    token_criteria = {
       slug: params[:id],
       grantee: current_character,
-    )
+    }
+    AccessToken.find_granted_by_slug!(token_criteria)
+  end
+
+  def ensure_valid_character_access_token
+    CharacterAccessToken.new(current_character).refresh
+  end
+
+  def ensure_synchronized_calendar(owner_character)
+    CalendarSync.new(character: owner_character).call
   end
 
   # def render_ical(calendar)

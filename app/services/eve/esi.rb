@@ -3,6 +3,13 @@ module Eve
     include ActiveSupport::Configurable
 
     module ClassMethods
+      def character_calendar(character)
+        EveOnline::ESI::CharacterCalendar.new(
+          token: character.token,
+          character_id: character.uid,
+        )
+      end
+
       # Renews the access token using the given refresh token
       def renew_access_token!(refresh_token, oauth_client: nil)
         oauth_client ||= build_oauth_client

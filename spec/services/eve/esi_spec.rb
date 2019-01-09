@@ -13,7 +13,10 @@ describe Eve::Esi do
   describe ".renew_access_token!" do
     it "requests a new access token" do
       oauth_client = instance_spy(OAuth2::Client)
-      access_token = instance_spy(OAuth2::AccessToken, token: "0xNEW")
+      access_token = instance_spy(
+        OAuth2::AccessToken,
+        token: "0xNEW", expires_at: 1, refresh_token: "0xNEW_REFRESH",
+      )
 
       allow(oauth_client).to receive(:get_token).and_return(access_token)
 
@@ -22,9 +25,11 @@ describe Eve::Esi do
         oauth_client: oauth_client,
       )
 
-      expect(actual_token).to eq("0xNEW")
       expect(oauth_client).to have_received(:get_token).
         with(refresh_token: "0xREFRESH", grant_type: "refresh_token")
+      expect(actual_token.token).to eq("0xNEW")
+      expect(actual_token.expires_at).to eq(1)
+      expect(actual_token.refresh_token).to eq("0xNEW_REFRESH")
     end
   end
 end
