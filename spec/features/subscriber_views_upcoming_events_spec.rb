@@ -52,6 +52,8 @@ feature "subscriber views upcoming events", type: :feature do
   end
 
   def stub_calendar(character:, events: [])
+    allow(CalendarSync).to receive(:new).and_return(proc { true })
+
     agenda = create(:agenda, events: events)
 
     double("calendar", agenda: agenda).tap do |calendar|
