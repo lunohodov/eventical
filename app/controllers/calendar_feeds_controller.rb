@@ -21,11 +21,10 @@ class CalendarFeedsController < ApplicationController
   end
 
   def access_token
-    token_criteria = {
+    @access_token ||= AccessToken.find_granted_by_slug!(
       slug: params[:id],
       grantee: current_character,
-    }
-    AccessToken.find_granted_by_slug!(token_criteria)
+    )
   end
 
   def ensure_valid_character_access_token
