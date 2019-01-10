@@ -12,9 +12,7 @@ module Eve
           refresh_token: refresh_token,
         )
 
-        new_token = access_token.refresh!
-
-        new_token.token
+        access_token.refresh!
       end
 
       private

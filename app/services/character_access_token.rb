@@ -7,9 +7,8 @@ class CharacterAccessToken
   end
 
   def refresh!
-    request_new_token.tap do |new_token|
-      update_token(new_token)
-    end
+    update_token(request_new_token)
+    value
   end
 
   def expires_at?(time)
@@ -25,7 +24,11 @@ class CharacterAccessToken
   attr_reader :esi
 
   def update_token(new_token)
-    character.update!(token: new_token)
+    character.update!(
+      token: new_token.token,
+      token_expires_at: Time.at(new_token.expires_at).in_time_zone,
+      refresh_token: new_token.refresh_token,
+    )
   end
 
   def request_new_token
