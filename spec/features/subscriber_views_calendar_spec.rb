@@ -8,10 +8,7 @@ feature "user views calendar", type: :feature do
 
     visit calendar_path
 
-    expect(page).to have_field(
-      "calendar-private-uri",
-      with: /#{access_token.token}$/,
-    )
+    expect(page).to have_link(href: /#{access_token.token}$/)
   end
 
   scenario "and sees a button to reset the private address" do
