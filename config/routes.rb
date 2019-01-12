@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   root "pages#index"
 
   get "/", to: "pages#index"
+  get "/about", to: "pages#about"
 
   get "/auth/eve_online_sso/callback", to: "sessions#create"
   get "/logout", to: "sessions#destroy", as: :logout
