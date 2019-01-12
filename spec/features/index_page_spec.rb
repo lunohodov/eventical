@@ -21,9 +21,9 @@ describe "home index page" do
     end
   end
 
-  it "links to CCP's copyright notice" do
+  it "links to about page" do
     visit "/"
 
-    expect(find_link("CCP copyright notice")).to be_visible
+    expect(find_link("About")).to be_visible
   end
 end
