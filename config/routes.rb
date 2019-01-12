@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   get "/login", to: redirect("/auth/eve_online_sso"), as: :login
   get "/auth/failure", to: redirect("/")
 
-  resource :calendar, only: %i[show]
+  resource :calendar, only: %i[show create]
   resources :calendars,
     controller: :calendar_feeds,
     only: %i[show],

@@ -11,16 +11,18 @@
             Use this address to access this calendar from other applications without making it public.
             <strong>Never share it with anyone.</strong>
           </p>
-          <form action="#" method="post" accept-charset="utf-8">
+          <%= form_for @personal_token, url: calendar_path, method: :post do |f| %>
             <div class="form-row">
               <div class="col-sm-6 col-md-8">
                 <p>You can reset this address and make the current one invalid.</p>
               </div>
               <div class="col-sm-6 col-md-4">
-                <button class="btn btn-outline-danger btn-block" type="submit">Reset secret address</button>
+                <button class="btn btn-outline-danger btn-block"
+                        id="btn-reset-private-address"
+                        type="submit">Reset secret address</button>
               </div>
             </div>
-          </form>
+          <% end %>
         </div>
       </div>
     </div>

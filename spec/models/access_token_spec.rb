@@ -39,17 +39,18 @@ describe AccessToken, type: :model do
     end
   end
 
-  describe "#renew!" do
-    it "revokes current instance" do
+  describe ".revoke!" do
+    it "revokes the given instance" do
       token = create(:access_token)
 
-      expect { token.renew! }.to change { token.revoked? }.from(false).to(true)
+      expect { AccessToken.revoke!(token) }.to change { token.reload.revoked? }.
+        from(false).to(true)
     end
 
     it "returns a new token" do
       token = create(:access_token)
 
-      new_token = token.renew!
+      new_token = AccessToken.revoke!(token)
 
       expect(new_token.issuer).to eq(token.issuer)
       expect(new_token.grantee).to eq(token.grantee)
@@ -57,18 +58,16 @@ describe AccessToken, type: :model do
     end
   end
 
-
   describe "#revoke!" do
-    it "sets revocation time" do
+    it "is revoked" do
       token = create(:access_token)
 
-      expect { token.revoke! }.to change { token.revoked_at }.from(nil).to(Time)
-    end
+      # Stubbing the SUT?
+      allow(AccessToken).to receive(:revoke!)
 
-    it "marks token revoked" do
-      token = create(:access_token)
+      token.revoke!
 
-      expect { token.revoke! }.to change { token.revoked? }.from(false).to(true)
+      expect(AccessToken).to have_received(:revoke!).with(token)
     end
   end
 
