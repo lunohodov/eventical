@@ -4,6 +4,14 @@ module ApplicationHelper
     "#{qualified_name} #{qualified_name}-#{controller.action_name}"
   end
 
+  def link_to_eve_online_sso_help(text = "What is this?")
+    link_to(
+      text,
+      "http://community.eveonline.com/news/dev-blogs/eve-online-sso-and-what-you-need-to-know",
+      target: "_blank",
+    )
+  end
+
   def eve_online_sso_button(size = :small)
     size = :small unless %i[small large].include?(size)
 

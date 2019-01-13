@@ -23,7 +23,10 @@
                 alt="<%= current_character.name %>"/>
           <% end %>
         <% else %>
-          <%= eve_online_sso_button(:small) %>
+          <div>
+            <%= eve_online_sso_button(:small) %>
+            <p><%= link_to_eve_online_sso_help %></p>
+          </div>
         <% end %>
       </header>
 
