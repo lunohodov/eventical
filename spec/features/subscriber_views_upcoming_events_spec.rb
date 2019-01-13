@@ -37,7 +37,7 @@ feature "subscriber views upcoming events", type: :feature do
     end
   end
 
-  scenario "and sees informative test, when there are no upcoming events" do
+  scenario "and sees informative text, when there are no upcoming events" do
     sign_in
 
     stub_calendar(character: current_character, events: [])
