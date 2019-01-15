@@ -1,6 +1,8 @@
 class CalendarFeedsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
+  after_action :remember_preferred_time_zone
+  around_action :set_time_zone, if: :current_character
   before_action :authenticate
 
   def show
@@ -10,11 +12,27 @@ class CalendarFeedsController < ApplicationController
     ensure_synchronized_calendar(access_token.issuer)
 
     @agenda = character_agenda(access_token.issuer)
+    @preferred_time_zone = preferred_time_zone
 
     render_headers
   end
 
   private
+
+  def preferred_time_zone
+    zone_name = params[:tz].presence ||
+      cookies.signed[:tz].presence ||
+      Eve.time_zone.name
+    ActiveSupport::TimeZone[zone_name].presence || Eve.time_zone
+  end
+
+  def set_time_zone(&block)
+    Time.use_zone(preferred_time_zone, &block)
+  end
+
+  def remember_preferred_time_zone
+    cookies.signed.permanent[:tz] = preferred_time_zone&.name
+  end
 
   def character_agenda(character)
     Calendar.new(character).agenda

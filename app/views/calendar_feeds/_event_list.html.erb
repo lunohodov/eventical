@@ -5,9 +5,7 @@
   <% events.each do |event| %>
     <tr class="event" data-event-id="<%= event.uid %>">
       <td class="event__time--local">
-        <span title="<%= event.starts_at.utc.strftime("%Y-%m-%d %H:%M %Z") %>">
-          <%= event.starts_at.strftime("%H:%M") %>
-        </span>
+        <%= event.starts_at.in_time_zone(preferred_time_zone).strftime("%H:%M") %>
       </td>
       <td class="event__title"><%= event.title %></td>
       <td class="event__time--eve">

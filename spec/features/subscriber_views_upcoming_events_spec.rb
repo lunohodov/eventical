@@ -37,6 +37,34 @@ feature "subscriber views upcoming events", type: :feature do
     end
   end
 
+  scenario "and can change preferred time zone" do
+    sign_in
+
+    stub_calendar(character: current_character)
+
+    visit_calendar_feed_path(tz: "Sofia")
+
+    select("London", from: :tz)
+    click_on("Change")
+
+    expect(page).to have_select(:tz, selected: "(GMT+00:00) London")
+  end
+
+  scenario "and sees time in preferred time zone" do
+    sign_in
+
+    event = create(:event, starts_at: Time.utc(2000, 1, 1, 0, 0))
+    stub_calendar(character: current_character, events: [event])
+
+    visit_calendar_feed_path(tz: "Sofia")
+
+    within("tr.event") do
+      expect(page).to have_content(
+        event.starts_at.in_time_zone("Sofia").strftime("%H:%M"),
+      )
+    end
+  end
+
   scenario "and sees informative text, when there are no upcoming events" do
     sign_in
 
@@ -47,8 +75,8 @@ feature "subscriber views upcoming events", type: :feature do
     expect(page).to have_content("There are no upcoming events")
   end
 
-  def visit_calendar_feed_path
-    visit calendar_feed_path(id: create_access_token.token)
+  def visit_calendar_feed_path(**params)
+    visit calendar_feed_path(id: create_access_token.token, params: params)
   end
 
   def stub_calendar(character:, events: [])

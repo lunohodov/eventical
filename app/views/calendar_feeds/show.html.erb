@@ -1,8 +1,19 @@
+<section class="text-small text-left feed_settings">
+  <%= form_with(method: :get, local: true, class: "form-inline") do |f| %>
+    <label for="tz" class="my-2 mr-2">Times shown for </label>
+    <%= select_tag(:tz, time_zone_options_for_select(@preferred_time_zone.name)) %>
+    <%= f.submit("Change", class: "btn btn-link") %>
+  <% end %>
+</section>
+
 <% unless @agenda.empty? %>
   <section class="text-left">
     <table class="table">
       <% @agenda.each do |entry| %>
-        <%= render "event_list", date: entry.date, events: entry.events %>
+        <%= render "event_list",
+          date: entry.date,
+          events: entry.events,
+          preferred_time_zone: @preferred_time_zone %>
       <% end %>
     </table>
   </section>
