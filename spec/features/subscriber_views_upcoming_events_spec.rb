@@ -3,7 +3,7 @@ require "rails_helper"
 feature "subscriber views upcoming events", type: :feature do
   before do
     # Stub calendar synchronization so no requests to ESI are made
-    allow(CalendarSync).to receive(:new).and_return(proc { true })
+    allow(EventSynchronization).to receive(:new).and_return(proc { true })
   end
 
   scenario "events are grouped by date" do

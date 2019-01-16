@@ -1,4 +1,4 @@
-class CalendarSync
+class EventSynchronization
   attr_reader :character
   attr_reader :source
 

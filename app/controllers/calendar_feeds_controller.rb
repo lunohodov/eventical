@@ -22,7 +22,7 @@ class CalendarFeedsController < ApplicationController
 
   def character_calendar(character)
     # TODO: Think about proper event synchronization
-    CalendarSync.new(character: character).call
+    EventSynchronization.new(character: character).call
 
     Calendar.new(
       events: upcoming_events(character),
