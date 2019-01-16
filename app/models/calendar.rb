@@ -1,19 +1,15 @@
 class Calendar
-  attr_reader :character
+  attr_reader :events
+  attr_reader :time_zone
 
-  def initialize(character)
-    @character = character
+  delegate :empty?, to: :events
+
+  def initialize(events: [], time_zone: Time.zone)
+    @events = events
+    @time_zone = time_zone
   end
 
   def agenda
-    @agenda ||= Agenda.new(events: upcoming_events)
-  end
-
-  def upcoming_events
-    character.
-      events.
-      where("starts_at >= ?", Date.current).
-      order(starts_at: :asc).
-      to_a
+    @agenda ||= Agenda.new(events: events)
   end
 end

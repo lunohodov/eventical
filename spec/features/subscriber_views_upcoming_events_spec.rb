@@ -1,14 +1,18 @@
 require "rails_helper"
 
 feature "subscriber views upcoming events", type: :feature do
+  before do
+    # Stub calendar synchronization so no requests to ESI are made
+    allow(CalendarSync).to receive(:new).and_return(proc { true })
+  end
+
   scenario "events are grouped by date" do
     sign_in
 
     events = [
-      create(:event, starts_at: Time.current),
-      create(:event, starts_at: 1.day.from_now),
+      create(:event, character: current_character, starts_at: Time.current),
+      create(:event, character: current_character, starts_at: 1.day.from_now),
     ]
-    stub_calendar(character: current_character, events: events)
 
     visit_calendar_feed_path
 
@@ -23,8 +27,9 @@ feature "subscriber views upcoming events", type: :feature do
   scenario "and sees event details" do
     sign_in
 
-    event = create(:event, starts_at: 1.day.from_now)
-    stub_calendar(character: current_character, events: [event])
+    event = create(
+      :event, character: current_character, starts_at: 1.day.from_now,
+    )
 
     visit_calendar_feed_path
 
@@ -40,7 +45,7 @@ feature "subscriber views upcoming events", type: :feature do
   scenario "and can change preferred time zone" do
     sign_in
 
-    stub_calendar(character: current_character)
+    create_list(:event, 2, character: current_character)
 
     visit_calendar_feed_path(tz: "Sofia")
 
@@ -53,8 +58,9 @@ feature "subscriber views upcoming events", type: :feature do
   scenario "and sees time in preferred time zone" do
     sign_in
 
-    event = create(:event, starts_at: Time.utc(2000, 1, 1, 0, 0))
-    stub_calendar(character: current_character, events: [event])
+    event = create(
+      :event, character: current_character, starts_at: 1.month.from_now,
+    )
 
     visit_calendar_feed_path(tz: "Sofia")
 
@@ -68,8 +74,6 @@ feature "subscriber views upcoming events", type: :feature do
   scenario "and sees informative text, when there are no upcoming events" do
     sign_in
 
-    stub_calendar(character: current_character, events: [])
-
     visit_calendar_feed_path
 
     expect(page).to have_content("There are no upcoming events")
@@ -77,18 +81,6 @@ feature "subscriber views upcoming events", type: :feature do
 
   def visit_calendar_feed_path(**params)
     visit calendar_feed_path(id: create_access_token.token, params: params)
-  end
-
-  def stub_calendar(character:, events: [])
-    allow(CalendarSync).to receive(:new).and_return(proc { true })
-
-    agenda = create(:agenda, events: events)
-
-    double("calendar", agenda: agenda).tap do |calendar|
-      allow(Calendar).to receive(:new).
-        with(character).
-        and_return(calendar)
-    end
   end
 
   def create_access_token
