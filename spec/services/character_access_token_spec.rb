@@ -23,7 +23,7 @@ describe CharacterAccessToken do
   end
 
   describe "#refresh!" do
-    def stub_renew_token_result(token: nil, refresh_token: nil, expires_at: nil, backend:)
+    def stub_renew_token_result(token: nil, refresh_token: nil, expires_at: nil, backend:) # rubocop:disable Metrics/LineLength
       double(
         token: token || SecureRandom.uuid,
         refresh_token: refresh_token || SecureRandom.uuid,

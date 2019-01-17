@@ -69,28 +69,28 @@ class CalendarFeedsController < ApplicationController
   #     disposition: :inline
   # end
 
-  def generate_feed(calendar, time_zone)
-    buffer = []
+  # def generate_feed(calendar, time_zone)
+  #   buffer = []
 
-    buffer << "BEGIN:VCALENDAR"
-    buffer << "VERSION:2.0"
-    buffer << "PRODID:eventical"
-    buffer << "CALSCALE:GREGORIAN"
-    buffer << "METHOD:PUBLISH"
-    # buffer << "X-WR-CALNAME:#{calendar.display_name}"
-    # buffer << "X-WR-TIMEZONE;VALUE=TEXT:#{calendar.time_zone.name}"
-    # buffer << "LAST-MODIFIED:#{format_datetime(calendar.last_modified_at)}"
-    #   BEGIN:VEVENT
-    #   DTSTAMP:20181216T074451Z
-    #   UID:a4359af6-dc68-451e-a415-074c721858d8
-    #   DTSTART:20181216T074451
-    #   SUMMARY:Robyn Dibbert
-    #   END:VEVENT
-    #   END:VCALENDAR
-    buffer << "END:VCALENDAR"
+  #   buffer << "BEGIN:VCALENDAR"
+  #   buffer << "VERSION:2.0"
+  #   buffer << "PRODID:eventical"
+  #   buffer << "CALSCALE:GREGORIAN"
+  #   buffer << "METHOD:PUBLISH"
+  #   # buffer << "X-WR-CALNAME:#{calendar.display_name}"
+  #   # buffer << "X-WR-TIMEZONE;VALUE=TEXT:#{calendar.time_zone.name}"
+  #   # buffer << "LAST-MODIFIED:#{format_datetime(calendar.last_modified_at)}"
+  #   #   BEGIN:VEVENT
+  #   #   DTSTAMP:20181216T074451Z
+  #   #   UID:a4359af6-dc68-451e-a415-074c721858d8
+  #   #   DTSTART:20181216T074451
+  #   #   SUMMARY:Robyn Dibbert
+  #   #   END:VEVENT
+  #   #   END:VCALENDAR
+  #   buffer << "END:VCALENDAR"
 
-    buffer.compact.join("\r\n")
-  end
+  #   buffer.compact.join("\r\n")
+  # end
 
   def render_headers
     response.headers["Cache-Control"] = "no-cache, no-store"

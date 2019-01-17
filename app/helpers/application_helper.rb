@@ -7,7 +7,7 @@ module ApplicationHelper
   def link_to_eve_online_sso_help(text = "What is this?")
     link_to(
       text,
-      "http://community.eveonline.com/news/dev-blogs/eve-online-sso-and-what-you-need-to-know",
+      "http://community.eveonline.com/news/dev-blogs/eve-online-sso-and-what-you-need-to-know", # rubocop:disable Metrics/LineLength
       target: "_blank",
     )
   end

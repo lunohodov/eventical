@@ -28,7 +28,9 @@ feature "subscriber views upcoming events", type: :feature do
     sign_in
 
     event = create(
-      :event, character: current_character, starts_at: 1.day.from_now,
+      :event,
+      character: current_character,
+      starts_at: 1.day.from_now,
     )
 
     visit_calendar_feed_path
@@ -59,7 +61,9 @@ feature "subscriber views upcoming events", type: :feature do
     sign_in
 
     event = create(
-      :event, character: current_character, starts_at: 1.month.from_now,
+      :event,
+      character: current_character,
+      starts_at: 1.month.from_now,
     )
 
     visit_calendar_feed_path(tz: "Sofia")
