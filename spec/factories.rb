@@ -76,6 +76,10 @@ FactoryBot.define do
     end
   end
 
+  factory :calendar, class: "Calendar" do
+    initialize_with { new(time_zone: time_zone) }
+  end
+
   factory :access_token do
     issuer { create(:character) }
     grantee { create(:character) }
