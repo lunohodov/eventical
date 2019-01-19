@@ -9,13 +9,13 @@ class CalendarFeedsController < ApplicationController
   around_action :set_time_zone
 
   def show
-    @calendar = character_calendar(access_token.issuer)
+    calendar = character_calendar(access_token.issuer)
 
     render_headers
 
     respond_to do |format|
-      format.ics { render_ical(@calendar) }
-      format.html
+      format.ics { render_ical(calendar) }
+      format.html { @calendar = calendar }
     end
   end
 
