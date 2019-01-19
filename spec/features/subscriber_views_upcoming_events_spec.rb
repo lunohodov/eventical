@@ -7,14 +7,14 @@ feature "subscriber views upcoming events", type: :feature do
   end
 
   scenario "events are grouped by date" do
-    sign_in
-
+    access_token = create_access_token
+    character = access_token.issuer
     events = [
-      create(:event, character: current_character, starts_at: Time.current),
-      create(:event, character: current_character, starts_at: 1.day.from_now),
+      create(:event, character: character, starts_at: Time.current),
+      create(:event, character: character, starts_at: 1.day.from_now),
     ]
 
-    visit_calendar_feed_path
+    visit_calendar_feed_path(access_token)
 
     events.map(&:starts_at).each do |date|
       within(event_list_selector(date)) do
@@ -25,15 +25,11 @@ feature "subscriber views upcoming events", type: :feature do
   end
 
   scenario "and sees event details" do
-    sign_in
+    access_token = create_access_token
+    character = access_token.issuer
+    event = create(:event, character: character, starts_at: 1.day.from_now)
 
-    event = create(
-      :event,
-      character: current_character,
-      starts_at: 1.day.from_now,
-    )
-
-    visit_calendar_feed_path
+    visit_calendar_feed_path(access_token)
 
     within("tr.event") do
       expect(page).to have_content(event.starts_at.strftime("%H:%M"))
@@ -45,11 +41,11 @@ feature "subscriber views upcoming events", type: :feature do
   end
 
   scenario "and can change preferred time zone" do
-    sign_in
+    access_token = create_access_token
+    character = access_token.issuer
+    create_list(:event, 2, character: character)
 
-    create_list(:event, 2, character: current_character)
-
-    visit_calendar_feed_path(tz: "Sofia")
+    visit_calendar_feed_path(access_token, tz: "Sofia")
 
     select("London", from: :tz)
     click_on("Change")
@@ -58,15 +54,11 @@ feature "subscriber views upcoming events", type: :feature do
   end
 
   scenario "and sees time in preferred time zone" do
-    sign_in
+    access_token = create_access_token
+    character = access_token.issuer
+    event = create(:event, character: character, starts_at: 1.month.from_now)
 
-    event = create(
-      :event,
-      character: current_character,
-      starts_at: 1.month.from_now,
-    )
-
-    visit_calendar_feed_path(tz: "Sofia")
+    visit_calendar_feed_path(access_token, tz: "Sofia")
 
     within("tr.event") do
       expect(page).to have_content(
@@ -76,19 +68,21 @@ feature "subscriber views upcoming events", type: :feature do
   end
 
   scenario "and sees informative text, when there are no upcoming events" do
-    sign_in
-
-    visit_calendar_feed_path
+    visit_calendar_feed_path(create_access_token)
 
     expect(page).to have_content("There are no upcoming events")
   end
 
-  def visit_calendar_feed_path(**params)
-    visit calendar_feed_path(id: create_access_token.token, params: params)
+  def visit_calendar_feed_path(access_token, **params)
+    visit calendar_feed_path(id: access_token.token, params: params)
   end
 
-  def create_access_token
-    create(:access_token, :personal, issuer: current_character)
+  def create_access_token(character = nil)
+    create(
+      :access_token,
+      :personal,
+      issuer: character || create(:character),
+    )
   end
 
   def event_list_selector(date)

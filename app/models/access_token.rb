@@ -13,9 +13,8 @@ class AccessToken < ApplicationRecord
   }
 
   class << self
-    def find_granted_by_slug!(slug:, grantee:)
-      # TODO: Support for non-personal tokens
-      current.personal(grantee).find_by!(token: parse_slug(slug))
+    def by_slug!(slug)
+      current.find_by!(token: parse_slug(slug))
     end
 
     def create_personal!(char)

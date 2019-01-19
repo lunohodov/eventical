@@ -39,6 +39,26 @@ describe AccessToken, type: :model do
     end
   end
 
+  describe ".by_slug!" do
+    it "returns found token" do
+      access_token = create(:access_token)
+
+      found = AccessToken.by_slug!(access_token.token)
+
+      expect(found).to eq(access_token)
+      expect(found).not_to be_revoked
+      expect(found).not_to be_expired
+    end
+
+    context "when not found" do
+      it "raises an error" do
+        expect do
+          AccessToken.by_slug!("non-existing")
+        end.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+  end
+
   describe ".revoke!" do
     it "revokes the given instance" do
       token = create(:access_token)

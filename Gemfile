@@ -10,6 +10,7 @@ gem "bootsnap", ">= 1.1.0", require: false
 gem "bootstrap", "~> 4.1.3"
 gem "eve_online"
 gem "font-awesome-rails"
+gem "icalendar"
 gem "jbuilder", "~> 2.5"
 gem "omniauth"
 gem "omniauth-eve_online-sso"
