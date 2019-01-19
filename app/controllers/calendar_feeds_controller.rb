@@ -70,7 +70,9 @@ class CalendarFeedsController < ApplicationController
     cal = Icalendar::Calendar.new
 
     tz = preferred_time_zone.tzinfo
-    cal.add_timezone tz.ical_timezone(calendar.events.first.starts_at)
+    unless calendar.empty?
+      cal.add_timezone tz.ical_timezone(calendar.events.first.starts_at)
+    end
 
     calendar.events.each do |event|
       cal.event do |e|
