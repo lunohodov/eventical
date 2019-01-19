@@ -18,7 +18,7 @@ feature "subscriber views iCalendar feed", type: :feature do
 
     visit_calendar_feed_path(access_token, time_zone: time_zone)
 
-    expect(page).to have_content("")
+    expect(page).to have_content("BEGIN:VCALENDAR")
   end
 
   def visit_calendar_feed_path(access_token, time_zone: nil)
