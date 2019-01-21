@@ -10,7 +10,6 @@ development:
   database: evecal_development
   encoding: utf8
   min_messages: warning
-  pool: 2
   timeout: 5000
 
 # Warning: The database defined as "test" will be erased and
