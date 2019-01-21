@@ -1,33 +1,19 @@
 # eventical [![CircleCI](https://circleci.com/gh/lunohodov/eventical.svg?style=svg&circle-token=b79e0b14abfe04bb761c1e6008af3f7e33b2fb99)](https://circleci.com/gh/lunohodov/eventical)
 
-Instant iCal feeds for your EVE Online calendar(s).
+## Instant iCal feeds for your EVE Online calendar(s)
 
-## How It Works
-
-#### Convenient out-of-game access
-
-Use your favourite calendar app on the desktop or mobile. Outlook,
-Apple Calendar, Google Calendar, or phone's native - you choose.
-
-Times are adjusted and shown in your own time-zone. No more missed events!
-
-#### Keep everyone in the loop
-
-Having a single location for scheduled incursion runs, mining operations,
-or the occasional roam keeps everyone on the same page.
-
-#### You're always in control
-
-You decide who to share with - individual characters, everyone in a corporation
-or alliance, or the whole Universe.
-
-Sharing can be stopped at anytime.
+* Convenient out-of-game access with your favourite device
+* Events shown in your time zone
+* Single events location to keep everyone in the loop
+* Feed sharing with fine-grained access control
 
 ---
 
-[Try it](https://eveonline-calendar-feeds.herokuapp.com).
+[Try it](https://eventical-production.herokuapp.com).
 
 **WARNING**: Still work in progress, and there may be occasional errors.
+
+---
 
 ## [TODO] Development
 
