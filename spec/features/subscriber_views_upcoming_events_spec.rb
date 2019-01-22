@@ -70,7 +70,7 @@ feature "subscriber views upcoming events", type: :feature do
   scenario "and sees informative text, when there are no upcoming events" do
     visit_calendar_feed_path(create_access_token)
 
-    expect(page).to have_content("There are no upcoming events")
+    expect(page).to have_content(/no upcoming events/i)
   end
 
   def visit_calendar_feed_path(access_token, **params)
