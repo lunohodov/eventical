@@ -7,7 +7,7 @@ ruby "2.5.3"
 gem "rails", "~> 5.2.1"
 
 gem "bootsnap", ">= 1.1.0", require: false
-gem "bootstrap", "~> 4.3.0"
+gem "bootstrap", "~> 4.3.1"
 gem "eve_online"
 gem "font-awesome-rails"
 gem "icalendar"
