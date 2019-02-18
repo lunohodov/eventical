@@ -89,7 +89,7 @@ GEM
       dotenv (= 2.5.0)
       railties (>= 3.2, < 6.0)
     erubi (1.8.0)
-    eve_online (0.23.0)
+    eve_online (0.24.0)
       activesupport (>= 4.2.0)
     execjs (2.7.0)
     factory_bot (5.0.0)
