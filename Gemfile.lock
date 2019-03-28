@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/stympy/faker.git
-  revision: 57c37d934fdcf65e7d5b8bc0f8f210e6de428b0b
+  revision: 1a39a9a76aa9a040466ba9ee944dc2aae1ea84de
   branch: master
   specs:
     faker (1.9.3)
@@ -276,7 +276,7 @@ GEM
     thread_safe (0.3.6)
     tilt (2.0.9)
     tty-color (0.4.3)
-    tty-pager (0.12.0)
+    tty-pager (0.12.1)
       strings (~> 0.1.4)
       tty-screen (~> 0.6)
       tty-which (~> 0.4)
