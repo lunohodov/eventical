@@ -10,6 +10,16 @@ describe Eve::Esi do
     end
   end
 
+  describe ".character_calendar" do
+    it "returns an event source" do
+      character = build(:character)
+
+      result = Eve::Esi.character_calendar(character)
+
+      expect(result).to respond_to(:events)
+    end
+  end
+
   describe ".renew_access_token!" do
     it "requests a new access token" do
       oauth_client = instance_spy(OAuth2::Client)
@@ -31,5 +41,22 @@ describe Eve::Esi do
       expect(actual_token.expires_at).to eq(1)
       expect(actual_token.refresh_token).to eq("0xNEW_REFRESH")
     end
+  end
+end
+
+describe Eve::Esi::EventSource do
+  matcher :be_mapped_from do |source|
+    match do |event|
+      expect(event.uid).to eq source.event_id
+    end
+  end
+
+  it "maps ESI event to domain model" do
+    character_calendar = instance_double(
+      EveOnline::ESI::CharacterCalendar,
+      events: [create(:esi_event)],
+    )
+    events = Eve::Esi::EventSource.new(character_calendar).events
+    expect(events.first).to be_mapped_from(character_calendar.events.first)
   end
 end

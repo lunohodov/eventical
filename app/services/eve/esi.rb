@@ -1,13 +1,33 @@
+require "ostruct"
+
 module Eve
   module Esi
     include ActiveSupport::Configurable
 
+    class EventSource < SimpleDelegator
+      def events
+        super.map(&method(:map_event))
+      end
+
+      private
+
+      def map_event(event)
+        OpenStruct.new(
+          uid: event.event_id,
+          response: event.event_response,
+          title: event.title,
+          starts_at: event.event_date,
+        ).freeze
+      end
+    end
+
     module ClassMethods
       def character_calendar(character)
-        EveOnline::ESI::CharacterCalendar.new(
+        calendar = EveOnline::ESI::CharacterCalendar.new(
           token: character.token,
           character_id: character.uid,
         )
+        EventSource.new(calendar)
       end
 
       # Renews the access token using the given refresh token
