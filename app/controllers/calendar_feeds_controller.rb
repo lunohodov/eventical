@@ -22,10 +22,14 @@ class CalendarFeedsController < ApplicationController
   private
 
   def character_calendar(character)
-    # TODO: Move this out of here?
-    CharacterAccessToken.new(character).refresh
-    # TODO: Think about proper event synchronization
-    EventSynchronization.new(character: character).call
+    begin
+      # TODO: Move this out of here?
+      CharacterAccessToken.new(character).refresh
+      # TODO: Think about proper event synchronization
+      EventSynchronization.new(character: character).call
+    rescue EveOnline::Exceptions::ServiceUnavailable => e
+      logger.info "EVE Online unavailable: #{e.message}"
+    end
 
     Calendar.new(
       events: upcoming_events(character),
@@ -58,9 +62,9 @@ class CalendarFeedsController < ApplicationController
 
   def render_ical(calendar)
     send_data to_ical(calendar),
-      filename: "basic.ics",
-      type: "text/calendar; charset=utf-8",
-      disposition: :inline
+              filename: "basic.ics",
+              type: "text/calendar; charset=utf-8",
+              disposition: :inline
   end
 
   def to_ical(calendar)
