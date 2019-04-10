@@ -31,13 +31,7 @@ feature "subscriber views upcoming events", type: :feature do
 
     visit_calendar_feed_path(access_token)
 
-    within("tr.event") do
-      expect(page).to have_content(event.starts_at.strftime("%H:%M"))
-      expect(page).to have_content(event.title)
-      expect(page).to have_content(
-        event.starts_at.utc.strftime("%Y-%m-%d %H:%M"),
-      )
-    end
+    expect(page).to have_event_details(event)
   end
 
   scenario "and can change preferred time zone" do
@@ -73,6 +67,20 @@ feature "subscriber views upcoming events", type: :feature do
     expect(page).to have_content(/no upcoming events/i)
   end
 
+  scenario "and sees cached events during EVE Online downtime" do
+    access_token = create_access_token
+    character = access_token.issuer
+    event = create(:event, character: character, starts_at: 1.day.from_now)
+
+    allow(EventSynchronization).to receive(:new).and_return(
+      proc { raise EveOnline::Exceptions::ServiceUnavailable },
+    )
+
+    visit_calendar_feed_path(create_access_token)
+
+    expect(page).to have_event_details(event)
+  end
+
   def visit_calendar_feed_path(access_token, **params)
     visit calendar_feed_path(id: access_token.token, params: params)
   end
@@ -87,5 +95,15 @@ feature "subscriber views upcoming events", type: :feature do
 
   def event_list_selector(date)
     ".event-list[data-date=\"#{date.strftime('%Y-%m-%d')}\"]"
+  end
+
+  matcher :have_event_details do |e|
+    match do |page|
+      within("tr.event") do
+        expect(page).to have_content(e.starts_at.strftime("%H:%M"))
+        expect(page).to have_content(e.title)
+        expect(page).to have_content(e.starts_at.utc.strftime("%Y-%m-%d %H:%M"))
+      end
+    end
   end
 end
