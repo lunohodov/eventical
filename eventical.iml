@@ -39,7 +39,7 @@
     <orderEntry type="library" scope="PROVIDED" name="arel (v9.0.0, asdf: 2.6.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="autoprefixer-rails (v9.4.7, asdf: 2.6.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="bindex (v0.5.0, asdf: 2.6.2) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="bootsnap (v1.4.2, asdf: 2.6.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="bootsnap (v1.4.3, asdf: 2.6.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="bootstrap (v4.3.1, asdf: 2.6.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="builder (v3.2.3, asdf: 2.6.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="bundler (v2.0.1, asdf: 2.6.2) [gem]" level="application" />
@@ -60,7 +60,7 @@
     <orderEntry type="library" scope="PROVIDED" name="execjs (v2.7.0, asdf: 2.6.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="factory_bot (v5.0.0, asdf: 2.6.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="factory_bot_rails (v5.0.1, asdf: 2.6.2) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="faker (v1.9.3@abf825, asdf: 2.6.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="faker (v1.9.3@59a926, asdf: 2.6.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="faraday (v0.15.4, asdf: 2.6.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="ffi (v1.9.25, asdf: 2.6.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="font-awesome-rails (v4.7.0.4, asdf: 2.6.2) [gem]" level="application" />
