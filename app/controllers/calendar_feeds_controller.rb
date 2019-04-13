@@ -6,10 +6,16 @@ class CalendarFeedsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   after_action :remember_preferred_time_zone
-  around_action :set_time_zone
 
   def show
-    calendar = character_calendar(access_token.issuer)
+    character = access_token.issuer
+
+    synchronize_events(character)
+
+    calendar = Calendar.new(
+      events: upcoming_events(character),
+      time_zone: preferred_time_zone,
+    )
 
     render_headers
 
@@ -21,20 +27,13 @@ class CalendarFeedsController < ApplicationController
 
   private
 
-  def character_calendar(character)
-    begin
-      # TODO: Move this out of here?
-      CharacterAccessToken.new(character).refresh
-      # TODO: Think about proper event synchronization
-      EventSynchronization.new(character: character).call
-    rescue EveOnline::Exceptions::ServiceUnavailable => e
-      logger.info "EVE Online unavailable: #{e.message}"
-    end
-
-    Calendar.new(
-      events: upcoming_events(character),
-      time_zone: preferred_time_zone,
-    )
+  def synchronize_events(character)
+    # TODO: Move this out of here?
+    CharacterAccessToken.new(character).refresh
+    # TODO: Think about proper event synchronization
+    EventSynchronization.new(character: character).call
+  rescue EveOnline::Exceptions::ServiceUnavailable => e
+    logger.info "EVE Online unavailable: #{e.message}"
   end
 
   def upcoming_events(character)
@@ -50,10 +49,6 @@ class CalendarFeedsController < ApplicationController
       cookies.signed[:tz].presence ||
       Eve.time_zone.name
     ActiveSupport::TimeZone[zone_name].presence || Eve.time_zone
-  end
-
-  def set_time_zone(&block)
-    Time.use_zone(preferred_time_zone, &block)
   end
 
   def remember_preferred_time_zone
