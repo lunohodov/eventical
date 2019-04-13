@@ -1,4 +1,4 @@
-<% if @calendar.empty? %>
+<% if @events.empty? %>
   <section class="text-center p-5">
     <h3>You have no upcoming events.</h3>
   </section>
@@ -6,17 +6,32 @@
   <section class="text-small text-left feed_settings">
     <%= form_with(method: :get, local: true, class: "form-inline") do |f| %>
       <label for="tz" class="my-2 mr-2">Times shown for </label>
-      <%= select_tag(:tz, time_zone_options_for_select(@calendar.time_zone.name)) %>
+      <%= select_tag(:tz, time_zone_options_for_select(@time_zone.name)) %>
       <%= f.submit("Change", class: "btn btn-link") %>
     <% end %>
   </section>
   <section class="text-left">
     <table class="table">
-      <% @calendar.agenda.each do |entry| %>
-        <%= render "event_list",
-          date: entry.date,
-          events: entry.events,
-          preferred_time_zone: @calendar.time_zone %>
+      <% @events.chunk { |e| e.starts_at.in_time_zone(@time_zone).midnight }.each do |date_time, events| %>
+        <tbody class="event-list" data-date="<%= date_time.to_date.iso8601 %>">
+        <tr class="<%= Time.current.in_time_zone(@time_zone).to_date == date_time.to_date ? "text-light bg-dark" : "table-active" %> event-list__header">
+          <th colspan="3"><%= date_time.strftime("%a %d %b") %></th>
+        </tr>
+        <% events.each do |event| %>
+          <tr class="event" data-event-id="<%= event.uid %>">
+            <td class="event__time--local">
+              <%= event.starts_at.in_time_zone(@time_zone).strftime("%H:%M") %>
+            </td>
+            <td class="event__title"><%= event.title %></td>
+            <td class="event__time--eve">
+              <small class="text-muted text-monospace">
+                <%= event.starts_at.utc.strftime("%Y-%m-%d %H:%M") %>
+                <abbr title="EVE Online Time" class="initialism">EVE</abbr>
+              </small>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
       <% end %>
     </table>
   </section>

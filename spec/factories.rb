@@ -24,16 +24,6 @@ FactoryBot.define do
     title { Faker::Name.name }
   end
 
-  factory :agenda, class: "Agenda" do
-    skip_create
-
-    events { create_list(:event, 2) }
-
-    initialize_with do
-      new(events: events)
-    end
-  end
-
   factory :character do
     name { Faker::Name.name }
     owner_hash { Faker::Crypto.sha1 }
@@ -74,10 +64,6 @@ FactoryBot.define do
         },
       )
     end
-  end
-
-  factory :calendar, class: "Calendar" do
-    initialize_with { new(time_zone: time_zone) }
   end
 
   factory :access_token do

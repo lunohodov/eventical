@@ -11,17 +11,18 @@ class CalendarFeedsController < ApplicationController
     character = access_token.issuer
 
     synchronize_events(character)
-
-    calendar = Calendar.new(
-      events: upcoming_events(character),
-      time_zone: preferred_time_zone,
-    )
+    events = upcoming_events(character)
 
     render_headers
 
     respond_to do |format|
-      format.ics { render_ical(calendar) }
-      format.html { @calendar = calendar }
+      format.ics do
+        render_ical(events)
+      end
+      format.html do
+        @time_zone = preferred_time_zone
+        @events = events
+      end
     end
   end
 
@@ -55,25 +56,25 @@ class CalendarFeedsController < ApplicationController
     cookies.signed.permanent[:tz] = preferred_time_zone&.name
   end
 
-  def render_ical(calendar)
-    send_data to_ical(calendar),
+  def render_ical(events)
+    send_data to_ical(events),
               filename: "basic.ics",
               type: "text/calendar; charset=utf-8",
               disposition: :inline
   end
 
-  def to_ical(calendar)
+  def to_ical(events)
     issuer = access_token.issuer
     recipient = access_token.grantee
 
     cal = Icalendar::Calendar.new
 
     tz = preferred_time_zone.tzinfo
-    unless calendar.empty?
-      cal.add_timezone tz.ical_timezone(calendar.events.first.starts_at)
+    unless events.empty?
+      cal.add_timezone tz.ical_timezone(events.first.starts_at)
     end
 
-    calendar.events.each do |event|
+    events.each do |event|
       cal.event do |e|
         e.dtstart = Icalendar::Values::DateTime.new(
           event.starts_at,
