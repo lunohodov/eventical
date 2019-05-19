@@ -7,6 +7,10 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  def character_settings
+    Setting.for_character(current_character)
+  end
+
   def set_raven_context
     Raven.user_context(id: current_character&.uid)
     Raven.extra_context(params: params.to_unsafe_h, url: request.url)

@@ -34,25 +34,27 @@ feature "subscriber views upcoming events", type: :feature do
     expect(page).to have_event_details(event)
   end
 
-  scenario "and can change preferred time zone" do
-    access_token = create_access_token
-    character = access_token.issuer
-    create_list(:event, 2, character: character)
-
-    visit_calendar_feed_path(access_token, tz: "Sofia")
-
-    select("London", from: :tz)
-    click_on("Change")
-
-    expect(page).to have_select(:tz, selected: "(GMT+00:00) London")
-  end
-
-  scenario "and sees time in preferred time zone" do
+  scenario "and sees time in given time zone" do
     access_token = create_access_token
     character = access_token.issuer
     event = create(:event, character: character, starts_at: 1.month.from_now)
 
     visit_calendar_feed_path(access_token, tz: "Sofia")
+
+    within("tr.event") do
+      expect(page).to have_content(
+        event.starts_at.in_time_zone("Sofia").strftime("%H:%M"),
+      )
+    end
+  end
+
+  scenario "and sees time in preferred time zone" do
+    access_token = create_access_token
+    character = access_token.issuer
+    create(:setting, owner_hash: character.owner_hash, time_zone: "Sofia")
+    event = create(:event, character: character, starts_at: 1.month.from_now)
+
+    visit_calendar_feed_path(access_token)
 
     within("tr.event") do
       expect(page).to have_content(

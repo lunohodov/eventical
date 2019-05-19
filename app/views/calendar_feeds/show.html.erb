@@ -4,6 +4,7 @@
   </section>
 <% else %>
   <section class="text-left">
+    <small class="text-muted">Primary time zone <span class="text-monospace"><%= @time_zone.to_s %></span></small>
     <table class="table">
       <% @events.chunk { |e| e.starts_at.in_time_zone(@time_zone).midnight }.each do |date_time, events| %>
         <tbody class="event-list" data-date="<%= date_time.to_date.iso8601 %>">

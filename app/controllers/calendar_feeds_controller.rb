@@ -5,8 +5,6 @@ class CalendarFeedsController < ApplicationController
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
-  after_action :remember_preferred_time_zone
-
   def show
     character = access_token.issuer
 
@@ -20,8 +18,8 @@ class CalendarFeedsController < ApplicationController
         render_ical(events)
       end
       format.html do
-        @time_zone = preferred_time_zone
         @events = events
+        @time_zone = preferred_time_zone
       end
     end
   end
@@ -46,14 +44,16 @@ class CalendarFeedsController < ApplicationController
   end
 
   def preferred_time_zone
-    zone_name = params[:tz].presence ||
-      cookies.signed[:tz].presence ||
-      Eve.time_zone.name
-    ActiveSupport::TimeZone[zone_name].presence || Eve.time_zone
+    @preferred_time_zone ||= resolve_time_zone
   end
 
-  def remember_preferred_time_zone
-    cookies.signed.permanent[:tz] = preferred_time_zone&.name
+  def resolve_time_zone
+    time_zone = if params[:tz].present?
+                  ActiveSupport::TimeZone[params[:tz]]
+                else
+                  Setting.for_character(access_token.grantee).time_zone
+                end
+    time_zone.presence || Eve.time_zone
   end
 
   def render_ical(events)
