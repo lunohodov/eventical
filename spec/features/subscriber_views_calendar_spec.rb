@@ -20,4 +20,15 @@ feature "user views calendar", type: :feature do
 
     expect(page).to have_button("Reset secret address")
   end
+
+  scenario "and can change preferred time zone" do
+    sign_in
+
+    visit calendar_path
+
+    select("London", from: :tz)
+    click_on("Update time zone")
+
+    expect(page).to have_select(:tz, selected: "(GMT+00:00) London")
+  end
 end

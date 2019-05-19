@@ -4,6 +4,11 @@ require "ostruct"
 EVENT_RESPONSES = %w[attending declined tentative].freeze
 
 FactoryBot.define do
+  factory :setting do
+    owner_hash { SecureRandom.uuid }
+    time_zone { "Europe/Amsterdam" }
+  end
+
   factory :esi_event, class: "OpenStruct" do
     skip_create
 
