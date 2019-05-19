@@ -1,35 +1,23 @@
-<section class="my-2">
-  <div class="container">
-    <div class="row">
-      <div class="card">
-        <div class="card-header d-flex justify-content-between">
-          <div>Secret address</div>
-          <div>
-            <%= link_to(fa_icon(:rss), calendar_feed_url(@personal_token, format: :ics)) %>
-          </div>
-        </div>
-        <div class="card-body">
-          <h6 class="card-title">
-            <%= link_to(nil, calendar_feed_url(@personal_token)) %>
-          </h6>
-          <p>
-            Use this address to access this calendar from other applications without making it public.
-            <strong>Never share it with anyone.</strong>
-          </p>
-          <%= form_for @personal_token, url: calendar_path, method: :post do |f| %>
-            <div class="form-row">
-              <div class="col-sm-6 col-md-8">
-                <p>You can reset this address and make the current one invalid.</p>
-              </div>
-              <div class="col-sm-6 col-md-4">
-                <button class="btn btn-outline-danger btn-block"
-                        id="btn-reset-private-address"
-                        type="submit">Reset secret address</button>
-              </div>
-            </div>
-          <% end %>
-        </div>
+<section>
+  <h3> Secret address </h3>
+
+  <p> Use this address to access this calendar from other applications without making it public.
+  <strong>Never share it with anyone.</strong> </p>
+
+  <div class="shadow-sm p-3 mb-5 bg-white rounded">
+    <%= link_to(nil, calendar_feed_url(@personal_token)) %> 
+  </div>
+
+  <%= form_for @personal_token, url: calendar_path, method: :post do |f| %>
+    <div class="form-row">
+      <div class="col-sm-6 col-md-8">
+        <p>You can reset this address and make the current one invalid.</p>
+      </div>
+      <div class="col-sm-6 col-md-4">
+        <button class="btn btn-outline-danger btn-block"
+                id="btn-reset-private-address"
+                type="submit">Reset secret address</button>
       </div>
     </div>
-  </div>
+  <% end %>
 </section>

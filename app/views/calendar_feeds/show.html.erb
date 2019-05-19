@@ -3,13 +3,6 @@
     <h3>You have no upcoming events.</h3>
   </section>
 <% else %>
-  <section class="text-small text-left feed_settings">
-    <%= form_with(method: :get, local: true, class: "form-inline") do |f| %>
-      <label for="tz" class="my-2 mr-2">Times shown for </label>
-      <%= select_tag(:tz, time_zone_options_for_select(@time_zone.name)) %>
-      <%= f.submit("Change", class: "btn btn-link") %>
-    <% end %>
-  </section>
   <section class="text-left">
     <table class="table">
       <% @events.chunk { |e| e.starts_at.in_time_zone(@time_zone).midnight }.each do |date_time, events| %>
