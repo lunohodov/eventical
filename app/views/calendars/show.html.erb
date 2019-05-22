@@ -5,13 +5,13 @@
     <%= link_to(nil, calendar_feed_url(@personal_token)) %> 
   </div>
 
-  <p> Use this address to access this calendar from other applications without making it public.
-  <strong>Never share it with anyone.</strong> </p>
+  <p> Use the Secret Address to access this calendar from other applications.
+  <strong>Don’t share this address with other people.</strong> </p>
 
   <%= form_for @personal_token, url: calendar_path, method: :post do |f| %>
     <div class="form-row">
       <div class="col-sm-6 col-md-8">
-        <p>You can reset this address and make the current one invalid.</p>
+        <p>If you accidentally shared your calendar's Secret Address, you can reset it and make the current one invalid.</p>
       </div>
       <div class="col-sm-6 col-md-4">
         <button class="btn btn-danger btn-block"
