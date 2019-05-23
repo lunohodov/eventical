@@ -83,6 +83,16 @@ feature "subscriber views upcoming events", type: :feature do
     expect(page).to have_event_details(event)
   end
 
+  scenario "and sees link to iCal feed" do
+    access_token = create_access_token
+    character = access_token.issuer
+    event = create(:event, character: character, starts_at: 1.day.from_now)
+
+    visit_calendar_feed_path(access_token)
+
+    expect(page).to have_link("iCal")
+  end
+
   def visit_calendar_feed_path(access_token, **params)
     visit calendar_feed_path(id: access_token.token, params: params)
   end
