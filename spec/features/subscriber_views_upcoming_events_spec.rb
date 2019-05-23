@@ -78,7 +78,7 @@ feature "subscriber views upcoming events", type: :feature do
       proc { raise EveOnline::Exceptions::ServiceUnavailable },
     )
 
-    visit_calendar_feed_path(create_access_token)
+    visit_calendar_feed_path(access_token)
 
     expect(page).to have_event_details(event)
   end
