@@ -20,6 +20,7 @@ class CalendarFeedsController < ApplicationController
       format.html do
         @events = events
         @time_zone = preferred_time_zone
+        @access_token = access_token
       end
     end
   end
