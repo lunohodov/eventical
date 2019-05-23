@@ -86,7 +86,7 @@ feature "subscriber views upcoming events", type: :feature do
   scenario "and sees link to iCal feed" do
     access_token = create_access_token
     character = access_token.issuer
-    event = create(:event, character: character, starts_at: 1.day.from_now)
+    create(:event, character: character, starts_at: 1.day.from_now)
 
     visit_calendar_feed_path(access_token)
 
