@@ -1,18 +1,31 @@
 <section>
-  <h3> Secret address </h3>
+  <h3> Integrate calendar </h3>
 
-  <div class="shadow-sm p-3 mb-3 bg-white rounded">
-    <%= link_to(nil, calendar_feed_url(@personal_token)) %> 
+  <p> Use the integration links below to access your calendar from other applications.
+  <strong>Don’t share them with other people.</strong> </p>
+
+  <div class="list-group mb-4">
+    <div class="list-group-item flex-column align-items-start" id="secret-address">
+      <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1">Secret address</h5>
+      </div>
+      <p class="mb-1"> <%= link_to(nil, calendar_feed_url(@personal_token)) %> </p>
+      <small>Use this address to privately access your calendar from a web browser.</small>
+    </div>
+    <div class="list-group-item flex-column align-items-start" id="secret-address-ical">
+      <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1">Secret address in iCal format</h5>
+      </div>
+      <p class="mb-1"> <%= link_to(nil, calendar_feed_url(@personal_token, format: :ics)) %> </p>
+      <small>Use this address to privately access your calendar from other applications such as
+        Apple Calendar, Google Calendar, Outlook Calendar or their mobile variants.</small>
+    </div>
   </div>
-
-  <p> Use the Secret Address to access this calendar from other applications.
-  <strong>Don’t share this address with other people.</strong> </p>
 
   <%= form_for @personal_token, url: calendar_path, method: :post do |f| %>
     <div class="form-row">
       <div class="col-sm-6 col-md-8">
-        <p>Reset your current secret address and make it invalid. Useful if the address has been accidentally
-        shared.</p>
+        <p>You can reset the secret address and make the current one invalid.</p>
       </div>
       <div class="col-sm-6 col-md-4">
         <%= f.submit("Reset secret address",

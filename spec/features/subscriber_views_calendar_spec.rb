@@ -8,7 +8,21 @@ feature "user views calendar", type: :feature do
 
     visit calendar_path
 
-    expect(page).to have_link(href: /#{access_token.token}$/)
+    within "#secret-address" do
+      expect(page).to have_link(href: /#{access_token.token}$/)
+    end
+  end
+
+  scenario "and sees it's private address in iCal format" do
+    sign_in
+
+    access_token = create(:access_token, :personal, issuer: current_character)
+
+    visit calendar_path
+
+    within "#secret-address-ical" do
+      expect(page).to have_link(href: /#{access_token.token}\.ics$/)
+    end
   end
 
   scenario "and sees a button to reset the private address" do
@@ -18,7 +32,7 @@ feature "user views calendar", type: :feature do
 
     visit calendar_path
 
-    expect(page).to have_button("Reset secret address")
+    expect(page).to have_button("Reset addresses")
   end
 
   scenario "and can change preferred time zone" do
