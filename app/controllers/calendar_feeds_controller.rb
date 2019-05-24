@@ -70,9 +70,17 @@ class CalendarFeedsController < ApplicationController
 
     cal = Icalendar::Calendar.new
 
-    tz = preferred_time_zone.tzinfo
+    # Modern calendar applications such as Google Calendar, Apple Calendar
+    # and their mobile variants convert to the right time zone automatically.
+    #
+    # Export iCal in UTC (i.e EVE time) and leave conversion to the client
+    # application.
+    #
+    tz = Eve.time_zone.tzinfo
+
     unless events.empty?
-      cal.add_timezone tz.ical_timezone(events.first.starts_at)
+      sample_time = events.first.starts_at
+      cal.add_timezone tz.ical_timezone(sample_time)
     end
 
     events.each do |event|
