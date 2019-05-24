@@ -32,7 +32,7 @@ feature "user views calendar", type: :feature do
 
     visit calendar_path
 
-    expect(page).to have_button("Reset addresses")
+    expect(page).to have_button("Reset secret address")
   end
 
   scenario "and can change preferred time zone" do
