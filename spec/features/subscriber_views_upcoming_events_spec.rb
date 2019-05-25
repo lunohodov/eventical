@@ -69,6 +69,12 @@ feature "subscriber views upcoming events", type: :feature do
     expect(page).to have_content(/no upcoming events/i)
   end
 
+  scenario "and sees iCal link, when there are no upcoming events" do
+    visit_calendar_feed_path(create_access_token)
+
+    expect(page).to have_ical_link
+  end
+
   scenario "and sees cached events during EVE Online downtime" do
     access_token = create_access_token
     character = access_token.issuer
@@ -86,11 +92,11 @@ feature "subscriber views upcoming events", type: :feature do
   scenario "and sees link to iCal feed" do
     access_token = create_access_token
     character = access_token.issuer
-    event = create(:event, character: character, starts_at: 1.day.from_now)
+    create(:event, character: character, starts_at: 1.day.from_now)
 
     visit_calendar_feed_path(access_token)
 
-    expect(page).to have_link("iCal")
+    expect(page).to have_ical_link
   end
 
   def visit_calendar_feed_path(access_token, **params)
@@ -107,6 +113,12 @@ feature "subscriber views upcoming events", type: :feature do
 
   def event_list_selector(date)
     ".event-list[data-date=\"#{date.strftime('%Y-%m-%d')}\"]"
+  end
+
+  matcher :have_ical_link do
+    match do |page|
+      expect(page).to have_link("iCal")
+    end
   end
 
   matcher :have_event_details do |e|
