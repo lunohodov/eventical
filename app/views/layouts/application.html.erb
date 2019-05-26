@@ -42,7 +42,12 @@
             <% end %>
             <li class="list-inline-item"><a href="/about">About</a></li>
           </ul>
-          <p class="mb-1">&copy; <%= Date.today.year %> <%= site_name %>.</p>
+          <p class="mb-1">
+            &copy; <%= Date.today.year %> <%= site_name %>
+            <% if app_version %>
+              <small class="font-weight-light">(<%= app_version %>)</small>
+            <% end %>
+          </p>
         </div>
       </footer>
     </div>

@@ -3,6 +3,10 @@ module ApplicationHelper
     "eve-calendars.com"
   end
 
+  def app_version
+    ENV["HEROKU_RELEASE_VERSION"]
+  end
+
   def body_class
     qualified_name = controller.controller_path.gsub("/", "-")
     "#{qualified_name} #{qualified_name}-#{controller.action_name}"
