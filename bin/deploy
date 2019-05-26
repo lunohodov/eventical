@@ -33,7 +33,7 @@ else
   fi
 
   if [ "$1" = "production" ]; then
-    open https://eventical-production.herokuapp.com
+    open https://www.eve-calendars.com
 
     if command -v watch >/dev/null; then
       watch heroku ps --remote "$1"

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>eventical</title>
+    <title><%= site_name %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -12,9 +12,9 @@
   <body class="<%= body_class %> text-center">
     <div class="content d-flex w-100 h-100 p-3 mx-auto flex-column">
       <header class="masthead d-flex justify-content-between">
-        <h3 class="masthead-brand">
-          <a href="/" title="eventical">eventical</a>
-        </h3>
+        <h1 class="masthead-brand h4">
+          <a href="/" title="<%= site_name %>"><%= site_name %></a>
+        </h1>
         <% if signed_in? %>
           <%= link_to calendar_url do %>
             <img src="https://image.eveonline.com/Character/<%= current_character.uid %>_256.jpg"
@@ -42,7 +42,7 @@
             <% end %>
             <li class="list-inline-item"><a href="/about">About</a></li>
           </ul>
-          <p class="mb-1">&copy; <%= Date.today.year %> eventical.</p>
+          <p class="mb-1">&copy; <%= Date.today.year %> <%= site_name %>.</p>
         </div>
       </footer>
     </div>
