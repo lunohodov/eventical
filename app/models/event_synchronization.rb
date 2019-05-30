@@ -10,8 +10,12 @@ class EventSynchronization
   def call
     event_data = fetch_event_data
 
-    Event.transaction do
-      event_data.map(&method(:sync_event))
+    if event_data.empty?
+      false
+    else
+      Event.transaction do
+        event_data.map(&method(:sync_event))
+      end
     end
   end
 

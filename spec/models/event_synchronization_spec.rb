@@ -23,6 +23,17 @@ describe EventSynchronization do
       expect(source).to have_received(:events)
     end
 
+    it "does not initiate a transaction when the source yields no events" do
+      character = build(:character)
+      source = stub_event_source([])
+
+      allow(Event).to receive(:transaction)
+
+      EventSynchronization.new(character: character, source: source).call
+
+      expect(Event).not_to have_received(:transaction)
+    end
+
     it "saves new event" do
       character = create(:character)
       new_event = build(:event, character: character)
