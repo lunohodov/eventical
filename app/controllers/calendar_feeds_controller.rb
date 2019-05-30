@@ -2,6 +2,7 @@ require "icalendar/tzinfo"
 
 class CalendarFeedsController < ApplicationController
   PAGE_SIZE = 50
+  CACHE_EXPIRES_IN = 90.minutes
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
@@ -28,12 +29,14 @@ class CalendarFeedsController < ApplicationController
   private
 
   def synchronize_events(character)
-    # TODO: Move this out of here?
-    CharacterAccessToken.new(character).refresh
-    # TODO: Think about proper event synchronization
-    EventSynchronization.new(character: character).call
-  rescue EveOnline::Exceptions::ServiceUnavailable => e
-    logger.info "EVE Online unavailable: #{e.message}"
+    cache_key = "synchronize_events.character.#{character.owner_hash}"
+    Rails.cache.fetch(cache_key, expires_in: CACHE_EXPIRES_IN) do
+      # TODO: Move this out of here
+      CharacterAccessToken.new(character).refresh
+      EventSynchronization.new(character: character).call
+    rescue EveOnline::Exceptions::ServiceUnavailable => e
+      logger.info "EVE Online unavailable: #{e.message}"
+    end
   end
 
   def upcoming_events(character)
