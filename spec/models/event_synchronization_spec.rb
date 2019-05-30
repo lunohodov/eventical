@@ -29,9 +29,11 @@ describe EventSynchronization do
 
       allow(Event).to receive(:transaction)
 
-      EventSynchronization.new(character: character, source: source).call
+      result = EventSynchronization.new(character: character, source: source).
+        call
 
       expect(Event).not_to have_received(:transaction)
+      expect(result).to be_empty
     end
 
     it "saves new event" do
@@ -39,9 +41,11 @@ describe EventSynchronization do
       new_event = build(:event, character: character)
       source = stub_event_source([new_event])
 
-      EventSynchronization.new(character: character, source: source).call
+      result = EventSynchronization.new(character: character, source: source).
+        call
 
       expect(Event.find_by(uid: new_event.uid)).to be_present
+      expect(result.size).to eq 1
     end
 
     it "updates title of existing event" do

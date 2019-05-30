@@ -11,7 +11,7 @@ class EventSynchronization
     event_data = fetch_event_data
 
     if event_data.empty?
-      false
+      []
     else
       Event.transaction do
         event_data.map(&method(:sync_event))
