@@ -13,11 +13,11 @@ describe "home index page" do
     visit "/"
 
     within(".cover-try") do
-      expect(find_link("Log in with EVE Online")).to be_visible
+      expect(find_button("Log in with EVE Online")).to be_visible
     end
 
     within(".masthead") do
-      expect(find_link("Log in with EVE Online")).to be_visible
+      expect(find_button("Log in with EVE Online")).to be_visible
     end
   end
 

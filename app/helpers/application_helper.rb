@@ -22,12 +22,15 @@ module ApplicationHelper
 
   def eve_online_sso_button(size = :small)
     size = :small unless %i[small large].include?(size)
+    style = "border: 0; padding: 0; display: inline-block; vertical-align: top;"
 
-    link_to "/auth/eve_online_sso" do
+    # rubocop:disable Metrics/LineLength
+    button_to("/auth/eve_online_sso", method: :post, remote: false, style: style) do
       image_tag(
-        "https://web.ccpgamescdn.com/eveonlineassets/developers/eve-sso-login-black-#{size}.png", # rubocop:disable Metrics/LineLength
+        "https://web.ccpgamescdn.com/eveonlineassets/developers/eve-sso-login-black-#{size}.png",
         alt: "Log in with EVE Online",
       )
     end
+    # rubocop:enable Metrics/LineLength
   end
 end
