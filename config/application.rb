@@ -21,5 +21,7 @@ module Eventical
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.2
+
+    config.skylight.environments += %w[development staging]
   end
 end
