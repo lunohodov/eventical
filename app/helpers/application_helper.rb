@@ -17,6 +17,7 @@ module ApplicationHelper
       text,
       "http://community.eveonline.com/news/dev-blogs/eve-online-sso-and-what-you-need-to-know", # rubocop:disable Metrics/LineLength
       target: "_blank",
+      rel: "noopener help",
     )
   end
 
