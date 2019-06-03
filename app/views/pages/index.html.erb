@@ -4,26 +4,28 @@
   </h1>
 
   <section class="cover-feature">
-    <h4>What you can do with <%= site_name %>?</h4>
+    <h4 class="mb-5">What you can do with <%= site_name %>?</h4>
+    <div class="card-deck">
+      <div class="card border-0">
+        <%= image_tag "devices.png", class: "mx-auto d-block w-25" %>
+        <div class="card-body">
+          <h5 class="card-title font-weight-light">Use your calendar app</h5>
+        </div>
+      </div>
+      <div class="card border-0">
+        <%= image_tag "time-zones.png", class: "mx-auto d-block w-25" %>
+        <div class="card-body">
+          <h5 class="card-title font-weight-light">See events in your time zone</h5>
+        </div>
+      </div>
+      <div class="card border-0">
+        <%= image_tag "sharing.png", class: "mx-auto d-block w-25" %>
+        <div class="card-body">
+          <h5 class="card-title font-weight-light">Keep everyone in the loop</h5>
+        </div>
+      </div>
+    </div>
   </section>
-
-  <div class="card-deck">
-    <div class="card border-0">
-      <div class="card-body">
-        <p class="card-title lead">Use <u>your</u> calendar app</p>
-      </div>
-    </div>
-    <div class="card border-0">
-      <div class="card-body">
-        <p class="card-title lead">See events in <u>your</u> time zone</p>
-      </div>
-    </div>
-    <div class="card border-0">
-      <div class="card-body">
-        <p class="card-title lead">Keep <u>everyone</u> in the loop</p>
-      </div>
-    </div>
-  </div>
 
   <section class="cover-feature">
     <h4>Convenient out-of-game access</h4>
