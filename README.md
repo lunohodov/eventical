@@ -24,7 +24,9 @@ Try it at [https://www.eve-calendars.com](https://www.eve-calendars.com).
 | Opera >= 30           | N/A            | N/A            |
 | Safari >= 9           | iOS >= 9       | iOS >= 9       |
 
-## [TODO] Development
+## Contributing
+
+Please see [CONTRIBUTING.md](/CONTRIBUTING.md).
 
 ## Built With
 
