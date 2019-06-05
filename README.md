@@ -9,11 +9,9 @@
 * Single events location to keep everyone in the loop
 * Feed sharing with fine-grained access control
 
----
 
 Try it at [https://www.eve-calendars.com](https://www.eve-calendars.com).
 
----
 
 ## Requirements
 
