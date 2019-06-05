@@ -1,4 +1,6 @@
-# eventical [![CircleCI](https://circleci.com/gh/lunohodov/eventical.svg?style=svg&circle-token=b79e0b14abfe04bb761c1e6008af3f7e33b2fb99)](https://circleci.com/gh/lunohodov/eventical)
+# eventical
+
+![CircleCI](https://img.shields.io/circleci/build/github/lunohodov/eventical.svg?token=b79e0b14abfe04bb761c1e6008af3f7e33b2fb99)
 
 ## Instant iCal feeds for your EVE Online calendar(s)
 
