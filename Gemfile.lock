@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/stympy/faker.git
-  revision: 14617c4ef7b89998e98e833ad5d11760e03d9bad
+  revision: c9f6be8848a70c2a0df93db5d454c2304a86b670
   branch: master
   specs:
     faker (1.9.3)
@@ -286,7 +286,7 @@ GEM
       tty-which (~> 0.4)
     tty-screen (0.6.5)
     tty-tree (0.2.0)
-    tty-which (0.4.0)
+    tty-which (0.4.1)
     turbolinks (5.2.0)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
