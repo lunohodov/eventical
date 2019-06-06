@@ -3,7 +3,7 @@
     <small class="text-muted">Primary time zone <span class="text-monospace"><%= @time_zone.to_s %></span></small>
   </div>
   <div class="flex-fill text-right">
-    <small class="text-monospace"><%= link_to("iCal", calendar_feed_url(@access_token, format: :ics)) %> </small>
+    <small class="text-monospace"><%= link_to("iCal", calendar_feed_url(@access_token, format: :ics, protocol: 'webcal')) %> </small>
   </div>
 </div>
 <% if @events.empty? %>
