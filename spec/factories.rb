@@ -24,6 +24,9 @@ FactoryBot.define do
 
     character
     importance { nil }
+    owner_category { "character" }
+    owner_name { character.name }
+    owner_uid { character.uid }
     response { EVENT_RESPONSES.sample }
     starts_at { rand(4).day.from_now }
     title { Faker::Name.name }
