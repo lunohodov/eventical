@@ -14,9 +14,9 @@ FactoryBot.define do
 
     sequence(:event_id)
 
-    title { "Event #{event_id}" }
-    event_date { Time.current }
+    event_date { rand(4).day.from_now }
     event_response { EVENT_RESPONSES.sample }
+    title { "Event #{event_id}" }
   end
 
   factory :event do
