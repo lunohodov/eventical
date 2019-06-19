@@ -1,8 +1,8 @@
 OmniAuth.config.logger = Rails.logger
 
-# Use a setup phase so that client credentials are set
-# after the app is initialized i.e Eve::Esi is configured
-SETUP_PROC = lambda do |env|
+# Using a setup phase allows for ESI's credentials constants
+# to be defined at any time during app's initialization
+setup_proc = lambda do |env|
   # rubocop:disable Metrics/LineLength
   env["omniauth.strategy"].options[:client_id] = EVE_ONLINE_CLIENT_ID
   env["omniauth.strategy"].options[:client_secret] = EVE_ONLINE_SECRET_KEY
@@ -16,5 +16,5 @@ Rails.application.config.middleware.use OmniAuth::Builder do
     RequestForgeryProtectionTokenVerification.new
 
   provider :developer unless Rails.env.production?
-  provider :eve_online_sso, setup: SETUP_PROC
+  provider :eve_online_sso, setup: setup_proc
 end
