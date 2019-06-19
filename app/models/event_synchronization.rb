@@ -4,7 +4,7 @@ class EventSynchronization
 
   def initialize(character:, source: nil)
     @character = character
-    @source = source || Eve::Esi.character_calendar(character)
+    @source = source || Eve.character_calendar(character)
   end
 
   def call

@@ -32,7 +32,7 @@ class CalendarFeedsController < ApplicationController
     cache_key = "synchronize_events.character.#{character.owner_hash}"
     Rails.cache.fetch(cache_key, expires_in: CACHE_EXPIRES_IN) do
       # TODO: Move this out of here
-      CharacterAccessToken.new(character).refresh
+      Eve::RenewAccessToken.new(character).call
       EventSynchronization.new(character: character).call
     rescue EveOnline::Exceptions::ServiceUnavailable => e
       logger.info "EVE Online unavailable: #{e.message}"

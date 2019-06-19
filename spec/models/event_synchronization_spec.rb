@@ -5,11 +5,11 @@ describe EventSynchronization do
     it "uses ESI's character calendar, when no source given" do
       character = build(:character)
 
-      allow(Eve::Esi).to receive(:character_calendar)
+      allow(Eve).to receive(:character_calendar)
 
       EventSynchronization.new(character: character)
 
-      expect(Eve::Esi).to have_received(:character_calendar).with(character)
+      expect(Eve).to have_received(:character_calendar).with(character)
     end
   end
 
