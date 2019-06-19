@@ -2,8 +2,6 @@ require "ostruct"
 
 module Eve
   module Esi
-    include ActiveSupport::Configurable
-
     class EventSource < SimpleDelegator
       def events
         super.map(&method(:map_event))
@@ -50,8 +48,8 @@ module Eve
 
       def build_oauth_client
         OAuth2::Client.new(
-          config.client_id,
-          config.client_secret,
+          EVE_ONLINE_CLIENT_ID,
+          EVE_ONLINE_SECRET_KEY,
           oauth_client_options,
         )
       end

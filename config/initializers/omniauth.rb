@@ -4,8 +4,8 @@ OmniAuth.config.logger = Rails.logger
 # after the app is initialized i.e Eve::Esi is configured
 SETUP_PROC = lambda do |env|
   # rubocop:disable Metrics/LineLength
-  env["omniauth.strategy"].options[:client_id] = Eve::Esi.config.client_id
-  env["omniauth.strategy"].options[:client_secret] = Eve::Esi.config.client_secret
+  env["omniauth.strategy"].options[:client_id] = EVE_ONLINE_CLIENT_ID
+  env["omniauth.strategy"].options[:client_secret] = EVE_ONLINE_SECRET_KEY
   env["omniauth.strategy"].options[:scope] = "esi-calendar.read_calendar_events.v1"
   # rubocop:enable Metrics/LineLength
 end

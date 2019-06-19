@@ -1,15 +1,6 @@
 require "rails_helper"
 
 describe Eve::Esi do
-  describe "configuration" do
-    it { is_expected.to respond_to(:configure) }
-
-    it "configures OAuth credentials in initializer" do
-      expect(Eve::Esi.config.client_id).not_to be_blank
-      expect(Eve::Esi.config.client_secret).not_to be_blank
-    end
-  end
-
   describe ".character_calendar" do
     it "returns an event source" do
       character = build(:character)
