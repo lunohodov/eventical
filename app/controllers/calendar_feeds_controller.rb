@@ -9,7 +9,6 @@ class CalendarFeedsController < ApplicationController
   def show
     character = access_token.issuer
 
-    synchronize_events(character)
     events = upcoming_events(character)
 
     render_headers
@@ -27,17 +26,6 @@ class CalendarFeedsController < ApplicationController
   end
 
   private
-
-  def synchronize_events(character)
-    cache_key = "synchronize_events.character.#{character.owner_hash}"
-    Rails.cache.fetch(cache_key, expires_in: CACHE_EXPIRES_IN) do
-      # TODO: Move this out of here
-      Eve::RenewAccessToken.new(character).call
-      EventSynchronization.new(character: character).call
-    rescue EveOnline::Exceptions::ServiceUnavailable => e
-      logger.info "EVE Online unavailable: #{e.message}"
-    end
-  end
 
   def upcoming_events(character)
     Event.upcoming_for(character).limit(PAGE_SIZE)

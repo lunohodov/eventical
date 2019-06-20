@@ -1,11 +1,6 @@
 require "rails_helper"
 
 feature "subscriber views upcoming events", type: :feature do
-  before do
-    allow(Eve::RenewAccessToken).to receive(:new).and_return(proc { true })
-    allow(EventSynchronization).to receive(:new).and_return(proc { true })
-  end
-
   scenario "events are grouped by date" do
     access_token = create_access_token
     character = access_token.issuer

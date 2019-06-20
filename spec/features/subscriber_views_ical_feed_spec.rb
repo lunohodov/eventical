@@ -3,11 +3,6 @@ require "rails_helper"
 feature "subscriber views iCalendar feed", type: :feature do
   ICAL_DATETIME_FORMAT = "%Y%m%dT%H%M%S".freeze
 
-  before do
-    allow(Eve::RenewAccessToken).to receive(:new).and_return(proc { true })
-    allow(EventSynchronization).to receive(:new).and_return(proc { true })
-  end
-
   scenario "and sees incoming events" do
     character = create(:character)
     access_token = create(:access_token, :personal, issuer: character)
