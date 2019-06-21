@@ -23,5 +23,6 @@ module Eventical
     config.load_defaults 5.2
 
     config.skylight.environments += %w[development staging]
+    config.skylight.probes << "active_job"
   end
 end
