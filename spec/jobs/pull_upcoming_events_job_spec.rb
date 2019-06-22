@@ -2,34 +2,29 @@ require "rails_helper"
 
 describe PullUpcomingEventsJob, type: :job do
   it "saves new events" do
-    character = create(:character)
-    new_event = build(:esi_event)
+    esi_event = build(:esi_event, event_id: 123)
 
-    stub_renew_access_token
-    stub_character_calendar(events: [new_event])
+    stub_character_calendar(events: [esi_event])
 
     PullUpcomingEventsJob.perform_now(character.id)
 
-    expect(Event.find_by(uid: new_event.event_id)).to be_present
+    expect(Event.find_by(uid: 123)).to be_present
   end
 
   it "updates existing events" do
-    character = create(:character)
-    event = create(:event, character: character)
-    esi_event = build(:esi_event, event_id: event.uid, title: "new text")
+    event = create(:event, character: character, uid: 123, title: "old")
+    esi_event = build(:esi_event, event_id: 123, title: "new")
 
-    stub_renew_access_token
     stub_character_calendar(events: [esi_event])
 
     expect { PullUpcomingEventsJob.perform_now(character.id) }.
       to change { event.reload.title }.
-      to "new text"
+      from("old").
+      to("new")
   end
 
   context "with OAuth error" do
     it "reports an error" do
-      character = create(:character)
-
       stub_character_calendar
       renew_token = stub_renew_access_token
 
@@ -44,7 +39,6 @@ describe PullUpcomingEventsJob, type: :job do
 
   context "when ESI is not available" do
     it "reports an error" do
-      character = create(:character)
       calendar = stub_character_calendar
 
       allow(Raven).to receive(:capture_exception)
@@ -55,6 +49,10 @@ describe PullUpcomingEventsJob, type: :job do
 
       expect(Raven).to have_received(:capture_exception)
     end
+  end
+
+  def character
+    @character ||= create(:character)
   end
 
   def stub_character_calendar(events: nil)

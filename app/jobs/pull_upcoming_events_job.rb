@@ -9,7 +9,8 @@ class PullUpcomingEventsJob < ApplicationJob
     @character_id = character_id
 
     ensure_valid_access_token
-    fetch_events.map(&method(:sync_event))
+
+    fetch_events.map { |e| Event.synchronize(e) }
   rescue ActiveRecord::RecordInvalid,
          EveOnline::Exceptions::Forbidden,
          EveOnline::Exceptions::ServiceUnavailable,
@@ -23,20 +24,10 @@ class PullUpcomingEventsJob < ApplicationJob
 
   attr_reader :character_id
 
-  def sync_event(data)
-    event = Event.lock.where(uid: data.uid, character: character).first
-    if event.nil?
-      event = Event.new(character: character, uid: data.uid)
-    end
-
-    event.assign_attributes(data.to_h)
-
-    event.save!
-  end
-
   def fetch_events
     character_calendar.events.map do |event|
       OpenStruct.new(
+        character: character,
         uid: event.event_id,
         response: event.event_response,
         title: event.title,
