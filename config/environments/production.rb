@@ -40,7 +40,7 @@ Rails.application.configure do # rubocop:disable Metrics/BlockLength
   config.cache_store = :memory_store
 
   # Use a queuing backend for Active Job (and separate queues per environment)
-  config.active_job.queue_adapter = :sidekiq
+  config.active_job.queue_adapter = :delayed_job
   config.active_job.queue_name_prefix = "eventical_#{Rails.env}"
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
