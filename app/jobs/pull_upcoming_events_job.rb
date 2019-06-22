@@ -14,7 +14,8 @@ class PullUpcomingEventsJob < ApplicationJob
          EveOnline::Exceptions::Forbidden,
          EveOnline::Exceptions::ServiceUnavailable,
          EveOnline::Exceptions::Unauthorized,
-         OAuth2::Error, StandardError => e
+         OAuth2::Error,
+         StandardError => e
     report_error(e)
   end
 
