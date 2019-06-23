@@ -7,6 +7,30 @@ describe Character, type: :model do
     it { should validate_presence_of(:owner_hash) }
   end
 
+  describe ".with_active_refresh_token" do
+    it "excludes characters where refresh token is voided" do
+      create(:character, :with_voided_refresh_token)
+
+      expect(Character.with_active_refresh_token.count).to eq 0
+    end
+
+    it "includes characters where refresh token is not voided" do
+      expected = create(:character)
+
+      expect(Character.with_active_refresh_token.count).to eq 1
+      expect(Character.with_active_refresh_token.last).to eq expected
+    end
+  end
+
+  describe "#void_refresh_token!" do
+    it "marks the refresh token voided" do
+      character = create(:character)
+
+      expect { character.void_refresh_token! }.
+        to change { character.reload.refresh_token_voided_at }.from(nil)
+    end
+  end
+
   describe "#token_expires_at?" do
     it "is true, when expiration time is before given time" do
       c = build(:character, token_expires_at: Time.current)

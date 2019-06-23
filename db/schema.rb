@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_21_055356) do
+ActiveRecord::Schema.define(version: 2019_06_22_090534) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,6 +40,8 @@ ActiveRecord::Schema.define(version: 2019_06_21_055356) do
     t.string "owner_hash"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "refresh_token_voided_at"
+    t.index ["refresh_token_voided_at"], name: "index_characters_on_refresh_token_voided_at"
     t.index ["uid"], name: "index_characters_on_uid", unique: true
   end
 
