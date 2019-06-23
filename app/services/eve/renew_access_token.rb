@@ -14,18 +14,26 @@ module Eve
     end
 
     def call
-      if character.token_expired? || forced?
-        update_character_attributes(refresh_access_token)
-        character.save
-      else
-        true
-      end
+      update_character(refresh_access_token) if should_renew?
+    rescue OAuth2::Error => e
+      # We are only interested in:
+      #   - 'invalid_token' - token expired, revoked or character owner changed
+      # Other errors include:
+      #   - 'invalid_request' - token may be malformed
+      #   - 'invalid_client', 'invalid_grant', 'unsupported_grant_type',
+      #     'invalid_scope'
+      character.void_refresh_token! if /invalid_token/.match?(e.code)
+      raise
     end
 
     private
 
-    def update_character_attributes(access_token)
-      character.assign_attributes(
+    def should_renew?
+      character.token_expired? || forced?
+    end
+
+    def update_character(access_token)
+      character.update!(
         token: access_token.token,
         token_expires_at: Time.at(access_token.expires_at).in_time_zone,
         refresh_token: access_token.refresh_token,

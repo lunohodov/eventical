@@ -61,12 +61,12 @@ describe Eve::RenewAccessToken do
         character = build(:character)
 
         stub_oauth_token
-        allow(character).to receive(:save)
         allow(character).to receive(:token_expired?).and_return(false)
+        allow(character).to receive(:update!)
 
         Eve::RenewAccessToken.new(character, force: true).call
 
-        expect(character).to have_received(:save)
+        expect(character).to have_received(:update!)
       end
     end
 
@@ -74,12 +74,35 @@ describe Eve::RenewAccessToken do
       it "does not update character" do
         character = build(:character)
 
-        allow(character).to receive(:save)
         allow(character).to receive(:token_expired?).and_return(false)
+        allow(character).to receive(:update!)
 
         Eve::RenewAccessToken.new(character, force: false).call
 
-        expect(character).not_to have_received(:save)
+        expect(character).not_to have_received(:update!)
+      end
+    end
+
+    context "with an invalid refresh token" do
+      it "voids character's refresh token" do
+        character = build(:character)
+
+        refresh_token = stub_oauth_token
+        oauth_error = stub_oauth_error("invalid_token")
+
+        allow(character).to receive(:void_refresh_token!)
+        allow(refresh_token).to receive(:refresh!).and_raise(oauth_error)
+
+        expect { Eve::RenewAccessToken.new(character, force: true).call }.
+          to raise_error(OAuth2::Error) do
+          expect(character).to have_received(:void_refresh_token!)
+        end
+      end
+    end
+
+    def stub_oauth_error(code)
+      OAuth2::Error.allocate.tap do |e|
+        e.instance_variable_set(:@code, code)
       end
     end
 
