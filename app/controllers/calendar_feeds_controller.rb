@@ -2,7 +2,6 @@ require "icalendar/tzinfo"
 
 class CalendarFeedsController < ApplicationController
   PAGE_SIZE = 50
-  CACHE_EXPIRES_IN = 90.minutes
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
