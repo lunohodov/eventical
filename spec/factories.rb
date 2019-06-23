@@ -36,12 +36,17 @@ FactoryBot.define do
     name { Faker::Name.name }
     owner_hash { Faker::Crypto.sha1 }
     refresh_token { Faker::Crypto.sha256 }
+    refresh_token_voided_at { nil }
     scopes { nil }
     token { Faker::Crypto.sha1 }
     token_expires_at { 1.day.from_now }
     token_type { "Bearer" }
 
     sequence(:uid)
+
+    trait :with_voided_refresh_token do
+      refresh_token_voided_at { 1.minute.ago }
+    end
 
     trait :with_scopes do
       scopes { "esi-calendar.read_calendar_events.v1" }
