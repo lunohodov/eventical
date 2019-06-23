@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_22_090534) do
+ActiveRecord::Schema.define(version: 2019_06_23_085207) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -73,7 +73,6 @@ ActiveRecord::Schema.define(version: 2019_06_22_090534) do
     t.string "owner_category"
     t.string "owner_name"
     t.index ["character_id"], name: "index_events_on_character_id"
-    t.index ["uid"], name: "index_events_on_uid", unique: true
   end
 
   create_table "settings", force: :cascade do |t|
