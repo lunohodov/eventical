@@ -64,7 +64,6 @@ class IcalendarBuilder
       "X-WR-CALNAME" => attributes.fetch(:calendar_name, ""),
       "X-WR-CALDESC" => attributes.fetch(:calendar_description, ""),
       "X-WR-TIMEZONE" => tz.identifier,
-      "X-APPLE-CALENDAR-COLOR" => "#9A9CFF",
     }.each do |prop_name, prop_value|
       cal.append_custom_property(prop_name, prop_value)
     end
