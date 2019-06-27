@@ -14,7 +14,7 @@ class CalendarFeedsController < ApplicationController
 
     respond_to do |format|
       format.ics do
-        render_ical(events)
+        render_ical(build_ical(events))
       end
       format.html do
         @events = events
@@ -47,58 +47,22 @@ class CalendarFeedsController < ApplicationController
     time_zone.presence || Eve.time_zone
   end
 
-  def render_ical(events)
-    send_data to_ical(events),
+  def render_ical(ical_representation)
+    send_data ical_representation,
               filename: "basic.ics",
               type: "text/calendar; charset=utf-8",
               disposition: :inline
   end
 
-  def to_ical(events)
+  def build_ical(events)
     issuer = access_token.issuer
-    recipient = access_token.grantee
+    grantee = access_token.grantee
 
-    cal = Icalendar::Calendar.new
-
-    # Modern calendar applications such as Google Calendar, Apple Calendar
-    # and their mobile variants convert to the right time zone automatically.
-    #
-    # Export iCal in UTC (i.e EVE time) and leave conversion to the client
-    # application.
-    #
-    tz = Eve.time_zone.tzinfo
-
-    unless events.empty?
-      sample_time = events.first.starts_at
-      cal.add_timezone tz.ical_timezone(sample_time)
+    IcalendarBuilder.build do
+      calendar_name("#{issuer.name}'s Calendar")
+      calendar_description("Upcoming events for #{grantee.name}")
+      events(events)
     end
-
-    events.each do |event|
-      cal.event do |e|
-        e.dtstart = Icalendar::Values::DateTime.new(
-          event.starts_at,
-          "tzid" => tz.identifier,
-        )
-        e.summary = event.title
-        # Status relates to event itself i.e confirmed by organizer.
-        e.status = "CONFIRMED"
-      end
-    end
-
-    {
-      "X-WR-CALNAME" => "#{issuer.name}'s Calendar",
-      "X-WR-CALDESC" => "Upcoming events for #{recipient.name}",
-      "X-WR-TIMEZONE" => tz.identifier,
-      "X-APPLE-CALENDAR-COLOR" => "#9A9CFF",
-    }.each do |prop_name, prop_value|
-      cal.append_custom_property(prop_name, prop_value)
-    end
-
-    # TODO
-    cal.prodid = "eventical"
-    cal.publish
-
-    cal.to_ical
   end
 
   def render_headers
