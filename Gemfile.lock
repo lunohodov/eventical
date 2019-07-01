@@ -101,7 +101,7 @@ GEM
       railties (>= 3.2, < 6.1)
     equatable (0.6.0)
     erubi (1.8.0)
-    eve_online (0.26.0)
+    eve_online (0.27.0)
       activesupport (>= 4.2.0)
     execjs (2.7.0)
     factory_bot (5.0.2)
