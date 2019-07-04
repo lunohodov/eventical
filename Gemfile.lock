@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/stympy/faker.git
-  revision: f03d4eec1b11b8a03413c89b7d2cadcd0cfd6ef9
+  revision: 7e74df35de035c9ebc102ad86caed2f7a9fa5cc7
   branch: master
   specs:
     faker (1.9.4)
@@ -99,7 +99,7 @@ GEM
     dotenv-rails (2.7.4)
       dotenv (= 2.7.4)
       railties (>= 3.2, < 6.1)
-    equatable (0.6.0)
+    equatable (0.6.1)
     erubi (1.8.0)
     eve_online (0.27.0)
       activesupport (>= 4.2.0)
