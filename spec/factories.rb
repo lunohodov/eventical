@@ -19,10 +19,27 @@ FactoryBot.define do
     title { "Event #{event_id}" }
   end
 
+  factory :esi_event_details, class: "OpenStruct" do
+    skip_create
+
+    sequence(:event_id)
+
+    date { rand(4).day.from_now }
+    duration { 1.hour.to_i }
+    event_response { EVENT_RESPONSES.sample }
+    importance { nil }
+    owner_type { "character" }
+    owner_id { 123_456 }
+    owner_name { "Devas Weddo" }
+    text { "Minins ops with the casual Atron." }
+    title { "Mining ops in Hevris" }
+  end
+
   factory :event do
     sequence(:uid)
 
     character
+    details_updated_at { created_at }
     importance { nil }
     owner_category { "character" }
     owner_name { character.name }
@@ -30,6 +47,13 @@ FactoryBot.define do
     response { EVENT_RESPONSES.sample }
     starts_at { rand(4).day.from_now }
     title { Faker::Name.name }
+
+    trait :without_details do
+      details_updated_at { nil }
+      owner_category { nil }
+      owner_name { nil }
+      owner_uid { nil }
+    end
   end
 
   factory :character do
