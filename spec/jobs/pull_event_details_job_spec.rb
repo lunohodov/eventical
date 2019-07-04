@@ -75,6 +75,32 @@ describe PullEventDetailsJob, type: :job do
     end
   end
 
+  context "when the event can not be found in the database" do
+    it "logs an error passing the job" do
+      allow(Raven).to receive(:capture_exception)
+
+      PullEventDetailsJob.perform_now(1)
+
+      expect(Raven).to have_received(:capture_exception)
+    end
+  end
+
+  context "when ESI can not find the event" do
+    it "deletes the event" do
+      event = create(:event)
+      calendar_event = stub_character_calendar_event(event)
+
+      allow(calendar_event).
+        to receive(:owner_name).
+        and_raise(EveOnline::Exceptions::ResourceNotFound.allocate)
+
+      expect { PullEventDetailsJob.perform_now(event.id) }.
+        to change { Event.count }.
+        from(1).
+        to(0)
+    end
+  end
+
   def stub_renew_access_token
     instance_spy(Eve::RenewAccessToken).tap do |t|
       allow(Eve::RenewAccessToken).to receive(:new).and_return(t)

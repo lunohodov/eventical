@@ -15,6 +15,14 @@ class PullEventDetailsJob < ApplicationJob
       owner_name: character_calendar_event.owner_name,
       owner_uid: character_calendar_event.owner_id,
     )
+  rescue EveOnline::Exceptions::ResourceNotFound => e
+    # Pass. Log the error to keep an eye on such situations
+    report_error(e)
+    # Drop the event, it has been deleted
+    event.destroy!
+  rescue ActiveRecord::RecordNotFound => e
+    # Pass and drop the job
+    report_error(e)
   end
 
   private
