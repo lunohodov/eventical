@@ -11,13 +11,6 @@ class PullUpcomingEventsJob < ApplicationJob
     ensure_valid_access_token
 
     fetch_events.map { |e| Event.synchronize(e) }
-  rescue ActiveRecord::RecordInvalid,
-         EveOnline::Exceptions::Forbidden,
-         EveOnline::Exceptions::ServiceUnavailable,
-         EveOnline::Exceptions::Unauthorized,
-         OAuth2::Error,
-         StandardError => e
-    report_error(e)
   end
 
   private
