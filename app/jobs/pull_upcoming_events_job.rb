@@ -10,14 +10,24 @@ class PullUpcomingEventsJob < ApplicationJob
 
     ensure_valid_access_token
 
-    fetch_events.map { |e| Event.synchronize(e) }
+    remote_events = fetch_remote_events
+
+    Event.transaction do
+      # Delete obsolete events
+      keep_uids = remote_events.map(&:uid)
+      Event.upcoming_for(character, since: Time.current).
+        where.not(uid: keep_uids).
+        delete_all
+      # Save new or update existing
+      remote_events.map { |e| Event.synchronize(e) }
+    end
   end
 
   private
 
   attr_reader :character_id
 
-  def fetch_events
+  def fetch_remote_events
     character_calendar.events.map do |event|
       OpenStruct.new(
         character: character,

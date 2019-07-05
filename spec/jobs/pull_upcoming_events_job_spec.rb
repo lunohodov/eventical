@@ -23,6 +23,26 @@ describe PullUpcomingEventsJob, type: :job do
       to("new")
   end
 
+  it "deletes removed upcoming events" do
+    create(:event, character: character, starts_at: 1.second.from_now)
+
+    stub_character_calendar(events: [])
+
+    expect { PullUpcomingEventsJob.perform_now(character.id) }.
+      to change { Event.count }.
+      from(1).
+      to(0)
+  end
+
+  it "does not delete past events" do
+    create(:event, character: character, starts_at: 1.second.ago)
+
+    stub_character_calendar(events: [])
+
+    expect { PullUpcomingEventsJob.perform_now(character.id) }.
+      not_to(change { Event.count })
+  end
+
   def character
     @character ||= create(:character)
   end
