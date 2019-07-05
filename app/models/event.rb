@@ -5,9 +5,9 @@ class Event < ApplicationRecord
   validates :title, presence: true
   validates :uid, presence: true
 
-  def self.upcoming_for(character)
+  def self.upcoming_for(character, since: Date.current)
     where(character: character).
-      where("starts_at >= ?", Date.current).
+      where("starts_at >= ?", since).
       order(starts_at: :asc)
   end
 
