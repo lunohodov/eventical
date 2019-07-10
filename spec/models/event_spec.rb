@@ -1,6 +1,16 @@
 require "rails_helper"
 
 describe Event, type: :model do
+  include ActiveSupport::Testing::TimeHelpers
+
+  before do
+    travel_to(Time.current)
+  end
+
+  after do
+    travel_back
+  end
+
   describe "validations" do
     it { should validate_presence_of(:uid) }
     it { should validate_presence_of(:title) }
@@ -27,6 +37,19 @@ describe Event, type: :model do
         result = Event.upcoming_for(character)
 
         expect(result).to be_empty
+      end
+    end
+
+    context "when the :since argument is nil" do
+      it "uses current date" do
+        character = create(:character)
+        create(:event, character: character, starts_at: 1.day.from_now)
+        create(:event, character: character, starts_at: 1.day.ago)
+
+        result = Event.upcoming_for(character)
+
+        expect(result.to_a).
+          to eq(Event.where("starts_at >= ?", Date.current).to_a)
       end
     end
   end
