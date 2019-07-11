@@ -20,11 +20,18 @@ class Event < ApplicationRecord
       event = Event.new(character: character, uid: data_source.uid)
     end
 
-    event.assign_attributes(
-      response: data_source.response,
-      title: data_source.title,
-      starts_at: data_source.starts_at,
-    )
+    %i[
+      importance
+      owner_category
+      owner_name
+      owner_uid
+      response
+      starts_at
+      title
+    ].each do |attr|
+      value = data_source.public_send(attr).presence
+      event[attr] = value if value
+    end
 
     event.save!
   end

@@ -76,6 +76,39 @@ describe Event, type: :model do
           to "new"
       end
 
+      it "updates owner_uid" do
+        event = create(:event, character: character, owner_uid: nil)
+        data_source = build(
+          :event, character: character, uid: event.uid, owner_uid: 123_456
+        )
+
+        expect { Event.synchronize(data_source) }.
+          to change { event.reload.owner_uid }.
+          to 123_456
+      end
+
+      it "updates owner_category" do
+        event = create(:event, character: character, owner_category: nil)
+        data_source = build(
+          :event, character: character, uid: event.uid, owner_category: "new"
+        )
+
+        expect { Event.synchronize(data_source) }.
+          to change { event.reload.owner_category }.
+          to "new"
+      end
+
+      it "updates owner_name" do
+        event = create(:event, character: character, owner_name: nil)
+        data_source = build(
+          :event, character: character, uid: event.uid, owner_name: "new"
+        )
+
+        expect { Event.synchronize(data_source) }.
+          to change { event.reload.owner_name }.
+          to "new"
+      end
+
       it "updates title" do
         event = create(:event, character: character)
         data_source = build(
@@ -84,6 +117,20 @@ describe Event, type: :model do
 
         expect { Event.synchronize(data_source) }.
           to change { event.reload.title }.
+          to "new"
+      end
+
+      it "updates importance" do
+        event = create(:event, character: character, importance: nil)
+        data_source = build(
+          :event,
+          character: character,
+          uid: event.uid,
+          importance: "new",
+        )
+
+        expect { Event.synchronize(data_source) }.
+          to change { event.reload.importance }.
           to "new"
       end
 
