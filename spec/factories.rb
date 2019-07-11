@@ -1,8 +1,6 @@
 require "securerandom"
 require "ostruct"
 
-EVENT_RESPONSES = %w[attending declined tentative].freeze
-
 FactoryBot.define do
   factory :setting do
     owner_hash { SecureRandom.uuid }
@@ -15,7 +13,7 @@ FactoryBot.define do
     sequence(:event_id)
 
     event_date { rand(4).day.from_now }
-    event_response { EVENT_RESPONSES.sample }
+    event_response { "attending" }
     title { "Event #{event_id}" }
   end
 
@@ -26,7 +24,7 @@ FactoryBot.define do
 
     date { rand(4).day.from_now }
     duration { 1.hour.to_i }
-    event_response { EVENT_RESPONSES.sample }
+    event_response { "attending" }
     importance { nil }
     owner_type { "character" }
     owner_id { 123_456 }
@@ -44,7 +42,7 @@ FactoryBot.define do
     owner_category { "character" }
     owner_name { character.name }
     owner_uid { character.uid }
-    response { EVENT_RESPONSES.sample }
+    response { "attending" }
     starts_at { rand(4).day.from_now }
     title { Faker::Name.name }
 
