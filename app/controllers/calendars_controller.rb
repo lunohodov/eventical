@@ -13,13 +13,17 @@ class CalendarsController < ApplicationController
     when /time zone/i
       remember_preferred_time_zone(params[:tz])
     else
-      personal_token.try(&:revoke!)
+      revoke_access_token
     end
 
     redirect_to calendar_url
   end
 
   private
+
+  def revoke_access_token
+    AccessTokenRevocation.new(personal_token).call
+  end
 
   def remember_preferred_time_zone(value)
     character_settings.update!(time_zone: value)
