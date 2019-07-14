@@ -21,22 +21,6 @@ class AccessToken < ApplicationRecord
       create!(issuer: char, grantee: char)
     end
 
-    def revoke!(access_token)
-      if access_token.invalid? || !access_token.persisted?
-        raise ArgumentError, "Valid and persisted access token expected"
-      end
-
-      transaction do
-        where(
-          issuer: access_token.issuer,
-          grantee: access_token.grantee,
-          revoked_at: nil,
-        ).lock.update_all(revoked_at: Time.current)
-
-        create!(issuer: access_token.issuer, grantee: access_token.grantee)
-      end
-    end
-
     private
 
     def parse_slug(slug)
@@ -54,10 +38,6 @@ class AccessToken < ApplicationRecord
 
   def to_param
     slug
-  end
-
-  def revoke!
-    AccessToken.revoke!(self)
   end
 
   def personal?

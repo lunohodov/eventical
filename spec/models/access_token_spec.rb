@@ -59,38 +59,6 @@ describe AccessToken, type: :model do
     end
   end
 
-  describe ".revoke!" do
-    it "revokes the given instance" do
-      token = create(:access_token)
-
-      expect { AccessToken.revoke!(token) }.to change { token.reload.revoked? }.
-        from(false).to(true)
-    end
-
-    it "returns a new token" do
-      token = create(:access_token)
-
-      new_token = AccessToken.revoke!(token)
-
-      expect(new_token.issuer).to eq(token.issuer)
-      expect(new_token.grantee).to eq(token.grantee)
-      expect(new_token.revoked?).to eq(false)
-    end
-  end
-
-  describe "#revoke!" do
-    it "is revoked" do
-      token = create(:access_token)
-
-      # Stubbing the SUT?
-      allow(AccessToken).to receive(:revoke!)
-
-      token.revoke!
-
-      expect(AccessToken).to have_received(:revoke!).with(token)
-    end
-  end
-
   describe "#revoked?" do
     it "returns true, when revocation time present" do
       token = build(:access_token, revoked_at: Time.current)
