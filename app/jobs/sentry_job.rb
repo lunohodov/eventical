@@ -1,5 +1,5 @@
 class SentryJob < ApplicationJob
-  queue_as :default
+  queue_as :error
 
   def perform(event)
     Raven.send_event(event)
