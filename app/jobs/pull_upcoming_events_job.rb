@@ -5,6 +5,13 @@ require "ostruct"
 class PullUpcomingEventsJob < ApplicationJob
   queue_as :default
 
+  discard_on ActiveRecord::RecordNotFound
+  discard_on EveOnline::Exceptions::Forbidden
+  discard_on EveOnline::Exceptions::Unauthorized
+  # Wait for next schedule (see `scheduler.rake`)
+  discard_on EveOnline::Exceptions::ServiceUnavailable
+  discard_on OAuth2::Error
+
   def perform(character_id)
     @character_id = character_id
 

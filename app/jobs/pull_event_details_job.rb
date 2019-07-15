@@ -3,6 +3,13 @@
 class PullEventDetailsJob < ApplicationJob
   queue_as :default
 
+  discard_on ActiveRecord::RecordNotFound
+  discard_on EveOnline::Exceptions::Forbidden
+  discard_on EveOnline::Exceptions::Unauthorized
+  # Wait for next schedule (see `scheduler.rake`)
+  discard_on EveOnline::Exceptions::ServiceUnavailable
+  discard_on OAuth2::Error
+
   def perform(event_id)
     @event_id = event_id
 
@@ -20,9 +27,6 @@ class PullEventDetailsJob < ApplicationJob
     report_error(e)
     # Drop the event, it has been deleted
     event.destroy!
-  rescue ActiveRecord::RecordNotFound => e
-    # Pass and drop the job
-    report_error(e)
   end
 
   private
