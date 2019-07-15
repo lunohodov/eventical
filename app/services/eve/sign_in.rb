@@ -23,13 +23,14 @@ module Eve
 
     def update_character_attributes
       character.assign_attributes(
-        uid: character_uid,
         name: character_name,
         owner_hash: character_owner_hash,
-        token: token,
-        token_type: token_type,
         refresh_token: refresh_token,
+        refresh_token_voided_at: nil,
+        token: token,
         token_expires_at: token_expiration_time,
+        token_type: token_type,
+        uid: character_uid,
       )
     end
 
