@@ -38,6 +38,19 @@ describe Eve::SignIn, "#call" do
         hash["credentials"]["expires_at"].to_i,
       )
     end
+
+    it "removes void, when refresh token voided" do
+      hash = auth_hash
+      existing = create(
+        :character,
+        :with_voided_refresh_token,
+        uid: hash["info"]["character_id"],
+      )
+
+      expect { Eve::SignIn.new(hash).call }.
+        to change { existing.reload.refresh_token_voided_at }.
+        to(nil)
+    end
   end
 
   def auth_hash(options = {})
