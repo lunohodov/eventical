@@ -12,8 +12,7 @@ Try it at [https://www.eve-calendars.com](https://www.eve-calendars.com).
 
 ## Requirements
 
-We are built with [Twitter's Bootstrap](https://getbootstrap.com) and have the
-same requirements. Please refer to their website more information on supported
+Please refer to [Bootstrap's](https://getbootstrap.com) website for more information on supported
 browsers and devices.
 
 ## Contributing
@@ -23,7 +22,8 @@ Please see [CONTRIBUTING.md](/CONTRIBUTING.md).
 ## Built With
 
 * [Ruby on Rails](https://github.com/rails/rails) &mdash; The back end is a Rails app
-* [PostgreSQL](http://www.postgresql.org/) &mdash; Main data store is in Postgres.
+* [PostgreSQL](http://www.postgresql.org/) &mdash; Main data store is in Postgres
+* [Bootstrap](https://getbootstrap.com) &mdash; HTML, CSS and JS library
 
 ## Authors
 
