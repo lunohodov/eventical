@@ -7,22 +7,14 @@
 * Convenient out-of-game access with your favourite device
 * Events shown in your time zone
 * Single events location to keep everyone in the loop
-* [TODO] Feed sharing with fine-grained access control
-
 
 Try it at [https://www.eve-calendars.com](https://www.eve-calendars.com).
 
-
 ## Requirements
 
-| Browsers              | Tablets        | Phones         |
-| --------------------- | -------------- | -------------- |
-| Edge >= 10            | N/A            | N/A            |
-| Explorer >= 10        | N/A            | N/A            |
-| Firefox >= 38         | N/A            | N/A            |
-| Google Chrome >= 45   | Android >= 4.4 | Android >= 4.4 |
-| Opera >= 30           | N/A            | N/A            |
-| Safari >= 9           | iOS >= 9       | iOS >= 9       |
+We are built with [Twitter's Bootstrap](https://getbootstrap.com) and have the
+same requirements. Please refer to their website more information on supported
+browsers and devices.
 
 ## Contributing
 
@@ -30,8 +22,8 @@ Please see [CONTRIBUTING.md](/CONTRIBUTING.md).
 
 ## Built With
 
-- [Ruby on Rails](https://github.com/rails/rails) &mdash; The back end API is a Rails app
-- [PostgreSQL](http://www.postgresql.org/) &mdash; Main data store is in Postgres.
+* [Ruby on Rails](https://github.com/rails/rails) &mdash; The back end is a Rails app
+* [PostgreSQL](http://www.postgresql.org/) &mdash; Main data store is in Postgres.
 
 ## Authors
 
