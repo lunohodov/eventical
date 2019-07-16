@@ -7,7 +7,7 @@
 * Convenient out-of-game access with your favourite device
 * Events shown in your time zone
 * Single events location to keep everyone in the loop
-* Feed sharing with fine-grained access control
+* [TODO] Feed sharing with fine-grained access control
 
 
 Try it at [https://www.eve-calendars.com](https://www.eve-calendars.com).
@@ -32,7 +32,6 @@ Please see [CONTRIBUTING.md](/CONTRIBUTING.md).
 
 - [Ruby on Rails](https://github.com/rails/rails) &mdash; The back end API is a Rails app
 - [PostgreSQL](http://www.postgresql.org/) &mdash; Main data store is in Postgres.
-- [Redis](http://redis.io/) &mdash; Redis as a cache and for transient data.
 
 ## Authors
 
