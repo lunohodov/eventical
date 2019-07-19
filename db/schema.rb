@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_03_061057) do
+ActiveRecord::Schema.define(version: 2019_07_19_042401) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 2019_07_03_061057) do
     t.datetime "revoked_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "event_owner_categories", array: true
     t.index ["grantee_type", "grantee_id"], name: "index_access_tokens_on_grantee_type_and_grantee_id"
     t.index ["issuer_id"], name: "index_access_tokens_on_issuer_id"
     t.index ["token"], name: "index_access_tokens_on_token"
