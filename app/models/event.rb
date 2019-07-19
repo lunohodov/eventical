@@ -12,6 +12,9 @@ class Event < ApplicationRecord
   validates :starts_at, presence: true
   validates :title, presence: true
   validates :uid, presence: true
+  validates :owner_category,
+            inclusion: { in: OWNER_CATEGORIES },
+            allow_nil: true
 
   def self.upcoming_for(character, since: nil)
     since ||= Date.current

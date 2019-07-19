@@ -17,12 +17,12 @@ describe PullEventDetailsJob, type: :job do
     event = create(:event, owner_category: nil)
 
     stub_renew_access_token
-    stub_character_calendar_event(event, owner_type: "new")
+    stub_character_calendar_event(event, owner_type: "character")
 
     expect { PullEventDetailsJob.perform_now(event.id) }.
       to change { event.reload.owner_category }.
       from(nil).
-      to("new")
+      to("character")
   end
 
   it "saves owner name" do

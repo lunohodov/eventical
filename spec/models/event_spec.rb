@@ -20,6 +20,11 @@ describe Event, type: :model do
     it { should validate_presence_of(:uid) }
     it { should validate_presence_of(:title) }
     it { should validate_presence_of(:starts_at) }
+    it do
+      is_expected.to validate_inclusion_of(:owner_category).
+        in_array(Event::OWNER_CATEGORIES).
+        allow_nil
+    end
   end
 
   describe ".upcoming_for" do
@@ -95,12 +100,15 @@ describe Event, type: :model do
       it "updates owner_category" do
         event = create(:event, character: character, owner_category: nil)
         data_source = build(
-          :event, character: character, uid: event.uid, owner_category: "new"
+          :event,
+          character: character,
+          uid: event.uid,
+          owner_category: "character",
         )
 
         expect { Event.synchronize(data_source) }.
           to change { event.reload.owner_category }.
-          to "new"
+          to "character"
       end
 
       it "updates owner_name" do
