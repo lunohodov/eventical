@@ -1,4 +1,12 @@
 class Event < ApplicationRecord
+  OWNER_CATEGORIES = %w[
+    alliance
+    character
+    corporation
+    eve_server
+    faction
+  ].freeze
+
   belongs_to :character
 
   validates :starts_at, presence: true

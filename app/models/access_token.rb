@@ -4,6 +4,8 @@ class AccessToken < ApplicationRecord
   belongs_to :issuer, class_name: "Character"
   belongs_to :grantee, polymorphic: true
 
+  validate :event_owner_categories_must_be_valid
+
   before_create :generate_token
 
   scope :personal, ->(c) { where(issuer: c, grantee: c) }
@@ -57,6 +59,14 @@ class AccessToken < ApplicationRecord
   end
 
   private
+
+  def event_owner_categories_must_be_valid
+    return true if event_owner_categories.blank?
+
+    if event_owner_categories.any? { |e| !Event::OWNER_CATEGORIES.include?(e) }
+      errors.add(:event_owner_categories, :invalid)
+    end
+  end
 
   def generate_token
     self.token = SecureRandom.uuid
