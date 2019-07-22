@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/stympy/faker.git
-  revision: 7683fc681649972a0bc6413accd8b1c78b17588f
+  revision: be75ff9a2c208e57a95bf836c400513a13cfb67f
   branch: master
   specs:
     faker (1.9.6)
