@@ -40,9 +40,9 @@ feature "user views calendar", type: :feature do
 
     visit calendar_path
 
-    select("London", from: :tz)
+    select("London", from: :time_zone)
     click_on("Update time zone")
 
-    expect(page).to have_select(:tz, selected: "(GMT+00:00) London")
+    expect(page).to have_select(:time_zone, selected: "(GMT+00:00) London")
   end
 end

@@ -7,14 +7,7 @@ class CalendarsController < ApplicationController
   end
 
   def create
-    # This should be OK for now. Consider a dedicated controller
-    # for settings updates when we have more settings
-    case params[:commit]
-    when /time zone/i
-      remember_preferred_time_zone(params[:tz])
-    else
-      revoke_access_token
-    end
+    revoke_access_token
 
     redirect_to calendar_url
   end
@@ -23,10 +16,6 @@ class CalendarsController < ApplicationController
 
   def revoke_access_token
     AccessTokenRevocation.new(personal_token).call
-  end
-
-  def remember_preferred_time_zone(value)
-    character_settings.update!(time_zone: value)
   end
 
   def personal_token

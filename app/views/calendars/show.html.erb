@@ -39,11 +39,11 @@
 
 <section class="my-4">
   <h3>Preferences</h3>
-  <%= form_with(url: calendar_path, method: :post, local: true) do |f| %>
+  <%= form_with(url: settings_path, method: :put, local: true) do |f| %>
     <div class="form-row">
       <div class="col-sm-8 col-md-8">
-        <label for="tz" class="my-2 mr-2">Time zone</label>
-        <%= select_tag(:tz, time_zone_options_for_select(@time_zone.name)) %>
+        <label for="time_zone" class="my-2 mr-2">Time zone</label>
+        <%= select_tag(:time_zone, time_zone_options_for_select(@time_zone.name)) %>
         <p class="form-text text-muted">
           Choose the preferred time zone for events to be shown in.
         </p>
