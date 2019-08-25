@@ -27,6 +27,16 @@ feature "subscriber resets secret address", type: :feature do
     end
   end
 
+  scenario "and can not access the reset address" do
+    initial_token = create(:access_token, :personal, issuer: current_character)
+
+    visit calendar_path
+    click_reset_button
+    visit calendar_feed_path(id: initial_token.token)
+
+    expect(page).to have_text(/not found/i)
+  end
+
   def click_reset_button
     click_on("Reset secret address")
   end
