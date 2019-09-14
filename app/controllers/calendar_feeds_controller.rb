@@ -72,7 +72,8 @@ class CalendarFeedsController < ApplicationController
     response.headers["Date"] = Time.current.utc.rfc2822
   end
 
-  def record_not_found
+  def record_not_found(err)
+    Raven.capture_exception(err, extra: params.to_unsafe_h)
     render plain: "404 Not Found", status: 404
   end
 end
