@@ -1,6 +1,6 @@
 Raven.configure do |config|
   # Set by bin/deploy
-  config.release = ENV.fetch("CURRENT_SHA", "unknown").split(" ").first
+  config.release = ENV.fetch("HEROKU_SLUG_COMMIT", "unknown").split(" ").first
 
   config.async = lambda { |event|
     SentryJob.perform_later(event)
