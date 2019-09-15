@@ -14,4 +14,5 @@ Rails.application.routes.draw do
     controller: :calendar_feeds,
     only: %i[show],
     as: :calendar_feeds
+  resource :settings, only: %i[update]
 end
