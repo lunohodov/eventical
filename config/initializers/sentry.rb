@@ -8,3 +8,9 @@ Raven.configure do |config|
 
   config.excluded_exceptions -= ["ActiveRecord::RecordNotFound"]
 end
+
+module Eventical
+  class Application < Rails::Application
+    config.middleware.use ::AddCharacterToSentryContext
+  end
+end
