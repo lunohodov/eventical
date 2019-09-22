@@ -5,6 +5,8 @@ class CalendarFeedsController < ApplicationController
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
+  before_action :add_sentry_tags_context
+
   def show
     character = access_token.issuer
 
@@ -75,5 +77,10 @@ class CalendarFeedsController < ApplicationController
   def record_not_found(err)
     Raven.capture_exception(err, extra: params.to_unsafe_h)
     render plain: "404 Not Found", status: 404
+  end
+
+  def add_sentry_tags_context
+    consumer = request.headers["User-Agent"]
+    Raven.tags_context(consumer: consumer) if consumer.present?
   end
 end
