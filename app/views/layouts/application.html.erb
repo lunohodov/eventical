@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title><%= content_for(:page_title).presence || "#{site_name} | Convenient out-of-game access to your EVE Online calendar" %></title>
+    <title><%= (content_for(:page_title).presence || site_name) << " | Convenient out-of-game access to your EVE Online calendar" %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Instant iCal feeds and convenient out-of-game access to your EVE Online calendar">
     <%= csrf_meta_tags %>
