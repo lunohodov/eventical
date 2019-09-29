@@ -1,63 +1,53 @@
-<div class="cover">
-  <h1 class="cover-heading">
-    Instant iCal feeds for your EVE Online calendar.
+<section class="intro my-5">
+  <h1 class="intro--heading font-weight-bolder">
+    Convenient out-of-game access to your EVE Online calendar.
   </h1>
 
-  <section class="cover-feature">
-    <h4 class="mb-5">What you can do with <%= site_name %>?</h4>
-    <div class="card-deck">
-      <div class="card border-0">
-        <%= image_tag "devices.png", class: "mx-auto d-block w-25" %>
-        <div class="card-body">
-          <h5 class="card-title font-weight-light">Use your calendar app</h5>
-        </div>
-      </div>
-      <div class="card border-0">
-        <%= image_tag "time-zones.png", class: "mx-auto d-block w-25" %>
-        <div class="card-body">
-          <h5 class="card-title font-weight-light">See events in your time zone</h5>
-        </div>
-      </div>
-      <div class="card border-0">
-        <%= image_tag "sharing.png", class: "mx-auto d-block w-25" %>
-        <div class="card-body">
-          <h5 class="card-title font-weight-light">Keep everyone in the loop</h5>
-        </div>
-      </div>
-    </div>
-  </section>
+  <p class="intro--body py-2">
+    <strong class="underline-gradient">Before eve-calendars:</strong>
+    EVE Online‘s calendar is disconnected from your daily agenda, you fail to notice overlaps, deal with time zones, and events slip.
+    <strong class="underline-gradient">After eve-calendars:</strong>
+    Your EVE Online and daily agendas are side by side, overlaps are easy to spot, times are in your time zone, and you take part in the game.
+  </p>
+</section>
 
-  <section class="cover-feature">
-    <h4>Convenient out-of-game access</h4>
-    <p>Use your favourite calendar app on the desktop or mobile. Outlook, Apple Calendar,
-    Google Calendar, or phone's native - you choose.</p>
-  </section>
+<section class="mb-5">
+  <% if signed_in? %>
+    <%= link_to "Go to calendar", calendar_url %>
+  <% else %>
+    <%= eve_online_sso_button(:large) %>
+    <p class="m-2"><%= link_to_eve_online_sso_help %></p>
+  <% end %>
+</section>
 
-  <section class="cover-feature">
-    <h4>Your time zone</h4>
-    <p>Choose the time zone event time is shown in. No more missed events!</p>
-  </section>
+<section class="">
+  <picture class="agenda-hero__screen">
+    <source srcset="<%= asset_url("agenda-apple-calendar-small.png") %>" media="(max-width: 600px)">
+    <source srcset="<%= asset_url("agenda-apple-calendar-large.png") %>" media="(min-width: 601px)">
+    <%= image_tag "agenda-apple-calendar-large.png", class: "img-fluid", alt: "Integration with Apple Calendar" %>
+  </picture>
 
-  <section class="cover-feature">
-    <h4>Keep everyone in the loop</h4>
-    <p>Having a single location for scheduled incursion runs, mining operations,
-    or the occasional roam keeps everyone on the same page.</p>
-  </section>
+  <h2 class="font-weight-bolder mt-5">Side by side, not aside.</h2>
 
-  <section class="cover-feature">
-    <h4>You're always in control</h4>
-    <p>You decide who to share with - individual characters<sup>coming soon</sup>, everyone in a corporation or alliance<sup>coming soon</sup>,
-    the whole Universe, or no one but you.</p>
-    <p>Sharing can be stopped at anytime.</p>
-  </section>
+  <p>
+  With EVE Online’s calendar available only in-game, people use additional means to organize and share events. As a result your agenda is spread out across the game client,
+  calendar apps, corporation/alliance forums etc. Updates are tough to follow, overlaps hard to see, and you miss events.
+  </p>
 
-  <section class="cover-try">
-    <h2>Try it</h2>
-    <% if signed_in? %>
-      <%= link_to "Go to calendar", calendar_url %>
-    <% else %>
-      <%= eve_online_sso_button(:large) %>
-      <p class="m-2"><%= link_to_eve_online_sso_help %></p>
-    <% end %>
-  </section>
-</div>
+
+  <p>
+  <strong class="underline-gradient">But with eve-calendars, you’ll see</strong> everything together, access game‘s calendar straight from your favourite calendar app, notice overlaps, and know which event you can take part in.
+  </p>
+
+  <!-- <p class="lead"><%= link_to "Take a deeper look at how it works", "#" %></p> -->
+</section>
+
+<section class="my-5">
+  <h2>Give eve-calendars a try.</h2>
+  <% if signed_in? %>
+    <%= link_to "Go to calendar", calendar_url %>
+  <% else %>
+    <%= eve_online_sso_button(:large) %>
+    <p class="m-2"><%= link_to_eve_online_sso_help %></p>
+  <% end %>
+</section>

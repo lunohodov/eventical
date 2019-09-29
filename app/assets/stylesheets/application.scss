@@ -6,7 +6,7 @@ body {
 }
 
 .content {
-  max-width: 42em;
+  max-width: 50em;
 }
 
 .masthead {
@@ -18,9 +18,22 @@ body {
   }
 }
 
-.pages-index {
-  .masthead {
-    margin-bottom: 5rem;
+.underline-gradient {
+  background-repeat: repeat-x;
+  background-size: 100% 3px;
+  background-position: 90% 90%;
+  background-image: linear-gradient(to right, #D3EBFD 0%, #9355A3 100%);
+  padding-bottom: 8px;
+}
+
+.agenda-hero__screen {
+  display: block;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+
+  img {
+    border-radius: 0.2rem !important;
   }
 }
 
@@ -28,31 +41,6 @@ body {
   .inner {
     text-align: left;
   }
-}
-
-.cover {
-  padding: 0 1.5rem;
-
-  .btn-lg {
-    font-weight: 700;
-    padding: 0.75rem 1.25rem;
-  }
-}
-
-.cover-feature {
-  margin-top: 5rem;
-
-  h4 {
-    margin-bottom: 1rem;
-  }
-
-  p {
-    text-align: justify;
-  }
-}
-
-.cover-try {
-  margin-top: 5rem;
 }
 
 .mastfoot {

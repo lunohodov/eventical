@@ -4,21 +4,14 @@ describe "home index page" do
   it "displays promotional content" do
     visit "/"
 
-    expect(page).to have_content("out-of-game access")
-    expect(page).to have_content("everyone in the loop")
-    expect(page).to have_content("always in control")
+    expect(page).to have_content("Convenient out-of-game access to your EVE Online calendar")
+    expect(page).to have_content("Side by side, not aside")
   end
 
   it "links to login page" do
     visit "/"
 
-    within(".cover-try") do
-      expect(find_button("Log in with EVE Online")).to be_visible
-    end
-
-    within(".masthead") do
-      expect(find_button("Log in with EVE Online")).to be_visible
-    end
+    expect(page).to have_button("Log in with EVE Online", count: 3)
   end
 
   it "links to about page" do
