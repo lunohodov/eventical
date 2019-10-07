@@ -3,7 +3,7 @@ namespace :scheduler do # rubocop:disable Metrics/BlockLength
 
   desc "Schedule pull of upcoming events from ESI"
   task "events:pull": :environment do
-    entitled_characters, excluded_characters =
+    excluded_characters, entitled_characters =
       Character.all.partition(&:refresh_token_voided?)
 
     excluded_characters.each do |c|
@@ -18,7 +18,7 @@ namespace :scheduler do # rubocop:disable Metrics/BlockLength
 
   desc "Schedule pull of event details for all upcoming events"
   task "events:details:pull": :environment do
-    entitled_characters, excluded_characters =
+    excluded_characters, entitled_characters =
       Character.all.partition(&:refresh_token_voided?)
 
     excluded_characters.each do |c|
