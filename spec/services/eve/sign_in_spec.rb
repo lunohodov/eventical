@@ -22,6 +22,33 @@ describe Eve::SignIn, "#call" do
     )
   end
 
+  context "when a new account is created" do
+    context "and successfuly saves" do
+      it "notifies analytics of account created" do
+        tracker = stub_analytics_tracker
+
+        Eve::SignIn.new(auth_hash).call
+
+        expect(tracker).to have_received(:track_account_created)
+      end
+    end
+
+    context "and fails to save" do
+      it "does not notify analytics" do
+        tracker = stub_analytics_tracker
+        invalid_hash = auth_hash("info" => { "character_id" => nil })
+
+        begin
+          Eve::SignIn.new(invalid_hash).call
+        rescue ActiveRecord::RecordInvalid
+          # Pass
+        end
+
+        expect(tracker).not_to have_received(:track_account_created)
+      end
+    end
+  end
+
   context "with an existing character" do
     it "updates the character" do
       hash = auth_hash
@@ -50,6 +77,23 @@ describe Eve::SignIn, "#call" do
       expect { Eve::SignIn.new(hash).call }.
         to change { existing.reload.refresh_token_voided_at }.
         to(nil)
+    end
+
+    it "does not notify analytics" do
+      tracker = stub_analytics_tracker
+      hash = auth_hash
+      create(:character, uid: hash["info"]["character_id"])
+
+      Eve::SignIn.new(hash).call
+
+      expect(tracker).not_to have_received(:track_account_created)
+    end
+  end
+
+  def stub_analytics_tracker
+    instance_double(Analytics).tap do |tracker|
+      allow(tracker).to receive(:track_account_created)
+      allow(Analytics).to receive(:new).and_return(tracker)
     end
   end
 
