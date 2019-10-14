@@ -14,4 +14,14 @@ describe Analytics do
         with_properties(label: character.name, category: "Accounts")
     end
   end
+
+  describe "#track_access_token_revoked" do
+    it "tracks that an access token has been revoked" do
+      analytics_instance.track_access_token_revoked
+
+      expect(analytics).to have_tracked("Access token revoked").
+        for_character(character).
+        with_properties(label: character.name, category: "Calendars")
+    end
+  end
 end

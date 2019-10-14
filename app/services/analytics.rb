@@ -10,6 +10,10 @@ class Analytics
     track("Account created", category: "Accounts", label: character.name)
   end
 
+  def track_access_token_revoked
+    track("Access token revoked", category: "Calendars", label: character.name)
+  end
+
   private
 
   attr_reader :character
