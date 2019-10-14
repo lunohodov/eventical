@@ -1,4 +1,6 @@
 class Analytics
+  ACCOUNTS_CATEGORY = "Accounts".freeze
+
   class_attribute :backend
 
   def initialize(character, backend: self.backend)
@@ -7,7 +9,7 @@ class Analytics
   end
 
   def track_account_created
-    track("Account created", category: "Accounts", label: character.name)
+    track("Account created", category: ACCOUNTS_CATEGORY, label: character.name)
   end
 
   def track_access_token_revoked
@@ -16,6 +18,10 @@ class Analytics
 
   def track_refresh_token_voided
     track("Refresh token voided", category: "ESI", label: character.name)
+  end
+
+  def track_character_logged_in
+    track("Logged in", category: ACCOUNTS_CATEGORY, label: character.name)
   end
 
   private

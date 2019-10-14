@@ -33,4 +33,14 @@ describe Analytics do
         with_properties(label: character.name, category: "ESI")
     end
   end
+
+  describe "#track_character_logged_in" do
+    it "it tracks that a character logged in" do
+      analytics_instance.track_character_logged_in
+
+      expect(analytics).to have_tracked("Logged in").
+        for_character(character).
+        with_properties(label: character.name, category: "Accounts")
+    end
+  end
 end

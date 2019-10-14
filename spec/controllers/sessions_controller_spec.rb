@@ -13,6 +13,8 @@ describe SessionsController, type: :controller do
       get :create, params: { provider: "eve_online_sso" }
 
       should redirect_to(calendar_url)
+
+      expect(analytics).to have_tracked("Logged in")
     end
 
     it "does not redirect to an outside domain" do
