@@ -1,6 +1,8 @@
 require "rails_helper"
 
 describe SessionsController, type: :controller do
+  include StubCurrentCharacterHelper
+
   before { ActiveJob::Base.queue_adapter = :test }
 
   context "#create" do
@@ -46,6 +48,22 @@ describe SessionsController, type: :controller do
 
       expect { get(:create, params: { provider: "eve_online_sso" }) }.
         not_to have_enqueued_job(PullUpcomingEventsJob)
+    end
+  end
+
+  context "#destroy" do
+    before { stub_current_character }
+
+    it "resets the current session" do
+      expect(controller).to receive(:reset_session)
+
+      get(:destroy)
+    end
+
+    it "logs the current character out" do
+      get(:destroy)
+
+      expect(analytics).to have_tracked("Logged out")
     end
   end
 end

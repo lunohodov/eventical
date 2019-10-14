@@ -43,4 +43,14 @@ describe Analytics do
         with_properties(label: character.name, category: "Accounts")
     end
   end
+
+  describe "#track_character_logged_out" do
+    it "it tracks that a character logged out" do
+      analytics_instance.track_character_logged_out
+
+      expect(analytics).to have_tracked("Logged out").
+        for_character(character).
+        with_properties(label: character.name, category: "Accounts")
+    end
+  end
 end

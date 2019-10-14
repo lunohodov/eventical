@@ -23,6 +23,9 @@ class SessionsController < ApplicationController
 
   def destroy
     reset_session
+
+    analytics.track_character_logged_out
+
     redirect_to root_url
   end
 

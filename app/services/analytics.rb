@@ -24,6 +24,10 @@ class Analytics
     track("Logged in", category: ACCOUNTS_CATEGORY, label: character.name)
   end
 
+  def track_character_logged_out
+    track("Logged out", category: ACCOUNTS_CATEGORY, label: character.name)
+  end
+
   private
 
   attr_reader :character
