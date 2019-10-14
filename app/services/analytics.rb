@@ -28,6 +28,17 @@ class Analytics
     track("Logged out", category: ACCOUNTS_CATEGORY, label: character.name)
   end
 
+  def track_access_token_used(access_token, consumer: nil)
+    grantee = access_token.grantee
+
+    track(
+      "Access token used (#{consumer})",
+      category: "Calendars",
+      label: grantee.name,
+      user_id: grantee.id,
+    )
+  end
+
   private
 
   attr_reader :character

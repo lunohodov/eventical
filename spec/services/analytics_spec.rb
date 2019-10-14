@@ -53,4 +53,19 @@ describe Analytics do
         with_properties(label: character.name, category: "Accounts")
     end
   end
+
+  describe "#track_access_token_used" do
+    it "tracks that an access token has been used" do
+      access_token = build(:access_token)
+
+      analytics_instance.track_access_token_used(
+        access_token,
+        consumer: "Google Calendar",
+      )
+
+      expect(analytics).to have_tracked("Access token used (Google Calendar)").
+        for_character(access_token.grantee).
+        with_properties(category: "Calendars", label: access_token.grantee.name)
+    end
+  end
 end
