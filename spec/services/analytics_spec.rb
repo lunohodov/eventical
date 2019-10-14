@@ -23,4 +23,14 @@ describe Analytics do
         with_properties(label: character.name, category: "Calendars")
     end
   end
+
+  describe "#track_refresh_token_voided" do
+    it "tracks that ESI‘s refresh token has been voided" do
+      analytics_instance.track_refresh_token_voided
+
+      expect(analytics).to have_tracked("Refresh token voided").
+        for_character(character).
+        with_properties(label: character.name, category: "ESI")
+    end
+  end
 end

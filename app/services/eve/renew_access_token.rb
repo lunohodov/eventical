@@ -22,11 +22,18 @@ module Eve
       #   - 'invalid_request' - token may be malformed
       #   - 'invalid_client', 'invalid_grant', 'unsupported_grant_type',
       #     'invalid_scope'
-      character.void_refresh_token! if /invalid_token/.match?(e.code)
+      if /invalid_token/.match?(e.code)
+        character.void_refresh_token!
+        track_refresh_token_voided
+      end
       raise
     end
 
     private
+
+    def track_refresh_token_voided
+      Analytics.new(character).track_refresh_token_voided
+    end
 
     def should_renew?
       character.token_expired? || forced?

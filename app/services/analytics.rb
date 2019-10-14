@@ -14,6 +14,10 @@ class Analytics
     track("Access token revoked", category: "Calendars", label: character.name)
   end
 
+  def track_refresh_token_voided
+    track("Refresh token voided", category: "ESI", label: character.name)
+  end
+
   private
 
   attr_reader :character
