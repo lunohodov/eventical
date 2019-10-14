@@ -3,7 +3,6 @@ require "rails_helper"
 describe Analytics do
   let(:analytics_instance) { Analytics.new(character) } # rubocop:disable Metrics/LineLength
   let(:character) { build_stubbed(:character) }
-  let(:analytics) { analytics_instance.backend }
 
   describe "#track_account_created" do
     it "tracks that a new account was created" do

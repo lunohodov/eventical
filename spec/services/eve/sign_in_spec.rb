@@ -91,9 +91,8 @@ describe Eve::SignIn, "#call" do
   end
 
   def stub_analytics_tracker
-    instance_double(Analytics).tap do |tracker|
+    stub_analytics.tap do |tracker|
       allow(tracker).to receive(:track_account_created)
-      allow(Analytics).to receive(:new).and_return(tracker)
     end
   end
 
