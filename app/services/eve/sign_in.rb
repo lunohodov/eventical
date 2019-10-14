@@ -4,7 +4,6 @@ module Eve
 
     def initialize(auth_hash)
       @auth_hash = auth_hash
-      @new_signup = false
     end
 
     def call
