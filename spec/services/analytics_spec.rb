@@ -67,5 +67,41 @@ describe Analytics do
         for_character(access_token.grantee).
         with_properties(category: "Calendars", label: access_token.grantee.name)
     end
+
+    context "when expired" do
+      it "tracks that an expired access token has been used" do
+        access_token = build(:access_token, expires_at: 1.hour.ago)
+
+        analytics_instance.track_access_token_used(
+          access_token,
+          consumer: "Google",
+        )
+
+        expect(analytics).to have_tracked("Expired access token used (Google)").
+          for_character(access_token.grantee).
+          with_properties(
+            category: "Calendars",
+            label: access_token.grantee.name,
+          )
+      end
+    end
+
+    context "when revoked" do
+      it "tracks that a revoked access token has been used" do
+        access_token = build(:access_token, revoked_at: 1.hour.ago)
+
+        analytics_instance.track_access_token_used(
+          access_token,
+          consumer: "Google",
+        )
+
+        expect(analytics).to have_tracked("Revoked access token used (Google)").
+          for_character(access_token.grantee).
+          with_properties(
+            category: "Calendars",
+            label: access_token.grantee.name,
+          )
+      end
+    end
   end
 end

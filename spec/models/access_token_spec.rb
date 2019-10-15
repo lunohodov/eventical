@@ -59,17 +59,23 @@ describe AccessToken, type: :model do
   end
 
   describe ".by_slug!" do
-    it "returns found token" do
-      access_token = create(:access_token)
+    it "finds the token, when personal" do
+      access_token = create(:access_token, :personal)
 
-      found = AccessToken.by_slug!(access_token.token)
+      found = AccessToken.by_slug!(access_token.slug)
 
       expect(found).to eq(access_token)
-      expect(found).not_to be_revoked
-      expect(found).not_to be_expired
     end
 
-    context "when not found" do
+    it "finds the token, when shared" do
+      access_token = create(:access_token)
+
+      found = AccessToken.by_slug!(access_token.slug)
+
+      expect(found).to eq(access_token)
+    end
+
+    context "when token does not exist" do
       it "raises an error" do
         expect do
           AccessToken.by_slug!("non-existing")
