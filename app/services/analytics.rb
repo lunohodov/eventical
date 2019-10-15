@@ -46,6 +46,15 @@ class Analytics
     )
   end
 
+  def track_upcoming_events_pulled
+    track(
+      "Upcoming events pulled",
+      category: "Background jobs",
+      label: character.name,
+      non_interactive: true,
+    )
+  end
+
   private
 
   attr_reader :character
