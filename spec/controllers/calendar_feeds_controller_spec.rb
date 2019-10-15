@@ -2,28 +2,39 @@ require "rails_helper"
 require "securerandom"
 
 describe CalendarFeedsController, type: :controller do
-  include StubCurrentCharacterHelper
+  before { request.headers["User-Agent"] = "Google" }
 
   describe "#show" do
-    it "renders '404 Not Found', when no valid token found" do
-      stub_current_character
+    it "notifies analytics than the access token has been used" do
+      access_token = create(:access_token)
 
+      get :show, params: { id: access_token.token }
+
+      expect(analytics).to have_tracked("Access token used (Google)")
+    end
+
+    it "renders '404 Not Found', when token can not be found" do
       get :show, params: { id: SecureRandom.uuid }
 
       expect(response.body).to eq("404 Not Found")
     end
 
-    it "notifies Sentry, when no valid token found" do
-      stub_current_character
-      bad_token = SecureRandom.uuid
-      allow(Raven).to receive(:capture_exception)
+    it "renders '404 Not Found', when token is expired" do
+      access_token = create(:access_token, expires_at: 1.hour.ago)
 
-      get :show, params: { id: bad_token }
+      get :show, params: { id: access_token.token }
 
-      expect(Raven).to have_received(:capture_exception).with(
-        an_instance_of(ActiveRecord::RecordNotFound),
-        extra: controller.params.to_unsafe_h,
-      )
+      expect(response.body).to eq("404 Not Found")
+      expect(analytics).to have_tracked("Expired access token used (Google)")
+    end
+
+    it "renders '404 Not Found', when token is revoked" do
+      access_token = create(:access_token, revoked_at: 1.hour.ago)
+
+      get :show, params: { id: access_token.token }
+
+      expect(response.body).to eq("404 Not Found")
+      expect(analytics).to have_tracked("Revoked access token used (Google)")
     end
   end
 end

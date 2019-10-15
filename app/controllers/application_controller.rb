@@ -7,6 +7,14 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  def analytics
+    analytics_for(current_character)
+  end
+
+  def analytics_for(character)
+    Analytics.new(character)
+  end
+
   def character_settings
     Setting.for_character(current_character)
   end

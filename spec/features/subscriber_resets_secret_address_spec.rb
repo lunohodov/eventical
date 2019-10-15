@@ -37,6 +37,15 @@ feature "subscriber resets secret address", type: :feature do
     expect(page).to have_text(/not found/i)
   end
 
+  scenario "and analytics receives a revokation event" do
+    create(:access_token, :personal, issuer: current_character)
+
+    visit calendar_path
+    click_reset_button
+
+    expect(analytics).to have_tracked("Access token revoked")
+  end
+
   def click_reset_button
     click_on("Reset secret address")
   end

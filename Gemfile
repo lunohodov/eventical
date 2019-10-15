@@ -22,6 +22,7 @@ gem "puma", "~> 4.2"
 gem "rack-timeout"
 gem "sass-rails", "~> 6.0"
 gem "sentry-raven"
+gem "staccato"
 gem "turbolinks", "~> 5"
 gem "uglifier", ">= 1.3.0"
 

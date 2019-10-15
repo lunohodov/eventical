@@ -12,6 +12,8 @@ class PullUpcomingEventsJob < ApplicationJob
 
     remote_events = fetch_remote_events
 
+    track_upcoming_events_pulled
+
     Event.transaction do
       # Delete obsolete events
       keep_uids = remote_events.map(&:uid)
@@ -26,6 +28,10 @@ class PullUpcomingEventsJob < ApplicationJob
   private
 
   attr_reader :character_id
+
+  def track_upcoming_events_pulled
+    Analytics.new(character).track_upcoming_events_pulled
+  end
 
   def fetch_remote_events
     character_calendar.events.map do |event|

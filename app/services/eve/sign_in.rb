@@ -7,10 +7,15 @@ module Eve
     end
 
     def call
-      update_character_attributes
+      is_new_account = character.new_record?
 
+      assign_character_attributes
       # TODO: Don't let ActiveRecord errors bubble up
-      character if character.save!
+      character.save!
+
+      track_account_created if is_new_account
+
+      character
     end
 
     private
@@ -21,7 +26,7 @@ module Eve
       @character ||= Character.find_or_initialize_by(uid: character_uid)
     end
 
-    def update_character_attributes
+    def assign_character_attributes
       character.assign_attributes(
         name: character_name,
         owner_hash: character_owner_hash,
@@ -32,6 +37,10 @@ module Eve
         token_type: token_type,
         uid: character_uid,
       )
+    end
+
+    def track_account_created
+      Analytics.new(character).track_account_created
     end
 
     def character_uid

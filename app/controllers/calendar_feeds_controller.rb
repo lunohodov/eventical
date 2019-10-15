@@ -5,11 +5,15 @@ class CalendarFeedsController < ApplicationController
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
-  before_action :add_sentry_tags_context
-
   def show
-    character = access_token.issuer
+    track_access_token_used
 
+    if access_token.revoked? || access_token.expired?
+      record_not_found
+      return
+    end
+
+    character = access_token.issuer
     events = upcoming_events(character)
 
     render_headers
@@ -27,6 +31,11 @@ class CalendarFeedsController < ApplicationController
   end
 
   private
+
+  def track_access_token_used
+    analytics_for(access_token.grantee).
+      track_access_token_used(access_token, consumer: consumer)
+  end
 
   def upcoming_events(character)
     Event.upcoming_for(character).limit(PAGE_SIZE)
@@ -74,13 +83,11 @@ class CalendarFeedsController < ApplicationController
     response.headers["Date"] = Time.current.utc.rfc2822
   end
 
-  def record_not_found(err)
-    Raven.capture_exception(err, extra: params.to_unsafe_h)
+  def record_not_found
     render plain: "404 Not Found", status: 404
   end
 
-  def add_sentry_tags_context
-    consumer = request.headers["User-Agent"]
-    Raven.tags_context(consumer: consumer) if consumer.present?
+  def consumer
+    request.headers["User-Agent"]
   end
 end

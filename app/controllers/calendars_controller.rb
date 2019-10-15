@@ -9,6 +9,8 @@ class CalendarsController < ApplicationController
   def create
     revoke_access_token
 
+    analytics.track_access_token_revoked
+
     redirect_to calendar_url
   end
 
