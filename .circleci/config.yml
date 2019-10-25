@@ -35,7 +35,7 @@ jobs:
   ruby-2.6:
     <<: *default_job
     docker:
-      - image: circleci/ruby:2.6.3-node-browsers
+      - image: circleci/ruby:2.6.5-node-browsers
         environment:
           PGHOST: localhost
           PGUSER: evecal
