@@ -74,4 +74,6 @@ class Analytics
       data_source: "server",
     }
   end
+
+  ActiveSupport.run_load_hooks(:analytics, Analytics)
 end

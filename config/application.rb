@@ -19,8 +19,7 @@ Bundler.require(*Rails.groups)
 
 module Eventical
   class Application < Rails::Application
-    # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 5.2
+    config.load_defaults 6.0
 
     config.skylight.environments += %w[development staging]
     config.skylight.probes << "active_job"

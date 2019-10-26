@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "2.6.5"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem "rails", "~> 5.2.3"
+gem "rails", "~> 6.0.0"
 
 gem "bootsnap", ">= 1.1.0", require: false
 gem "bootstrap", "~> 4.3.1"
@@ -25,6 +25,7 @@ gem "sentry-raven"
 gem "staccato"
 gem "turbolinks", "~> 5"
 gem "uglifier", ">= 1.3.0"
+gem "webpacker"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get
@@ -33,7 +34,7 @@ group :development, :test do
   gem "dotenv-rails"
   gem "factory_bot_rails"
   gem "faker", git: "https://github.com/stympy/faker.git", branch: "master"
-  gem "rspec-rails", "~> 3.9"
+  gem "rspec-rails", ">= 4.0.0.beta3"
 end
 
 group :development do
