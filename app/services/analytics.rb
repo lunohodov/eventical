@@ -1,5 +1,6 @@
 class Analytics
   ACCOUNTS_CATEGORY = "Accounts".freeze
+  BACKGROUND_JOBS_CATEGORY = "Background jobs".freeze
 
   class_attribute :backend
 
@@ -49,7 +50,16 @@ class Analytics
   def track_upcoming_events_pulled
     track(
       "Upcoming events pulled",
-      category: "Background jobs",
+      category: BACKGROUND_JOBS_CATEGORY,
+      label: character.name,
+      non_interactive: true,
+    )
+  end
+
+  def track_event_details_pulled
+    track(
+      "Event details pulled",
+      category: BACKGROUND_JOBS_CATEGORY,
       label: character.name,
       non_interactive: true,
     )

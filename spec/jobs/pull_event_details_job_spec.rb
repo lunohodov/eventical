@@ -60,6 +60,20 @@ describe PullEventDetailsJob, type: :job do
       from(nil)
   end
 
+  it "notifies analytics that event details have been pulled" do
+    event = create(:event, details_updated_at: nil)
+    tracker = stub_analytics.tap do |t|
+      allow(t).to receive(:track_event_details_pulled)
+    end
+
+    stub_renew_access_token
+    stub_character_calendar_event(event)
+
+    PullEventDetailsJob.perform_now(event.id)
+
+    expect(tracker).to have_received(:track_event_details_pulled)
+  end
+
   context "with expired access token" do
     it "renews the access token" do
       character = create(:character, token_expires_at: 1.day.ago)
