@@ -15,6 +15,8 @@ class PullEventDetailsJob < ApplicationJob
       owner_name: character_calendar_event.owner_name,
       owner_uid: character_calendar_event.owner_id,
     )
+
+    track_event_details_pulled
   rescue EveOnline::Exceptions::ResourceNotFound => e
     # Pass. Log the error to keep an eye on such situations
     report_error(e)
@@ -25,6 +27,10 @@ class PullEventDetailsJob < ApplicationJob
   private
 
   attr_reader :event_id
+
+  def track_event_details_pulled
+    Analytics.new(character).track_event_details_pulled
+  end
 
   def ensure_valid_access_token
     Eve::RenewAccessToken.new(character, force: false).call
