@@ -75,5 +75,5 @@ class Analytics
     }
   end
 
-  ActiveSupport.run_load_hooks(:analytics, Analytics)
+  ActiveSupport.run_load_hooks(:analytics, self)
 end
