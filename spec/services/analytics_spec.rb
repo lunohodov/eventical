@@ -118,4 +118,18 @@ describe Analytics do
         )
     end
   end
+
+  describe "#track_event_details_pulled" do
+    it "tracks that event details have been pulled" do
+      analytics_instance.track_event_details_pulled
+
+      expect(analytics).to have_tracked("Event details pulled").
+        for_character(character).
+        with_properties(
+          category: "Background jobs",
+          label: character.name,
+          non_interactive: true,
+        )
+    end
+  end
 end
