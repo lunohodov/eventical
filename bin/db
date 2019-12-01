@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+
+set -e
+
+if [ -z "$1" ]; then
+  printf "You must provide an environment (staging|production).\n"
+  exit 1
+else
+  if ! command -v psql >/dev/null; then
+    printf "PostgreSQL interactive terminal is not installed.\n"
+  fi
+
+  dsn="$(heroku config:get DATABASE_URL -r $1)"
+  psql "$dsn"
+fi
+
