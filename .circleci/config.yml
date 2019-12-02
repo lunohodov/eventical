@@ -7,7 +7,7 @@ default_job: &default_job
     # Restore Cached Dependencies
     - type: cache-restore
       name: Restore bundle cache
-      key:
+      keys:
         - ruby-265-v1-{{ checksum "Gemfile.lock" }}
         - ruby-265-v1-
 
