@@ -7,7 +7,9 @@ default_job: &default_job
     # Restore Cached Dependencies
     - type: cache-restore
       name: Restore bundle cache
-      key: evecal-{{ checksum "Gemfile.lock" }}
+      key:
+        - ruby-265-v1-{{ checksum "Gemfile.lock" }}
+        - ruby-265-v1-
 
     # Bundle install dependencies
     - run: bundle install --path vendor/bundle
@@ -15,7 +17,7 @@ default_job: &default_job
     # Cache Dependencies
     - type: cache-save
       name: Store bundle cache
-      key: evecal-{{ checksum "Gemfile.lock" }}
+      key: ruby-265-v1-{{ checksum "Gemfile.lock" }}
       paths:
         - vendor/bundle
 
