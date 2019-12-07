@@ -1,5 +1,5 @@
 Raven.configure do |config|
-  # Set by bin/deploy
+  # Set by Dyno Metadata. See https://devcenter.heroku.com/articles/dyno-metadata
   config.release = ENV.fetch("HEROKU_SLUG_COMMIT", "unknown").split(" ").first
 
   config.async = lambda { |event|
