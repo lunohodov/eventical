@@ -160,7 +160,7 @@ GEM
     omniauth-oauth2 (1.6.0)
       oauth2 (~> 1.1)
       omniauth (~> 1.9)
-    pg (1.1.4)
+    pg (1.2.0)
     popper_js (1.14.5)
     pry (0.12.2)
       coderay (~> 1.1.0)
