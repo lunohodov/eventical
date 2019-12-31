@@ -11,12 +11,19 @@
   </head>
 
   <body class="<%= body_class %> text-center">
-    <div class="content d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <div class="content w-100 h-100 p-3 mx-auto">
       <header class="masthead d-flex justify-content-between">
-        <h1 class="masthead-brand h4">
-          <a href="/" title="<%= site_name %>"><%= site_name %></a>
-        </h1>
         <% if signed_in? %>
+          <nav class="navbar navbar-expand pl-0">
+            <ul class="navbar-nav font-weight-bolder">
+              <li class="nav-item">
+                <%= link_to "My Feed", calendar_url, class: "nav-link pl-0" %>
+              </li>
+              <li class="nav-item">
+                <%= link_to "Sharing", "#", class: "nav-link" %>
+              </li>
+            </ul>
+          </nav>
           <%= link_to calendar_url do %>
             <img src="https://image.eveonline.com/Character/<%= current_character.uid %>_256.jpg"
                 class="rounded avatar"
@@ -24,6 +31,9 @@
                 alt="<%= current_character.name %>"/>
           <% end %>
         <% else %>
+          <h1 class="masthead-brand h4">
+            <a href="/" title="<%= site_name %>"><%= site_name %></a>
+          </h1>
           <div>
             <%= eve_online_sso_button(:small) %>
             <p class="m-2"><%= link_to_eve_online_sso_help %></p>
