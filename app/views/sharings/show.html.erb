@@ -1,0 +1,67 @@
+<% content_for :page_title, "Sharing" %>
+
+<section>
+  <h3 class="mb-3">Sharing events</h3>
+
+  <p>
+    Here you can publish a <span class="font-weight-bold">feed for public events you organize</span>.
+    Others can subscribe to the feed and stay up-to-date using their favourite calendar app.
+  </p>
+
+  <div class="pb-3">
+    <p class="font-weight-bolder">An event will appear in the feed when: </p>
+    <ul>
+      <li>
+        it has a title prefixed with <span class="font-italic">[PUBLIC]</span>
+        e.g <span class="font-italic">[PUBLIC] Frigate free for all</span>
+      </li>
+      <li> it is personal i.e created with the <span class="font-italic">Personal</span> radio button checked </li>
+    </ul>
+  </div>
+
+  <div class="list-group mb-4">
+    <div class="list-group-item flex-column align-items-start bg-light">
+      <%= form_with url: sharing_url, method: :patch, local: true do |f| %>
+        <div class="form-row">
+          <% unless @public_events_feed.enabled? %>
+            <div class="col-sm-6 col-md-8">
+              <p> Nothing is published and nobody can see your events. </p>
+            </div>
+            <div class="col-sm-6 col-md-4">
+              <%= f.submit("Start publishing",
+                           id: "btn-start-public-feed",
+                           class: "btn btn-primary btn-block") %>
+            </div>
+          <% else %>
+            <div class="col-sm-6 col-md-8">
+              <p> Feed is published and subscribers can see your public events. </p>
+            </div>
+            <div class="col-sm-6 col-md-4">
+              <%= f.submit("Stop publishing",
+                           id: "btn-stop-public-feed",
+                           class: "btn btn-danger btn-block",
+                           data: { confirm: "Are you sure you want to stop the feed?" }) %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+    <% if @public_events_feed.enabled? %>
+      <div class="list-group-item flex-column align-items-start" id="secret-address">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">Web browser</h5>
+        </div>
+        <p class="mb-1"> <%= link_to(nil, @public_events_feed.browser_url) %> </p>
+        <small>Share this address so others can view your public events in a web browser.</small>
+      </div>
+      <div class="list-group-item flex-column align-items-start" id="secret-address-ical">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">iCal applications</h5>
+        </div>
+        <p class="mb-1"> <%= link_to(nil, @public_events_feed.ical_url) %> </p>
+        <small>Share this address so others can view your public events using
+          Apple Calendar, Google Calendar, Outlook Calendar or their mobile variants.</small>
+      </div>
+    <% end %>
+  </div>
+</section>
