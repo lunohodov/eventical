@@ -15,5 +15,5 @@ Rails.application.routes.draw do
     only: %i[show],
     as: :calendar_feeds
   resource :settings, only: %i[update]
-  resource :sharing, only: %i[show]
+  resource :sharing, only: %i[show update]
 end

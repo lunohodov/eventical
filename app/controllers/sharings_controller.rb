@@ -1,9 +1,21 @@
 class SharingsController < ApplicationController
   def show
-    @public_events_feed = OpenStruct.new(
-      ical_url: sharing_url(nil, format: :ics, protocol: "webcal"),
-      browser_url: sharing_url,
-      enabled?: (Time.current.to_i % 2).zero?,
-    )
+    @event_sharing = event_sharing
+  end
+
+  def update
+    if event_sharing.active?
+      event_sharing.deactivate!
+    else
+      event_sharing.activate!
+    end
+
+    redirect_to sharing_url
+  end
+
+  private
+
+  def event_sharing
+    @event_sharing ||= EventSharing.new(current_character)
   end
 end

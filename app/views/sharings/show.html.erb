@@ -23,7 +23,7 @@
     <div class="list-group-item flex-column align-items-start bg-light">
       <%= form_with url: sharing_url, method: :patch, local: true do |f| %>
         <div class="form-row">
-          <% unless @public_events_feed.enabled? %>
+          <% unless @event_sharing.active? %>
             <div class="col-sm-6 col-md-8">
               <p> Nothing is published and nobody can see your events. </p>
             </div>
@@ -46,19 +46,19 @@
         </div>
       <% end %>
     </div>
-    <% if @public_events_feed.enabled? %>
+    <% if @event_sharing.active? %>
       <div class="list-group-item flex-column align-items-start" id="secret-address">
         <div class="d-flex w-100 justify-content-between">
           <h5 class="mb-1">Web browser</h5>
         </div>
-        <p class="mb-1"> <%= link_to(nil, @public_events_feed.browser_url) %> </p>
+        <p class="mb-1"> <%= link_to(nil, calendar_feed_url(@event_sharing.access_token)) %> </p>
         <small>Share this address so others can view your public events in a web browser.</small>
       </div>
       <div class="list-group-item flex-column align-items-start" id="secret-address-ical">
         <div class="d-flex w-100 justify-content-between">
           <h5 class="mb-1">iCal applications</h5>
         </div>
-        <p class="mb-1"> <%= link_to(nil, @public_events_feed.ical_url) %> </p>
+        <p class="mb-1"> <%= link_to(nil, calendar_feed_url(@event_sharing.access_token, format: :ics, protocol: "webcal")) %> </p>
         <small>Share this address so others can view your public events using
           Apple Calendar, Google Calendar, Outlook Calendar or their mobile variants.</small>
       </div>

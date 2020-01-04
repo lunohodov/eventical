@@ -6,7 +6,7 @@ class AccessToken < ApplicationRecord
 
   validate :event_owner_categories_must_be_valid
 
-  before_create :generate_token
+  before_create :generate_token_if_needed
 
   scope :personal, ->(c) { where(issuer: c, grantee: c) }
   scope :current, -> {
@@ -78,7 +78,7 @@ class AccessToken < ApplicationRecord
     end
   end
 
-  def generate_token
-    self.token = SecureRandom.uuid
+  def generate_token_if_needed
+    self.token = SecureRandom.uuid if token.blank?
   end
 end
