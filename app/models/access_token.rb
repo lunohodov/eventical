@@ -2,7 +2,7 @@ require "securerandom"
 
 class AccessToken < ApplicationRecord
   belongs_to :issuer, class_name: "Character"
-  belongs_to :grantee, polymorphic: true
+  belongs_to :grantee, polymorphic: true, optional: true
 
   validate :event_owner_categories_must_be_valid
 

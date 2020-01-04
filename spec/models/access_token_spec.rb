@@ -1,6 +1,11 @@
 require "rails_helper"
 
 describe AccessToken, type: :model do
+  describe "associations" do
+    it { should belong_to(:issuer) }
+    it { should belong_to(:grantee).optional }
+  end
+
   describe "validations" do
     it { validate_presence_of :grantee }
     it { validate_presence_of :issuer }

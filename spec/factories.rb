@@ -112,5 +112,10 @@ FactoryBot.define do
       issuer { create(:character) }
       grantee { issuer }
     end
+
+    trait :public do
+      issuer { create(:character) }
+      grantee { nil }
+    end
   end
 end
