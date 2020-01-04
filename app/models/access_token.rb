@@ -23,6 +23,16 @@ class AccessToken < ApplicationRecord
       create!(issuer: char, grantee: char)
     end
 
+    def revoke!(access_token)
+      raise "Access token must be persisted" unless access_token.persisted?
+
+      where(issuer: access_token.issuer,
+            grantee: access_token.grantee,
+            revoked_at: nil).
+        lock.
+        update_all(revoked_at: Time.current)
+    end
+
     private
 
     def parse_slug(slug)

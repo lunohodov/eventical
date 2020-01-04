@@ -1,29 +1,24 @@
 class AccessTokenRevocation
   include ActiveModel::Validations
 
-  validates :issuer, presence: true
-  validates :grantee, presence: true
+  attr_reader :access_token
+
+  validates :access_token, presence: true
 
   def initialize(access_token)
-    @issuer = access_token.issuer
-    @grantee = access_token.grantee
+    @access_token = access_token
   end
 
   def call
     validate!
 
     AccessToken.transaction do
-      AccessToken.
-        where(issuer: issuer, grantee: grantee, revoked_at: nil).
-        lock.
-        update_all(revoked_at: Time.current)
+      AccessToken.revoke!(access_token)
 
-      AccessToken.create!(issuer: issuer, grantee: grantee)
+      AccessToken.create!(
+        issuer: access_token.issuer,
+        grantee: access_token.grantee,
+      )
     end
   end
-
-  private
-
-  attr_reader :issuer
-  attr_reader :grantee
 end
