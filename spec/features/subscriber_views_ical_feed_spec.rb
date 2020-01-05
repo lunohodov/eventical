@@ -6,7 +6,6 @@ feature "subscriber views iCalendar feed", type: :feature do
   scenario "and sees incoming events" do
     character = create(:character)
     access_token = create(:access_token, :personal, issuer: character)
-
     create(:event, character: character)
     create(:event, character: character)
 
@@ -23,7 +22,6 @@ feature "subscriber views iCalendar feed", type: :feature do
       owner_hash: character.owner_hash,
       time_zone: "Europe/Sofia",
     )
-
     create(:event, character: character)
     create(:event, character: character)
 

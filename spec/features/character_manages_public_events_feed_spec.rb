@@ -1,0 +1,23 @@
+require "rails_helper"
+
+feature "Public events feed management", type: :feature do
+  before { sign_in }
+
+  scenario "enabling" do
+    visit sharing_url
+    click_on "Start publishing"
+
+    expect(page).to have_text(/Feed is published/)
+    expect(page).to have_button("Stop publishing")
+  end
+
+  scenario "disabling" do
+    create(:access_token, :public, issuer: current_character)
+
+    visit sharing_url
+    click_on "Stop publishing"
+
+    expect(page).to have_text(/Nothing is published/)
+    expect(page).to have_button("Start publishing")
+  end
+end
