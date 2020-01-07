@@ -56,8 +56,8 @@ class AccessToken < ApplicationRecord
     issuer == grantee
   end
 
-  def shared?
-    !personal?
+  def public?
+    grantee.nil?
   end
 
   def revoked?

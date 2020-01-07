@@ -106,8 +106,8 @@ describe AccessToken, type: :model do
       expect(found).to eq(access_token)
     end
 
-    it "finds the token, when shared" do
-      access_token = create(:access_token)
+    it "finds the token, when public" do
+      access_token = create(:access_token, :public)
 
       found = AccessToken.by_slug!(access_token.slug)
 
