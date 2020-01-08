@@ -23,6 +23,10 @@ class Event < ApplicationRecord
       order(starts_at: :asc)
   end
 
+  def self.public
+    where("title LIKE '[PUBLIC]%'")
+  end
+
   def self.synchronize(data_source)
     character = data_source.character
 

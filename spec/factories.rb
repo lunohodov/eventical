@@ -52,6 +52,10 @@ FactoryBot.define do
       owner_name { nil }
       owner_uid { nil }
     end
+
+    trait :public do
+      title { "[PUBLIC] #{Faker::Name.name}" }
+    end
   end
 
   factory :character do

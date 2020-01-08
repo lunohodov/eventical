@@ -64,6 +64,18 @@ describe Event, type: :model do
     end
   end
 
+  describe "#public" do
+    it "returns public events only" do
+      character = create(:character)
+      create(:event, character: character)
+      expected = create(:event, :public, character: character)
+
+      result = Event.public
+
+      expect(result).to match_array [expected]
+    end
+  end
+
   describe ".synchronize" do
     it "saves new event" do
       data_source = build(:event, character: character)
