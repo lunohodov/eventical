@@ -16,7 +16,7 @@ class AccessToken < ApplicationRecord
 
   class << self
     def by_slug!(slug)
-      find_by!(token: parse_slug(slug))
+      where(token: parse_slug(slug)).last!
     end
 
     def create_personal!(char)

@@ -14,7 +14,7 @@ class CalendarFeedsController < ApplicationController
     end
 
     character = access_token.issuer
-    events = upcoming_events(character)
+    events = upcoming_events(character, public_only: access_token.public?)
 
     render_headers
 
@@ -33,12 +33,19 @@ class CalendarFeedsController < ApplicationController
   private
 
   def track_access_token_used
-    analytics_for(access_token.grantee).
+    character = if access_token.public?
+                  access_token.issuer
+                else
+                  access_token.grantee
+                end
+    analytics_for(character).
       track_access_token_used(access_token, consumer: consumer)
   end
 
-  def upcoming_events(character)
-    Event.upcoming_for(character).limit(PAGE_SIZE)
+  def upcoming_events(character, public_only: false)
+    result = Event.upcoming_for(character)
+    result = result.public if public_only
+    result.limit(PAGE_SIZE)
   end
 
   def access_token
@@ -52,8 +59,8 @@ class CalendarFeedsController < ApplicationController
   def resolve_time_zone
     time_zone = if params[:tz].present?
                   ActiveSupport::TimeZone[params[:tz]]
-                else
-                  Setting.for_character(access_token.grantee).time_zone
+                elsif access_token.grantee
+                  Setting.for_character(access_token.grantee)&.time_zone
                 end
     time_zone.presence || Eve.time_zone
   end

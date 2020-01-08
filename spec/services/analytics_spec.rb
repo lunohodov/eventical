@@ -68,40 +68,51 @@ describe Analytics do
         with_properties(category: "Calendars", label: access_token.grantee.name)
     end
 
-    context "when expired" do
-      it "tracks that an expired access token has been used" do
-        access_token = build(:access_token, expires_at: 1.hour.ago)
+    it "tracks that an expired access token has been used" do
+      access_token = build(:access_token, expires_at: 1.hour.ago)
 
-        analytics_instance.track_access_token_used(
-          access_token,
-          consumer: "Google",
+      analytics_instance.track_access_token_used(
+        access_token,
+        consumer: "Google",
+      )
+
+      expect(analytics).to have_tracked("Expired access token used (Google)").
+        for_character(access_token.grantee).
+        with_properties(
+          category: "Calendars",
+          label: access_token.grantee.name,
         )
-
-        expect(analytics).to have_tracked("Expired access token used (Google)").
-          for_character(access_token.grantee).
-          with_properties(
-            category: "Calendars",
-            label: access_token.grantee.name,
-          )
-      end
     end
 
-    context "when revoked" do
-      it "tracks that a revoked access token has been used" do
-        access_token = build(:access_token, revoked_at: 1.hour.ago)
+    it "tracks that a revoked access token has been used" do
+      access_token = build(:access_token, revoked_at: 1.hour.ago)
 
-        analytics_instance.track_access_token_used(
-          access_token,
-          consumer: "Google",
+      analytics_instance.track_access_token_used(
+        access_token,
+        consumer: "Google",
+      )
+
+      expect(analytics).to have_tracked("Revoked access token used (Google)").
+        for_character(access_token.grantee).
+        with_properties(
+          category: "Calendars",
+          label: access_token.grantee.name,
         )
+    end
 
-        expect(analytics).to have_tracked("Revoked access token used (Google)").
-          for_character(access_token.grantee).
-          with_properties(
-            category: "Calendars",
-            label: access_token.grantee.name,
-          )
-      end
+    it "tracks that a public access token has been used" do
+      access_token = build(:access_token, :public)
+
+      analytics_instance.track_access_token_used(
+        access_token,
+        consumer: "Google",
+      )
+
+      expect(analytics).to have_tracked("Public access token used (Google)").
+        with_properties(
+          category: "Calendars",
+          label: access_token.issuer.name,
+        )
     end
   end
 

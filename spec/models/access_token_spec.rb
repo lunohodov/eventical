@@ -114,6 +114,14 @@ describe AccessToken, type: :model do
       expect(found).to eq(access_token)
     end
 
+    it "finds the last record when many" do
+      access_token = create_list(:access_token, 2, token: "abc123").last
+
+      found = AccessToken.by_slug!(access_token.slug)
+
+      expect(found).to eq AccessToken.where(token: "abc123").last!
+    end
+
     context "when token does not exist" do
       it "raises an error" do
         expect do
