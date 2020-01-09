@@ -3,11 +3,15 @@ require "rails_helper"
 feature "subscriber views upcoming public events", type: :feature do
   scenario "and does not see private events" do
     access_token = create_access_token
-    private_event = create(:event, character: access_token.issuer)
+    create(:event, character: access_token.issuer)
+    create(:event, :corporate, character: access_token.issuer)
+    create(:event, :faction, character: access_token.issuer)
+    create(:event, :alliance, character: access_token.issuer)
+    create(:event, :ccp, character: access_token.issuer)
 
     visit_calendar_feed_path(access_token)
 
-    expect(page).not_to have_event_details(private_event)
+    expect(page).not_to have_events
   end
 
   scenario "and sees events grouped by date" do
@@ -38,12 +42,14 @@ feature "subscriber views upcoming public events", type: :feature do
   scenario "and sees informative text, when there are no upcoming events" do
     visit_calendar_feed_path(create_access_token)
 
+    expect(page).not_to have_events
     expect(page).to have_content(/no upcoming events/i)
   end
 
   scenario "and sees iCal link, when there are no upcoming events" do
     visit_calendar_feed_path(create_access_token)
 
+    expect(page).not_to have_events
     expect(page).to have_ical_link
   end
 
@@ -71,6 +77,12 @@ feature "subscriber views upcoming public events", type: :feature do
 
   def date_group_selector(date)
     ".event-list[data-date=\"#{date.strftime('%Y-%m-%d')}\"]"
+  end
+
+  matcher :have_events do
+    match do |page|
+      !page.has_css?("tr.event", count: 0)
+    end
   end
 
   matcher :have_ical_link do
