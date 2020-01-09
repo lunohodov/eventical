@@ -1,4 +1,8 @@
-<% content_for :page_title, "Upcoming events" %>
+<% if @access_token.public? %>
+  <% content_for :page_title, "Events by #{@access_token.issuer.name}" %>
+<% else %>
+  <% content_for :page_title, "Upcoming for #{@access_token.grantee.name}" %>
+<% end %>
 
 <div class="d-flex">
   <div class="flex-fill text-left">
