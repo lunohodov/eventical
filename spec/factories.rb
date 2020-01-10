@@ -52,6 +52,34 @@ FactoryBot.define do
       owner_name { nil }
       owner_uid { nil }
     end
+
+    trait :public do
+      title { "[PUBLIC] #{Faker::Name.name}" }
+    end
+
+    trait :corporate do
+      owner_category { "corporation" }
+      owner_name { "#{character.name} Corporation" }
+      owner_uid { character.uid * 10 }
+    end
+
+    trait :alliance do
+      owner_category { "alliance" }
+      owner_name { "#{character.name} Alliance" }
+      owner_uid { character.uid * 100 }
+    end
+
+    trait :faction do
+      owner_category { "faction" }
+      owner_name { "Gallente Federation" }
+      owner_uid { character.uid * 1000 }
+    end
+
+    trait :ccp do
+      owner_category { "eve_server" }
+      owner_name { "CCP" }
+      owner_uid { character.uid * 10_000 }
+    end
   end
 
   factory :character do
@@ -111,6 +139,11 @@ FactoryBot.define do
     trait :personal do
       issuer { create(:character) }
       grantee { issuer }
+    end
+
+    trait :public do
+      issuer { create(:character) }
+      grantee { nil }
     end
   end
 end

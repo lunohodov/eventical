@@ -2,11 +2,11 @@ require "securerandom"
 
 class AccessToken < ApplicationRecord
   belongs_to :issuer, class_name: "Character"
-  belongs_to :grantee, polymorphic: true
+  belongs_to :grantee, polymorphic: true, optional: true
 
   validate :event_owner_categories_must_be_valid
 
-  before_create :generate_token
+  before_create :generate_token_if_needed
 
   scope :personal, ->(c) { where(issuer: c, grantee: c) }
   scope :current, -> {
@@ -16,11 +16,21 @@ class AccessToken < ApplicationRecord
 
   class << self
     def by_slug!(slug)
-      find_by!(token: parse_slug(slug))
+      where(token: parse_slug(slug)).last!
     end
 
     def create_personal!(char)
       create!(issuer: char, grantee: char)
+    end
+
+    def revoke!(access_token)
+      raise "Access token must be persisted" unless access_token.persisted?
+
+      where(issuer: access_token.issuer,
+            grantee: access_token.grantee,
+            revoked_at: nil).
+        lock.
+        update_all(revoked_at: Time.current)
     end
 
     private
@@ -46,8 +56,8 @@ class AccessToken < ApplicationRecord
     issuer == grantee
   end
 
-  def shared?
-    !personal?
+  def public?
+    grantee.nil?
   end
 
   def revoked?
@@ -68,7 +78,7 @@ class AccessToken < ApplicationRecord
     end
   end
 
-  def generate_token
-    self.token = SecureRandom.uuid
+  def generate_token_if_needed
+    self.token = SecureRandom.uuid if token.blank?
   end
 end

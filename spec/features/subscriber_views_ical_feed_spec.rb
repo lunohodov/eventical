@@ -1,12 +1,11 @@
 require "rails_helper"
 
-feature "subscriber views iCalendar feed", type: :feature do
+feature "subscriber views iCal feed", type: :feature do
   ICAL_DATETIME_FORMAT = "%Y%m%dT%H%M%S".freeze
 
   scenario "and sees incoming events" do
     character = create(:character)
     access_token = create(:access_token, :personal, issuer: character)
-
     create(:event, character: character)
     create(:event, character: character)
 
@@ -15,7 +14,7 @@ feature "subscriber views iCalendar feed", type: :feature do
     expect(page).to have_ical_content
   end
 
-  scenario "and ignores preferred time zone" do
+  scenario "and preferred time zone is not used" do
     character = create(:character)
     access_token = create(:access_token, :personal, issuer: character)
     create(
@@ -23,7 +22,6 @@ feature "subscriber views iCalendar feed", type: :feature do
       owner_hash: character.owner_hash,
       time_zone: "Europe/Sofia",
     )
-
     create(:event, character: character)
     create(:event, character: character)
 
@@ -33,7 +31,7 @@ feature "subscriber views iCalendar feed", type: :feature do
     expect(page).to have_content "Etc/UTC"
   end
 
-  scenario "and sees empty feed, when no upcoming events found" do
+  scenario "and sees empty feed, when there are no upcoming events" do
     character = create(:character)
     access_token = create(:access_token, :personal, issuer: character)
 

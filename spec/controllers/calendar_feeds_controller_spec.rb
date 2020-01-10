@@ -5,7 +5,7 @@ describe CalendarFeedsController, type: :controller do
   before { request.headers["User-Agent"] = "Google" }
 
   describe "#show" do
-    it "notifies analytics than the access token has been used" do
+    it "notifies analytics that the access token has been used" do
       access_token = create(:access_token)
 
       get :show, params: { id: access_token.token }

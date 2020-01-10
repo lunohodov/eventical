@@ -1,4 +1,8 @@
-<% content_for :page_title, "Upcoming events" %>
+<% if @access_token.public? %>
+  <% content_for :page_title, "Events by #{@access_token.issuer.name}" %>
+<% else %>
+  <% content_for :page_title, "Upcoming for #{@access_token.grantee.name}" %>
+<% end %>
 
 <div class="d-flex">
   <div class="flex-fill text-left">
@@ -10,7 +14,13 @@
 </div>
 <% if @events.empty? %>
   <section class="text-center p-5">
-    <h3>You have no upcoming events.</h3>
+    <h3>
+      <% if @access_token.public? %>
+        There are no upcoming events.
+      <% else %>
+        You have no upcoming events.
+      <% end %>
+    </h3>
   </section>
 <% else %>
   <section class="text-left">

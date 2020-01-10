@@ -1,6 +1,11 @@
 require "rails_helper"
 
 describe AccessToken, type: :model do
+  describe "associations" do
+    it { should belong_to(:issuer) }
+    it { should belong_to(:grantee).optional }
+  end
+
   describe "validations" do
     it { validate_presence_of :grantee }
     it { validate_presence_of :issuer }
@@ -58,6 +63,40 @@ describe AccessToken, type: :model do
     end
   end
 
+  describe ".revoke!" do
+    it "revokes given token" do
+      access_token = create(:access_token)
+
+      expect { AccessToken.revoke!(access_token) }.
+        to change { access_token.reload.revoked? }.
+        to(true)
+    end
+
+    it "revokes current tokens" do
+      access_token = create(:access_token, :personal)
+      create(:access_token, :personal, issuer: access_token.issuer)
+
+      expect { AccessToken.revoke!(access_token) }.
+        to change { AccessToken.where(revoked_at: nil).count }.
+        to(0)
+    end
+
+    it "records revocation time" do
+      access_token = create(:access_token)
+
+      expect { AccessToken.revoke!(access_token) }.
+        to change { access_token.reload.revoked_at }.
+        from(nil)
+    end
+
+    it "raises an error when given token is not persisted" do
+      access_token = build(:access_token)
+
+      expect { AccessToken.revoke!(access_token) }.
+        to raise_error(/persisted/)
+    end
+  end
+
   describe ".by_slug!" do
     it "finds the token, when personal" do
       access_token = create(:access_token, :personal)
@@ -67,12 +106,20 @@ describe AccessToken, type: :model do
       expect(found).to eq(access_token)
     end
 
-    it "finds the token, when shared" do
-      access_token = create(:access_token)
+    it "finds the token, when public" do
+      access_token = create(:access_token, :public)
 
       found = AccessToken.by_slug!(access_token.slug)
 
       expect(found).to eq(access_token)
+    end
+
+    it "finds the last record when many" do
+      access_token = create_list(:access_token, 2, token: "abc123").last
+
+      found = AccessToken.by_slug!(access_token.slug)
+
+      expect(found).to eq AccessToken.where(token: "abc123").last!
     end
 
     context "when token does not exist" do

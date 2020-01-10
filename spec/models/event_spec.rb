@@ -64,6 +64,40 @@ describe Event, type: :model do
     end
   end
 
+  describe ".public_by" do
+    it "returns public events by given character" do
+      character = create(:character)
+      create(:event, character: character)
+      expected = create(:event, :public, character: character)
+
+      result = Event.public_by(character)
+
+      expect(result).to match_array [expected]
+    end
+
+    context "when there are no upcoming events" do
+      it "returns none" do
+        character = create(:character)
+
+        result = Event.public_by(character)
+
+        expect(result).to be_empty
+      end
+    end
+
+    context "without :since argument" do
+      it "uses current date" do
+        character = create(:character)
+        create(:event, :public, character: character, starts_at: 1.day.ago)
+        expected_event = create(:event, :public, character: character, starts_at: 1.day.from_now)
+
+        result = Event.public_by(character)
+
+        expect(result.to_a). to eq [expected_event]
+      end
+    end
+  end
+
   describe ".synchronize" do
     it "saves new event" do
       data_source = build(:event, character: character)

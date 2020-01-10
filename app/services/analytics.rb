@@ -30,21 +30,22 @@ class Analytics
   end
 
   def track_access_token_used(access_token, consumer: nil)
-    grantee = access_token.grantee
-    event_action = if access_token.revoked?
-                     "Revoked access token used (#{consumer})"
-                   elsif access_token.expired?
-                     "Expired access token used (#{consumer})"
-                   else
-                     "Access token used (#{consumer})"
-                   end
+    action = if access_token.revoked?
+               "Revoked access token used (#{consumer})"
+             elsif access_token.expired?
+               "Expired access token used (#{consumer})"
+             else
+               "Access token used (#{consumer})"
+             end
 
-    track(
-      event_action,
-      category: "Calendars",
-      label: grantee.name,
-      user_id: grantee.id,
-    )
+    if access_token.public?
+      char = access_token.issuer
+      action = "Public access token used (#{consumer})"
+      track(action, category: "Calendars", label: char.name, user_id: nil)
+    else
+      char = access_token.grantee
+      track(action, category: "Calendars", label: char.name, user_id: char.id)
+    end
   end
 
   def track_upcoming_events_pulled
