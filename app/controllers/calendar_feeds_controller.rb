@@ -14,7 +14,11 @@ class CalendarFeedsController < ApplicationController
     end
 
     character = access_token.issuer
-    events = upcoming_events(character, public_only: access_token.public?)
+    events = if access_token.public?
+               Event.public_by(character)
+             else
+               Event.upcoming_for(character)
+             end.limit(PAGE_SIZE)
 
     render_headers
 
@@ -40,12 +44,6 @@ class CalendarFeedsController < ApplicationController
                 end
     analytics_for(character).
       track_access_token_used(access_token, consumer: consumer)
-  end
-
-  def upcoming_events(character, public_only: false)
-    result = Event.upcoming_for(character)
-    result = result.public if public_only
-    result.limit(PAGE_SIZE)
   end
 
   def access_token

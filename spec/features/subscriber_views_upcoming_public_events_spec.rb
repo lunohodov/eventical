@@ -1,19 +1,6 @@
 require "rails_helper"
 
 feature "subscriber views upcoming public events", type: :feature do
-  scenario "and does not see private events" do
-    access_token = create_access_token
-    create(:event, character: access_token.issuer)
-    create(:event, :corporate, character: access_token.issuer)
-    create(:event, :faction, character: access_token.issuer)
-    create(:event, :alliance, character: access_token.issuer)
-    create(:event, :ccp, character: access_token.issuer)
-
-    visit_calendar_feed_path(access_token)
-
-    expect(page).not_to have_events
-  end
-
   scenario "and sees events grouped by date" do
     access_token = create_access_token
     event = create(:event, :public, character: access_token.issuer)
@@ -61,6 +48,31 @@ feature "subscriber views upcoming public events", type: :feature do
     visit_calendar_feed_path(access_token)
 
     expect(page).to have_ical_link
+  end
+
+  scenario "and does not see private events" do
+    access_token = create_access_token
+    create(:event, character: access_token.issuer)
+    create(:event, :corporate, character: access_token.issuer)
+    create(:event, :faction, character: access_token.issuer)
+    create(:event, :alliance, character: access_token.issuer)
+    create(:event, :ccp, character: access_token.issuer)
+
+    visit_calendar_feed_path(access_token)
+
+    expect(page).not_to have_events
+  end
+
+  scenario "and does not see public events from other entities" do
+    access_token = create_access_token
+    create(:event, :public, :corporate, character: access_token.issuer)
+    create(:event, :public, :faction, character: access_token.issuer)
+    create(:event, :public, :alliance, character: access_token.issuer)
+    create(:event, :public, :ccp, character: access_token.issuer)
+
+    visit_calendar_feed_path(access_token)
+
+    expect(page).not_to have_events
   end
 
   def visit_calendar_feed_path(access_token, time_zone: nil)
