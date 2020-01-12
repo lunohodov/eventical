@@ -76,7 +76,7 @@ class CalendarFeedsController < ApplicationController
 
     IcalendarBuilder.build do
       calendar_name("#{issuer.name}'s Calendar")
-      calendar_description("Upcoming events for #{grantee.name}")
+      calendar_description("Upcoming events for #{grantee.name}") if grantee
       events(events)
     end
   end
