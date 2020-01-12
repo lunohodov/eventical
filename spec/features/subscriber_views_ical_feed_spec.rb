@@ -47,6 +47,17 @@ feature "subscriber views iCal feed", type: :feature do
     )
   end
 
+  scenario "and sees public events, when feed is public" do
+    character = create(:character)
+    access_token = create(:access_token, :public, issuer: character)
+    create(:event, :public, character: character)
+    create(:event, :public, character: character)
+
+    visit_calendar_feed_path(access_token)
+
+    expect(page).to have_ical_content
+  end
+
   matcher :have_ical_content do
     match do |actual|
       expect(actual).to have_content("BEGIN:VCALENDAR")
