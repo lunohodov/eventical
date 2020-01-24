@@ -19,34 +19,34 @@ body {
 }
 
 .perma__header {
-  border-bottom: 3px solid !important;
-  padding-bottom: 0.7rem !important;
+  border-bottom: 3px solid;
+  padding-bottom: 0.7rem;
 }
 
-.feed__option {
-  display: inline-block;
-  padding: 0 0 0 1.66em;
-  margin-right: 15px;
-  background-image: image_url('calendar_format_browser.png');
-  background-repeat: no-repeat;
+.feed-option {
+  background-image: image-url("calendar_format_browser.png");
   background-position: left center;
+  background-repeat: no-repeat;
   background-size: 1.5em;
+  display: inline-block;
+  margin-right: 15px;
+  padding: 0 0 0 1.66em;
 }
 
-.feed__option--browser {
-  background-image: image_url('calendar_format_browser.png');
+.feed-option__browser {
+  background-image: image-url("calendar_format_browser.png");
 }
 
-.feed__option--google {
-  background-image: image_url('calendar_format_google.png');
+.feed-option__google {
+  background-image: image-url("calendar_format_google.png");
 }
 
-.feed__option--apple {
-  background-image: image_url('calendar_format_apple.png');
+.feed-option__apple {
+  background-image: image-url("calendar_format_apple.png");
 }
 
-.feed__option--outlook {
-  background-image: image_url('calendar_format_outlook.png');
+.feed-option__outlook {
+  background-image: image-url("calendar_format_outlook.png");
 }
 
 .underline-gradient {

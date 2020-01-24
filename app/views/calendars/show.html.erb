@@ -20,19 +20,19 @@
   <h3 class="h5">Subscribe to all events in your EVE Online calendar via…</h3>
 
   <div class="d-flex flex-wrap justify-content-center">
-    <%= link_to("#", class: "feed__option feed__option--google", id: "google-instructions-toggle") do %>
+    <%= link_to("#", class: "feed-option feed-option__google", id: "google-instructions-toggle") do %>
       Google Calendar
     <% end %>
     <%= link_to(calendar_feed_url(@personal_token, format: :ics, protocol: 'webcal'),
-                class: "feed__option feed__option--apple") do %>
+                class: "feed-option feed-option__apple") do %>
       Apple Calendar
     <% end %>
     <%= link_to(calendar_feed_url(@personal_token, format: :ics, protocol: 'webcal'),
-                class: "feed__option feed__option--outlook") do %>
+                class: "feed-option feed-option__outlook") do %>
       Outlook
     <% end %>
     <%= link_to(calendar_feed_url(@personal_token),
-                class: "feed__option feed__option--browser") do %>
+                class: "feed-option feed-option__browser") do %>
       Browser
     <% end %>
   </div>
