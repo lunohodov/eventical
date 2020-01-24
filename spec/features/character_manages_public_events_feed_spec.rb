@@ -7,8 +7,8 @@ feature "Public events feed management", type: :feature do
     visit sharing_url
     click_on "Start publishing"
 
-    expect(page).to have_text(/Feed is published/)
-    expect(page).to have_button("Stop publishing")
+    expect(page).to have_text(/Feed published/)
+    expect(page).to have_link("Stop publishing")
   end
 
   scenario "disabling" do
@@ -17,7 +17,7 @@ feature "Public events feed management", type: :feature do
     visit sharing_url
     click_on "Stop publishing"
 
-    expect(page).to have_text(/Nothing is published/)
-    expect(page).to have_button("Start publishing")
+    expect(page).to have_text(/Nothing published/)
+    expect(page).to have_link("Start publishing")
   end
 end
