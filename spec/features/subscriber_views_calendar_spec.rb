@@ -1,28 +1,45 @@
 require "rails_helper"
 
 feature "user views calendar", type: :feature do
-  scenario "and sees it's private address" do
+  scenario "and sees Google Calendar export option" do
     sign_in
 
     access_token = create(:access_token, :personal, issuer: current_character)
 
     visit calendar_path
 
-    within "#secret-address" do
-      expect(page).to have_link(href: /#{access_token.token}$/)
-    end
+    expect(page).to have_link("Google Calendar", href: "#")
+    expect(page).to have_field(with: /#{access_token.token}\.ics$/)
   end
 
-  scenario "and sees it's private address in iCal format" do
+  scenario "and sees Apple Calendar export option" do
     sign_in
 
     access_token = create(:access_token, :personal, issuer: current_character)
 
     visit calendar_path
 
-    within "#secret-address-ical" do
-      expect(page).to have_link(href: /#{access_token.token}\.ics$/)
-    end
+    expect(page).to have_link("Apple Calendar", href: /#{access_token.token}\.ics$/)
+  end
+
+  scenario "and sees Outlook export option" do
+    sign_in
+
+    access_token = create(:access_token, :personal, issuer: current_character)
+
+    visit calendar_path
+
+    expect(page).to have_link("Outlook", href: /#{access_token.token}\.ics$/)
+  end
+
+  scenario "and sees browser export option" do
+    sign_in
+
+    access_token = create(:access_token, :personal, issuer: current_character)
+
+    visit calendar_path
+
+    expect(page).to have_link("Browser", href: /#{access_token.token}$/)
   end
 
   scenario "and sees a button to reset the private address" do
@@ -32,7 +49,7 @@ feature "user views calendar", type: :feature do
 
     visit calendar_path
 
-    expect(page).to have_button("Reset secret address")
+    expect(page).to have_link("reset it")
   end
 
   scenario "and can change preferred time zone" do

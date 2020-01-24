@@ -28,7 +28,7 @@ module ApplicationHelper
     # rubocop:disable Metrics/LineLength
     button_to("/auth/eve_online_sso", method: :post, remote: false, style: style) do
       image_tag(
-        "https://web.ccpgamescdn.com/eveonlineassets/developers/eve-sso-login-black-#{size}.png",
+        "https://web.ccpgamescdn.com/eveonlineassets/developers/eve-sso-login-white-#{size}.png",
         alt: "Log in with EVE Online",
       )
     end

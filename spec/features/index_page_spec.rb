@@ -11,7 +11,7 @@ describe "home index page" do
   it "links to login page" do
     visit "/"
 
-    expect(page).to have_button("Log in with EVE Online", count: 3)
+    expect(page).to have_button("Log in with EVE Online", count: 2)
   end
 
   it "links to about page" do

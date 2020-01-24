@@ -9,9 +9,8 @@ feature "subscriber resets secret address", type: :feature do
     visit calendar_path
     click_reset_button
 
-    within "#secret-address" do
-      expect(page).not_to have_link(href: /#{access_token.token}$/)
-    end
+    expect(page).not_to have_field(with: /#{access_token.token}\.ics$/)
+    expect(page).not_to have_link(href: /#{access_token.token}/)
   end
 
   scenario "and receives a new address" do
@@ -22,9 +21,8 @@ feature "subscriber resets secret address", type: :feature do
 
     access_token = AccessToken.personal(current_character).current.last
 
-    within "#secret-address" do
-      expect(page).to have_link(href: /#{access_token.token}$/)
-    end
+    expect(page).to have_field(with: /#{access_token.token}\.ics$/)
+    expect(page).to have_link(href: /#{access_token.token}$/)
   end
 
   scenario "and can not access the reset address" do
@@ -47,6 +45,6 @@ feature "subscriber resets secret address", type: :feature do
   end
 
   def click_reset_button
-    click_on("Reset secret address")
+    click_on("reset it")
   end
 end

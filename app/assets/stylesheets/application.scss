@@ -18,6 +18,37 @@ body {
   }
 }
 
+.perma__header {
+  border-bottom: 3px solid;
+  padding-bottom: 0.7rem;
+}
+
+.feed-option {
+  background-image: image-url("calendar_format_browser.png");
+  background-position: left center;
+  background-repeat: no-repeat;
+  background-size: 1.5em;
+  display: inline-block;
+  margin-right: 15px;
+  padding: 0 0 0 1.66em;
+}
+
+.feed-option__browser {
+  background-image: image-url("calendar_format_browser.png");
+}
+
+.feed-option__google {
+  background-image: image-url("calendar_format_google.png");
+}
+
+.feed-option__apple {
+  background-image: image-url("calendar_format_apple.png");
+}
+
+.feed-option__outlook {
+  background-image: image-url("calendar_format_outlook.png");
+}
+
 .underline-gradient {
   background-repeat: repeat-x;
   background-size: 100% 3px;

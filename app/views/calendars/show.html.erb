@@ -1,58 +1,79 @@
 <% content_for :page_title, "My Feed" %>
 
-<section>
-  <h3> Secret feed address </h3>
+<% content_for :javascript do %>
+  <script charset="utf-8">
+    (function() {
+      var link = document.getElementById("google-instructions-toggle");
+      var instructions = document.getElementById("google-instructions");
 
-  <p> Use the integration links below to access your calendar from other applications.
-  <strong>Don’t share them with other people.</strong> </p>
+      link.addEventListener('click', event => {
+        instructions.classList.remove("d-none");
+        event.preventDefault();
+      });
+    })();
+  </script>
+<% end %>
 
-  <div class="list-group mb-4">
-    <div class="list-group-item flex-column align-items-start" id="secret-address">
-      <div class="d-flex w-100 justify-content-between">
-        <h5 class="mb-1">Web browser</h5>
-      </div>
-      <p class="mb-1"> <%= link_to(nil, calendar_feed_url(@personal_token)) %> </p>
-      <small>Use this address to privately access your calendar from a web browser.</small>
-    </div>
-    <div class="list-group-item flex-column align-items-start" id="secret-address-ical">
-      <div class="d-flex w-100 justify-content-between">
-        <h5 class="mb-1">iCal applications</h5>
-      </div>
-      <p class="mb-1"> <%= link_to(nil, calendar_feed_url(@personal_token, format: :ics, protocol: 'webcal')) %> </p>
-      <small>Use this address to privately access your calendar from other applications such as
-        Apple Calendar, Google Calendar, Outlook Calendar or their mobile variants.</small>
-    </div>
+<h2 class="perma__header text-center"> Your Secret Feed </h2>
+
+<section class="text-center p-4">
+  <h3 class="h5">Subscribe to all events in your EVE Online calendar via…</h3>
+
+  <div class="d-flex flex-wrap justify-content-center">
+    <%= link_to("#", class: "feed-option feed-option__google", id: "google-instructions-toggle") do %>
+      Google Calendar
+    <% end %>
+    <%= link_to(calendar_feed_url(@personal_token, format: :ics, protocol: 'webcal'),
+                class: "feed-option feed-option__apple") do %>
+      Apple Calendar
+    <% end %>
+    <%= link_to(calendar_feed_url(@personal_token, format: :ics, protocol: 'webcal'),
+                class: "feed-option feed-option__outlook") do %>
+      Outlook
+    <% end %>
+    <%= link_to(calendar_feed_url(@personal_token),
+                class: "feed-option feed-option__browser") do %>
+      Browser
+    <% end %>
   </div>
 
-  <%= form_for @personal_token, url: calendar_path, method: :post do |f| %>
-    <div class="form-row">
-      <div class="col-sm-6 col-md-8">
-        <p>You can reset the secret address and make the current one invalid.</p>
-      </div>
-      <div class="col-sm-6 col-md-4">
-        <%= f.submit("Reset secret address",
-                     id: "btn-reset-private-address",
-                     class: "btn btn-danger btn-block",
-                     data: { confirm: "Are you sure you want to reset the secret address?" }) %>
-      </div>
-    </div>
-  <% end %>
-</section>
+  <div class="alert alert-secondary text-left my-3 d-none" role="alert" id="google-instructions">
+    <p>
+      <input type="text"
+            value="<%= calendar_feed_url(@personal_token, format: :ics) %>"
+            class="form-control"
+            autofocus="true"
+            readonly="readonly" />
+    </p>
+    <ol>
+      <li>Copy the link above to your clipboard</li>
+      <li>Open Google Calendar</li>
+      <li>On the left side, choose “Add a friend's calendar &gt; From URL”</li>
+      <li>Paste the link you copied from above and click “Add Calendar”</li>
+    </ol>
+  </div>
 
-<section class="my-4">
-  <h3>Preferences</h3>
-  <%= form_with(url: settings_path, method: :put, local: true) do |f| %>
-    <div class="form-row">
-      <div class="col-sm-8 col-md-8">
-        <label for="time_zone" class="my-2 mr-2">Time zone</label>
-        <%= select_tag(:time_zone, time_zone_options_for_select(@time_zone.name)) %>
-        <p class="form-text text-muted">
-          Choose the preferred time zone for events to be shown in.
-        </p>
+  <div class="my-5">
+    <p class="text-secondary">Preferred time zone for events to be shown in</p>
+    <%= form_with(url: settings_path, method: :put, local: true) do |f| %>
+      <div class="d-flex justify-content-center align-items-center">
+        <div class="mr-2">
+          <%= select_tag(:time_zone, time_zone_options_for_select(@time_zone.name), class: "custom-select custom-select-sm") %>
+        </div>
+        <div>
+          <%= f.submit("Update time zone", class: "btn btn-sm btn-outline-primary") %>
+        </div>
       </div>
-      <div class="col-sm-4 col-md-4">
-        <%= f.submit("Update time zone", class: "btn btn-block btn-outline-primary") %>
-      </div>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
+
+  <p class="my-5 text-center">
+    <strong>Don’t share feed’s address with other people.</strong>
+    To make the current one invalid, you can
+    <%= link_to "reset it",
+        calendar_url,
+        method: :post,
+        class: "text-danger",
+        data: { confirm: "Are you sure you want to reset the secret address?" } %>.
+  </p>
 </section>
