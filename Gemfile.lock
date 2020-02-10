@@ -121,8 +121,8 @@ GEM
       ice_cube (~> 0.16)
     ice_cube (0.16.3)
     io-like (0.3.0)
-    jbuilder (2.9.1)
-      activesupport (>= 4.2.0)
+    jbuilder (2.10.0)
+      activesupport (>= 5.0.0)
     jwt (2.2.1)
     listen (3.2.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
@@ -308,7 +308,7 @@ DEPENDENCIES
   factory_bot_rails
   faker
   icalendar
-  jbuilder (~> 2.9)
+  jbuilder (~> 2.10)
   listen (>= 3.0.5, < 3.3)
   omniauth
   omniauth-eve_online-sso
