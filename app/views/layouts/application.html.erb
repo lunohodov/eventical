@@ -65,6 +65,11 @@
         </div>
       </footer>
     </div>
+    <% if can_use_analytics? %>
+      <!-- Fathom - beautiful, simple website analytics -->
+      <script src="https://cdn.usefathom.com/script.js" site="<%= fathom_site_token %>" defer></script>
+      <!-- / Fathom -->
+    <% end %>
     <%= yield :javascript %>
   </body>
 </html>
