@@ -83,6 +83,7 @@ GEM
     chromedriver-helper (2.1.1)
       archive-zip (~> 0.10)
       nokogiri (~> 1.8)
+    climate_control (0.2.0)
     coderay (1.1.2)
     concurrent-ruby (1.1.6)
     crass (1.0.6)
@@ -302,6 +303,7 @@ DEPENDENCIES
   byebug
   capybara (>= 2.15)
   chromedriver-helper
+  climate_control
   daemons
   database_cleaner
   delayed_job_active_record
