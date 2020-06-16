@@ -22,7 +22,7 @@ Please see [CONTRIBUTING.md](/CONTRIBUTING.md).
 ## Acknowledgment
 
 * [Bootstrap](https://getbootstrap.com) &mdash; HTML, CSS and JS library
-* [Fathom](https://usefathom.com) &mdash; Simple, light-weight, privacy-focused alternative to Google Analytics
+* [Fathom](https://usefathom.com/ref/81T39X) &mdash; Simple, light-weight, privacy-focused alternative to Google Analytics
 * [PostgreSQL](http://www.postgresql.org/) &mdash; Main data store is in Postgres
 * [Ruby on Rails](https://github.com/rails/rails) &mdash; The back end is a Rails app
 
