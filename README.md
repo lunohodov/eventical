@@ -19,11 +19,12 @@ browsers and devices.
 
 Please see [CONTRIBUTING.md](/CONTRIBUTING.md).
 
-## Built With
+## Acknowledgment
 
-* [Ruby on Rails](https://github.com/rails/rails) &mdash; The back end is a Rails app
-* [PostgreSQL](http://www.postgresql.org/) &mdash; Main data store is in Postgres
 * [Bootstrap](https://getbootstrap.com) &mdash; HTML, CSS and JS library
+* [Fathom](https://usefathom.com) &mdash; Simple, light-weight, privacy-focused alternative to Google Analytics
+* [PostgreSQL](http://www.postgresql.org/) &mdash; Main data store is in Postgres
+* [Ruby on Rails](https://github.com/rails/rails) &mdash; The back end is a Rails app
 
 ## Authors
 
