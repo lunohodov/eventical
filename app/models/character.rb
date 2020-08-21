@@ -8,10 +8,6 @@ class Character < ApplicationRecord
   validates :owner_hash, presence: true
   validates :token, presence: true
 
-  def self.deactivated
-    where.not(refresh_token_voided_at: nil)
-  end
-
   def void_refresh_token!
     update!(refresh_token_voided_at: Time.current)
   end

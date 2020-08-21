@@ -12,21 +12,28 @@ describe EventCleaner, type: :model do
       expect(result).to eq(["left"])
     end
 
-    it "deletes events belonging to deactivated characters" do
-      active_character = create(:character)
-      deactivated_character = create(:character, :with_voided_refresh_token)
-      create(:event, character: active_character)
-      create(:event, character: deactivated_character)
+    it "does not delete events belonging to recently deactivated characters" do
+      character = create(:character, refresh_token_voided_at: 1.month.ago)
+      create(:event, character: character)
 
       EventCleaner.call
 
-      expect(active_character.events).not_to be_empty
-      expect(deactivated_character.events).to be_empty
+      expect(character.events).not_to be_empty
+    end
+
+    it "deletes events belonging to characters deactivated 2 months ago" do
+      character = create(:character, refresh_token_voided_at: 2.months.ago)
+      create(:event, character: character)
+
+      EventCleaner.call
+
+      expect(character.events).to be_empty
     end
 
     it "returns the number of deleted events" do
       create(:event, created_at: 7.months.ago)
-      create(:event, character: create(:character, :with_voided_refresh_token))
+      create(:event, character: create(:character, refresh_token_voided_at: Time.current))
+      create(:event, character: create(:character, refresh_token_voided_at: 2.months.ago))
 
       result = EventCleaner.call
 
