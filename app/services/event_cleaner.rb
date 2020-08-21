@@ -10,10 +10,12 @@ class EventCleaner
   end
 
   def call
-    [
-      clean_aged,
-      clean_belonging_to_deactivated_characters,
-    ].sum
+    Event.transaction do
+      [
+        clean_aged,
+        clean_belonging_to_deactivated_characters,
+      ].sum
+    end
   end
 
   private
