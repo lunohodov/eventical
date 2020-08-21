@@ -12,12 +12,11 @@ class EventCleaner
   def call
     [
       clean_aged,
-      clean_belonging_to_deactivated_characters
+      clean_belonging_to_deactivated_characters,
     ].sum
   end
 
   private
-
 
   def clean_aged
     Event.delete_by("created_at < ?", max_event_age.ago)

@@ -18,7 +18,6 @@ describe EventCleaner, type: :model do
       create(:event, character: active_character)
       create(:event, character: deactivated_character)
 
-
       EventCleaner.call
 
       expect(active_character.events).not_to be_empty
