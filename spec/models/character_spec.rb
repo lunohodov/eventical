@@ -7,6 +7,24 @@ describe Character, type: :model do
     it { should validate_presence_of(:owner_hash) }
   end
 
+  describe "scope deactivated" do
+    it "returns characters with voided refresh tokens" do
+      create(:character, :with_voided_refresh_token)
+
+      result = Character.deactivated.to_a
+
+      expect(result).not_to be_empty
+    end
+
+    it "does not return characters with valid refresh tokens" do
+      create(:character)
+
+      result = Character.deactivated.to_a
+
+      expect(result).to be_empty
+    end
+  end
+
   describe "#void_refresh_token!" do
     it "marks the refresh token voided" do
       character = create(:character)
