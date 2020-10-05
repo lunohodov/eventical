@@ -60,7 +60,7 @@ GEM
       public_suffix (>= 2.0.2, < 5.0)
     archive-zip (0.12.0)
       io-like (~> 0.3.0)
-    autoprefixer-rails (9.8.6.2)
+    autoprefixer-rails (10.0.1.0)
       execjs
     bindex (0.8.1)
     bootsnap (1.4.8)
@@ -214,8 +214,8 @@ GEM
     rb-fsevent (0.10.4)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    regexp_parser (1.7.1)
-    rspec-core (3.9.2)
+    regexp_parser (1.8.1)
+    rspec-core (3.9.3)
       rspec-support (~> 3.9.3)
     rspec-expectations (3.9.2)
       diff-lcs (>= 1.2.0, < 2.0)
@@ -339,7 +339,7 @@ DEPENDENCIES
   webpacker
 
 RUBY VERSION
-   ruby 2.6.5p114
+   ruby 2.7.2p137
 
 BUNDLED WITH
-   1.17.2
+   2.1.4
