@@ -7,7 +7,7 @@ ruby "2.7.2"
 gem "rails", "~> 6.0.3"
 
 gem "bootsnap", ">= 1.1.0", require: false
-gem "bootstrap", "~> 4.5.0"
+gem "bootstrap", "~> 4.5.3"
 gem "daemons"
 gem "delayed_job_active_record"
 gem "eve_online"
@@ -39,7 +39,7 @@ group :development, :test do
 end
 
 group :development do
-  gem "listen", ">= 3.0.5", "< 3.3"
+  gem "listen", ">= 3.0.5", "< 3.4"
   gem "spring"
   gem "spring-watcher-listen", "~> 2.0.0"
   gem "web-console", ">= 3.3.0"
