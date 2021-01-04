@@ -112,7 +112,7 @@ GEM
       i18n (>= 1.6, < 2)
     faraday (1.0.1)
       multipart-post (>= 1.2, < 3)
-    ffi (1.13.1)
+    ffi (1.14.2)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     hashie (4.1.0)
@@ -125,7 +125,7 @@ GEM
     jbuilder (2.10.1)
       activesupport (>= 5.0.0)
     jwt (2.2.2)
-    listen (3.3.3)
+    listen (3.4.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     loofah (2.8.0)
@@ -313,7 +313,7 @@ DEPENDENCIES
   faker
   icalendar
   jbuilder (~> 2.10)
-  listen (>= 3.0.5, < 3.4)
+  listen (>= 3.0.5, < 3.5)
   omniauth
   omniauth-eve_online-sso
   pg
