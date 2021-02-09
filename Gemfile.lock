@@ -175,6 +175,9 @@ GEM
     omniauth-oauth2 (1.7.1)
       oauth2 (~> 1.4)
       omniauth (>= 1.9, < 3)
+    omniauth-rails_csrf_protection (1.0.0)
+      actionpack (>= 4.2)
+      omniauth (~> 2.0)
     pg (1.2.3)
     popper_js (1.16.0)
     pry (0.13.1)
@@ -333,8 +336,9 @@ DEPENDENCIES
   icalendar
   jbuilder (~> 2.11)
   listen (>= 3.0.5, < 3.5)
-  omniauth
+  omniauth (~> 2.0)
   omniauth-eve_online-sso
+  omniauth-rails_csrf_protection (~> 1.0)
   pg
   pry-byebug
   pry-rails

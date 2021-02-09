@@ -12,8 +12,6 @@ end
 
 Rails.application.config.middleware.use OmniAuth::Builder do
   OmniAuth.config.allowed_request_methods = [:post]
-  OmniAuth.config.before_request_phase =
-    RequestForgeryProtectionTokenVerification.new
 
   provider :developer unless Rails.env.production?
   provider :eve_online_sso, setup: setup_proc
