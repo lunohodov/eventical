@@ -43,7 +43,7 @@ FactoryBot.define do
     owner_name { character.name }
     owner_uid { character.uid }
     response { "attending" }
-    starts_at { rand(4).day.from_now }
+    starts_at { rand(2..7).days.from_now }
     title { Faker::Name.name }
 
     trait :without_details do

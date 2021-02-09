@@ -19,4 +19,20 @@ describe "home index page" do
 
     expect(find_link("About")).to be_visible
   end
+
+  context "with logged in character" do
+    before { sign_in }
+
+    it "does not link to login page" do
+      visit "/"
+
+      expect(page).not_to have_button("Log in with EVE Online")
+    end
+
+    it "shows link to character's calendar page" do
+      visit "/"
+
+      expect(page).to have_link(href: calendar_url)
+    end
+  end
 end
