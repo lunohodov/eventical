@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "2.7.2"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem "rails", "~> 6.0.3"
+gem "rails", "~> 6.1.1"
 
 gem "bootsnap", ">= 1.1.0", require: false
 gem "bootstrap", "~> 4.6.0"
@@ -54,6 +54,6 @@ group :test do
   gem "shoulda-matchers"
 end
 
-gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
+gem "tzinfo-data"
 
 gem "skylight"
