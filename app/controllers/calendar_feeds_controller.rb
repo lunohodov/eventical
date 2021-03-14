@@ -14,11 +14,12 @@ class CalendarFeedsController < ApplicationController
     end
 
     character = access_token.issuer
-    events = if access_token.public?
-               Event.public_by(character)
-             else
-               Event.upcoming_for(character)
-             end.limit(PAGE_SIZE)
+    events =
+      if access_token.public?
+        Event.public_by(character)
+      else
+        Event.upcoming_for(character)
+      end.limit(PAGE_SIZE)
 
     render_headers
 
@@ -37,13 +38,14 @@ class CalendarFeedsController < ApplicationController
   private
 
   def track_access_token_used
-    character = if access_token.public?
-                  access_token.issuer
-                else
-                  access_token.grantee
-                end
-    analytics_for(character).
-      track_access_token_used(access_token, consumer: consumer)
+    character =
+      if access_token.public?
+        access_token.issuer
+      else
+        access_token.grantee
+      end
+    analytics_for(character)
+      .track_access_token_used(access_token, consumer: consumer)
   end
 
   def access_token
@@ -55,19 +57,20 @@ class CalendarFeedsController < ApplicationController
   end
 
   def resolve_time_zone
-    time_zone = if params[:tz].present?
-                  ActiveSupport::TimeZone[params[:tz]]
-                elsif access_token.grantee
-                  Setting.for_character(access_token.grantee)&.time_zone
-                end
+    time_zone =
+      if params[:tz].present?
+        ActiveSupport::TimeZone[params[:tz]]
+      elsif access_token.grantee
+        Setting.for_character(access_token.grantee)&.time_zone
+      end
     time_zone.presence || Eve.time_zone
   end
 
   def render_ical(ical_representation)
     send_data ical_representation,
-              filename: "basic.ics",
-              type: "text/calendar; charset=utf-8",
-              disposition: :inline
+      filename: "basic.ics",
+      type: "text/calendar; charset=utf-8",
+      disposition: :inline
   end
 
   def build_ical(events)
@@ -89,7 +92,7 @@ class CalendarFeedsController < ApplicationController
   end
 
   def record_not_found
-    render plain: "404 Not Found", status: 404
+    render plain: "404 Not Found", status: :not_found
   end
 
   def consumer

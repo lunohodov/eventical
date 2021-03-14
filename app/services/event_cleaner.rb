@@ -15,7 +15,7 @@ class EventCleaner
     Event.transaction do
       [
         clean_aged,
-        clean_belonging_to_deactivated_characters,
+        clean_belonging_to_deactivated_characters
       ].sum
     end
   end

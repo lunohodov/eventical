@@ -10,9 +10,9 @@ RSpec::Matchers.define :have_tracked do |event_name|
         analytics_backend.tracked_events
       end
 
-    events.
-      named(@event_name).
-      has_properties?(@properties || {})
+    events
+      .named(@event_name)
+      .has_properties?(@properties || {})
   end
 
   chain(:for_character) { |character| @character = character }

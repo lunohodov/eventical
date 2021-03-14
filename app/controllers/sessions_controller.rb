@@ -42,9 +42,7 @@ class SessionsController < ApplicationController
     #
     # Pull upcoming events as soon as possible to improve new-user experience.
     if character.created_at > NEW_SIGNUP_THRESHOLD.ago
-      PullUpcomingEventsJob.
-        set(wait: 3.seconds).
-        perform_later(character.id)
+      PullUpcomingEventsJob.set(wait: 3.seconds).perform_later(character.id)
     end
   end
 end

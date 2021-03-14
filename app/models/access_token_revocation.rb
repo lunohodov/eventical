@@ -17,7 +17,7 @@ class AccessTokenRevocation
 
       AccessToken.create!(
         issuer: access_token.issuer,
-        grantee: access_token.grantee,
+        grantee: access_token.grantee
       )
     end
   end

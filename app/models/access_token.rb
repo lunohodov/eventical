@@ -10,8 +10,8 @@ class AccessToken < ApplicationRecord
 
   scope :personal, ->(c) { where(issuer: c, grantee: c) }
   scope :current, -> {
-    where("expires_at > ? OR expires_at IS NULL", Time.current).
-      where(revoked_at: nil)
+    where("expires_at > ? OR expires_at IS NULL", Time.current)
+      .where(revoked_at: nil)
   }
 
   class << self
@@ -28,9 +28,9 @@ class AccessToken < ApplicationRecord
 
       where(issuer: access_token.issuer,
             grantee: access_token.grantee,
-            revoked_at: nil).
-        lock.
-        update_all(revoked_at: Time.current)
+            revoked_at: nil)
+        .lock
+        .update_all(revoked_at: Time.current)
     end
 
     private

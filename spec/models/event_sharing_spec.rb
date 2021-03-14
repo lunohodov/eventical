@@ -26,10 +26,10 @@ describe EventSharing, type: :model do
       es = EventSharing.new(character)
 
       expect { es.activate! }.to change {
-        AccessToken.
-          where(issuer: character, grantee: nil).
-          current.
-          count
+        AccessToken
+          .where(issuer: character, grantee: nil)
+          .current
+          .count
       }.from(0).to(1)
     end
   end
@@ -39,9 +39,9 @@ describe EventSharing, type: :model do
       access_token = create(:access_token, issuer: character, grantee: nil)
       es = EventSharing.new(character)
 
-      expect { es.deactivate! }.
-        to change { access_token.reload.revoked? }.
-        to(true)
+      expect { es.deactivate! }
+        .to change { access_token.reload.revoked? }
+        .to(true)
     end
   end
 

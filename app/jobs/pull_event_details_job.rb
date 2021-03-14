@@ -13,7 +13,7 @@ class PullEventDetailsJob < ApplicationJob
       importance: character_calendar_event.importance,
       owner_category: character_calendar_event.owner_type,
       owner_name: character_calendar_event.owner_name,
-      owner_uid: character_calendar_event.owner_id,
+      owner_uid: character_calendar_event.owner_id
     )
 
     track_event_details_pulled
@@ -49,7 +49,7 @@ class PullEventDetailsJob < ApplicationJob
       EveOnline::ESI::CharacterCalendarEvent.new(
         character_id: character.uid,
         event_id: event.uid,
-        token: character.token,
+        token: character.token
       )
     end
   end

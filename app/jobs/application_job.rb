@@ -3,7 +3,7 @@ class ApplicationJob < ActiveJob::Base
     Raven.capture_exception(
       error,
       message: error.message,
-      extra: { job: self, arguments: arguments },
+      extra: {job: self, arguments: arguments}
     )
   end
 end

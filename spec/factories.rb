@@ -118,13 +118,13 @@ FactoryBot.define do
           character_id: character.uid,
           character_owner_hash: character.owner_hash,
           name: character.name,
-          token_type: character.token_type,
+          token_type: character.token_type
         },
         credentials: {
           token: character.token,
           refresh_token: character.refresh_token,
-          expires_at: character.token_expires_at,
-        },
+          expires_at: character.token_expires_at
+        }
       )
     end
   end

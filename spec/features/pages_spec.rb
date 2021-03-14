@@ -3,7 +3,7 @@ require "rails_helper"
 feature "Static pages", type: :feature do
   [
     "/",
-    "/about",
+    "/about"
   ].each do |page_path|
     scenario "able to visit #{page_path}" do
       visit page_path

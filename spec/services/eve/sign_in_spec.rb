@@ -6,8 +6,8 @@ describe Eve::SignIn, "#call" do
       "info" => {
         "name" => "Devas Weddo",
         "character_id" => 1,
-        "character_owner_hash" => "0xME",
-      },
+        "character_owner_hash" => "0xME"
+      }
     )
 
     character = Eve::SignIn.new(hash).call
@@ -18,7 +18,7 @@ describe Eve::SignIn, "#call" do
     expect(character.owner_hash).to eq("0xME")
     expect(character.token).to eq(hash["credentials"]["token"])
     expect(character.token_expires_at.to_i).to eq(
-      hash["credentials"]["expires_at"].to_i,
+      hash["credentials"]["expires_at"].to_i
     )
   end
 
@@ -36,7 +36,7 @@ describe Eve::SignIn, "#call" do
     context "and fails to save" do
       it "does not notify analytics" do
         tracker = stub_analytics_tracker
-        invalid_hash = auth_hash("info" => { "character_id" => nil })
+        invalid_hash = auth_hash("info" => {"character_id" => nil})
 
         begin
           Eve::SignIn.new(invalid_hash).call
@@ -58,11 +58,11 @@ describe Eve::SignIn, "#call" do
       expect(existing.reload.uid).to eq(hash["info"]["character_id"])
       expect(existing.reload.name).to eq(hash["info"]["name"])
       expect(existing.reload.owner_hash).to eq(
-        hash["info"]["character_owner_hash"],
+        hash["info"]["character_owner_hash"]
       )
       expect(existing.reload.token).to eq(hash["credentials"]["token"])
       expect(existing.reload.token_expires_at.to_i).to eq(
-        hash["credentials"]["expires_at"].to_i,
+        hash["credentials"]["expires_at"].to_i
       )
     end
 
@@ -71,12 +71,12 @@ describe Eve::SignIn, "#call" do
       existing = create(
         :character,
         :with_voided_refresh_token,
-        uid: hash["info"]["character_id"],
+        uid: hash["info"]["character_id"]
       )
 
-      expect { Eve::SignIn.new(hash).call }.
-        to change { existing.reload.refresh_token_voided_at }.
-        to(nil)
+      expect { Eve::SignIn.new(hash).call }
+        .to change { existing.reload.refresh_token_voided_at }
+        .to(nil)
     end
 
     it "does not notify analytics" do

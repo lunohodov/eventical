@@ -1,4 +1,4 @@
-require "eventical/middleware/add_character_to_sentry_context.rb"
+require "eventical/middleware/add_character_to_sentry_context"
 
 Raven.configure do |config|
   # Set by Dyno Metadata. See https://devcenter.heroku.com/articles/dyno-metadata

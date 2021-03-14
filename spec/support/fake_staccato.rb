@@ -10,13 +10,13 @@ class FakeStaccato
 
     def events_for(user)
       self.class.new(
-        events.select { |e| e[:user_id] == user.id },
+        events.select { |e| e[:user_id] == user.id }
       )
     end
 
     def named(event_name)
       self.class.new(
-        events.select { |e| e[:action] == event_name },
+        events.select { |e| e[:action] == event_name }
       )
     end
 

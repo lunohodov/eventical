@@ -12,7 +12,7 @@ describe SessionsController, type: :controller do
       request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:eve_online_sso]
       request.env["omniauth.origin"] = nil
 
-      get :create, params: { provider: "eve_online_sso" }
+      get :create, params: {provider: "eve_online_sso"}
 
       should redirect_to(calendar_url)
 
@@ -25,7 +25,7 @@ describe SessionsController, type: :controller do
       request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:eve_online_sso]
       request.env["omniauth.origin"] = "//google.com"
 
-      get :create, params: { provider: "eve_online_sso" }
+      get :create, params: {provider: "eve_online_sso"}
 
       should redirect_to(calendar_url)
     end
@@ -36,8 +36,8 @@ describe SessionsController, type: :controller do
       request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:eve_online_sso]
       request.env["omniauth.origin"] = nil
 
-      expect { get(:create, params: { provider: "eve_online_sso" }) }.
-        to have_enqueued_job(PullUpcomingEventsJob)
+      expect { get(:create, params: {provider: "eve_online_sso"}) }
+        .to have_enqueued_job(PullUpcomingEventsJob)
     end
 
     it "does not schedule upcoming events pull, when character exists" do
@@ -46,8 +46,8 @@ describe SessionsController, type: :controller do
       request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:eve_online_sso]
       request.env["omniauth.origin"] = nil
 
-      expect { get(:create, params: { provider: "eve_online_sso" }) }.
-        not_to have_enqueued_job(PullUpcomingEventsJob)
+      expect { get(:create, params: {provider: "eve_online_sso"}) }
+        .not_to have_enqueued_job(PullUpcomingEventsJob)
     end
   end
 

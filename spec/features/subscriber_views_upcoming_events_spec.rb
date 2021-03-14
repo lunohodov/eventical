@@ -21,7 +21,7 @@ feature "subscriber views upcoming events", type: :feature do
 
     within("tr.event") do
       expect(page).to have_content(
-        event.starts_at.in_time_zone("Sofia").strftime("%H:%M"),
+        event.starts_at.in_time_zone("Sofia").strftime("%H:%M")
       )
     end
   end
@@ -36,7 +36,7 @@ feature "subscriber views upcoming events", type: :feature do
 
     within("tr.event") do
       expect(page).to have_content(
-        event.starts_at.in_time_zone("Sofia").strftime("%H:%M"),
+        event.starts_at.in_time_zone("Sofia").strftime("%H:%M")
       )
     end
   end
@@ -64,19 +64,19 @@ feature "subscriber views upcoming events", type: :feature do
   end
 
   def visit_calendar_feed_path(access_token, time_zone: nil)
-    visit calendar_feed_path(id: access_token.token, params: { tz: time_zone })
+    visit calendar_feed_path(id: access_token.token, params: {tz: time_zone})
   end
 
   def create_access_token(character = nil)
     create(
       :access_token,
       :personal,
-      issuer: character || create(:character),
+      issuer: character || create(:character)
     )
   end
 
   def date_group_selector(date)
-    ".event-list[data-date=\"#{date.strftime('%Y-%m-%d')}\"]"
+    ".event-list[data-date=\"#{date.strftime("%Y-%m-%d")}\"]"
   end
 
   matcher :have_ical_link do

@@ -1,8 +1,6 @@
 require "rails_helper"
 
 feature "subscriber views iCal feed", type: :feature do
-  ICAL_DATETIME_FORMAT = "%Y%m%dT%H%M%S".freeze
-
   scenario "and sees incoming events" do
     character = create(:character)
     access_token = create(:access_token, :personal, issuer: character)
@@ -20,7 +18,7 @@ feature "subscriber views iCal feed", type: :feature do
     create(
       :setting,
       owner_hash: character.owner_hash,
-      time_zone: "Europe/Sofia",
+      time_zone: "Europe/Sofia"
     )
     create(:event, character: character)
     create(:event, character: character)
@@ -43,7 +41,7 @@ feature "subscriber views iCal feed", type: :feature do
   def visit_calendar_feed_path(access_token, time_zone: nil)
     visit calendar_feed_path(
       id: access_token.token,
-      params: { tz: time_zone&.name, format: :ics },
+      params: {tz: time_zone&.name, format: :ics}
     )
   end
 

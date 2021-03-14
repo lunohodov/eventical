@@ -12,8 +12,8 @@ describe Event, type: :model do
   end
 
   it "specifies owner categories" do
-    expect(Event::OWNER_CATEGORIES).
-      to eq %w[alliance character corporation eve_server faction]
+    expect(Event::OWNER_CATEGORIES)
+      .to eq %w[alliance character corporation eve_server faction]
   end
 
   describe "validations" do
@@ -21,9 +21,9 @@ describe Event, type: :model do
     it { should validate_presence_of(:title) }
     it { should validate_presence_of(:starts_at) }
     it do
-      is_expected.to validate_inclusion_of(:owner_category).
-        in_array(Event::OWNER_CATEGORIES).
-        allow_nil
+      is_expected.to validate_inclusion_of(:owner_category)
+        .in_array(Event::OWNER_CATEGORIES)
+        .allow_nil
     end
   end
 
@@ -58,8 +58,8 @@ describe Event, type: :model do
 
         result = Event.upcoming_for(character)
 
-        expect(result.to_a).
-          to eq(Event.where("starts_at >= ?", Date.current).to_a)
+        expect(result.to_a)
+          .to eq(Event.where("starts_at >= ?", Date.current).to_a)
       end
     end
   end
@@ -93,7 +93,7 @@ describe Event, type: :model do
 
         result = Event.public_by(character)
 
-        expect(result.to_a). to eq [expected_event]
+        expect(result.to_a).to eq [expected_event]
       end
     end
   end
@@ -104,8 +104,8 @@ describe Event, type: :model do
 
       Event.synchronize(data_source)
 
-      expect(Event.find_by(uid: data_source.uid).attributes).
-        to include(data_source.attributes.slice(:title, :starts_at, :response))
+      expect(Event.find_by(uid: data_source.uid).attributes)
+        .to include(data_source.attributes.slice(:title, :starts_at, :response))
     end
 
     context "when event exists" do
@@ -115,9 +115,9 @@ describe Event, type: :model do
           :event, character: character, uid: event.uid, response: "new"
         )
 
-        expect { Event.synchronize(data_source) }.
-          to change { event.reload.response }.
-          to "new"
+        expect { Event.synchronize(data_source) }
+          .to change { event.reload.response }
+          .to "new"
       end
 
       it "updates owner_uid" do
@@ -126,9 +126,9 @@ describe Event, type: :model do
           :event, character: character, uid: event.uid, owner_uid: 123_456
         )
 
-        expect { Event.synchronize(data_source) }.
-          to change { event.reload.owner_uid }.
-          to 123_456
+        expect { Event.synchronize(data_source) }
+          .to change { event.reload.owner_uid }
+          .to 123_456
       end
 
       it "updates owner_category" do
@@ -137,12 +137,12 @@ describe Event, type: :model do
           :event,
           character: character,
           uid: event.uid,
-          owner_category: "character",
+          owner_category: "character"
         )
 
-        expect { Event.synchronize(data_source) }.
-          to change { event.reload.owner_category }.
-          to "character"
+        expect { Event.synchronize(data_source) }
+          .to change { event.reload.owner_category }
+          .to "character"
       end
 
       it "updates owner_name" do
@@ -151,9 +151,9 @@ describe Event, type: :model do
           :event, character: character, uid: event.uid, owner_name: "new"
         )
 
-        expect { Event.synchronize(data_source) }.
-          to change { event.reload.owner_name }.
-          to "new"
+        expect { Event.synchronize(data_source) }
+          .to change { event.reload.owner_name }
+          .to "new"
       end
 
       it "updates title" do
@@ -162,9 +162,9 @@ describe Event, type: :model do
           :event, character: character, uid: event.uid, title: "new"
         )
 
-        expect { Event.synchronize(data_source) }.
-          to change { event.reload.title }.
-          to "new"
+        expect { Event.synchronize(data_source) }
+          .to change { event.reload.title }
+          .to "new"
       end
 
       it "updates importance" do
@@ -173,12 +173,12 @@ describe Event, type: :model do
           :event,
           character: character,
           uid: event.uid,
-          importance: "new",
+          importance: "new"
         )
 
-        expect { Event.synchronize(data_source) }.
-          to change { event.reload.importance }.
-          to "new"
+        expect { Event.synchronize(data_source) }
+          .to change { event.reload.importance }
+          .to "new"
       end
 
       it "updates start time" do
@@ -187,12 +187,12 @@ describe Event, type: :model do
           :event,
           character: character,
           uid: event.uid,
-          starts_at: Time.utc(2001),
+          starts_at: Time.utc(2001)
         )
 
-        expect { Event.synchronize(data_source) }.
-          to change { event.reload.starts_at }.
-          to Time.utc(2001)
+        expect { Event.synchronize(data_source) }
+          .to change { event.reload.starts_at }
+          .to Time.utc(2001)
       end
     end
 

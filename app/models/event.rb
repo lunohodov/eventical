@@ -13,23 +13,23 @@ class Event < ApplicationRecord
   validates :title, presence: true
   validates :uid, presence: true
   validates :owner_category,
-            inclusion: { in: OWNER_CATEGORIES },
-            allow_nil: true
+    inclusion: {in: OWNER_CATEGORIES},
+    allow_nil: true
 
   def self.upcoming_for(character, since: nil)
     since ||= Date.current
-    where(character: character).
-      where("starts_at >= ?", since).
-      order(starts_at: :asc)
+    where(character: character)
+      .where("starts_at >= ?", since)
+      .order(starts_at: :asc)
   end
 
   def self.public_by(character, since: nil)
     since ||= Date.current
-    where(character: character).
-      where("starts_at >= ?", since).
-      where("title LIKE '[PUBLIC]%'").
-      where(owner_category: "character", owner_uid: character.uid).
-      order(starts_at: :asc)
+    where(character: character)
+      .where("starts_at >= ?", since)
+      .where("title LIKE '[PUBLIC]%'")
+      .where(owner_category: "character", owner_uid: character.uid)
+      .order(starts_at: :asc)
   end
 
   def self.synchronize(data_source)

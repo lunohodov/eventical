@@ -20,12 +20,12 @@ describe AccessToken, type: :model do
         is_expected.to allow_value(["faction"]).for(:event_owner_categories)
       end
       it do
-        is_expected.to allow_value(%w[faction character]).
-          for(:event_owner_categories)
+        is_expected.to allow_value(%w[faction character])
+          .for(:event_owner_categories)
       end
       it do
-        is_expected.not_to allow_value(%w[faction something]).
-          for(:event_owner_categories)
+        is_expected.not_to allow_value(%w[faction something])
+          .for(:event_owner_categories)
       end
     end
   end
@@ -67,33 +67,33 @@ describe AccessToken, type: :model do
     it "revokes given token" do
       access_token = create(:access_token)
 
-      expect { AccessToken.revoke!(access_token) }.
-        to change { access_token.reload.revoked? }.
-        to(true)
+      expect { AccessToken.revoke!(access_token) }
+        .to change { access_token.reload.revoked? }
+        .to(true)
     end
 
     it "revokes current tokens" do
       access_token = create(:access_token, :personal)
       create(:access_token, :personal, issuer: access_token.issuer)
 
-      expect { AccessToken.revoke!(access_token) }.
-        to change { AccessToken.where(revoked_at: nil).count }.
-        to(0)
+      expect { AccessToken.revoke!(access_token) }
+        .to change { AccessToken.where(revoked_at: nil).count }
+        .to(0)
     end
 
     it "records revocation time" do
       access_token = create(:access_token)
 
-      expect { AccessToken.revoke!(access_token) }.
-        to change { access_token.reload.revoked_at }.
-        from(nil)
+      expect { AccessToken.revoke!(access_token) }
+        .to change { access_token.reload.revoked_at }
+        .from(nil)
     end
 
     it "raises an error when given token is not persisted" do
       access_token = build(:access_token)
 
-      expect { AccessToken.revoke!(access_token) }.
-        to raise_error(/persisted/)
+      expect { AccessToken.revoke!(access_token) }
+        .to raise_error(/persisted/)
     end
   end
 

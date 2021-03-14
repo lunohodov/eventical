@@ -28,9 +28,9 @@ namespace :scheduler do # rubocop:disable Metrics/BlockLength
     character_ids = entitled_characters.pluck(:id)
 
     unless character_ids.empty?
-      event_ids = Event.
-        where(details_updated_at: nil, character_id: character_ids).
-        pluck(:id)
+      event_ids = Event
+        .where(details_updated_at: nil, character_id: character_ids)
+        .pluck(:id)
 
       event_ids.each_with_index do |event_id, index|
         delay = (5 + index).minutes

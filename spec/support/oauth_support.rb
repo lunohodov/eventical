@@ -2,7 +2,7 @@ module OAuthSupport
   def stub_valid_oauth_hash(character = nil)
     OmniAuth.config.mock_auth[:eve_online_sso] = build(
       :oauth_hash,
-      character: character || build_stubbed(:character),
+      character: character || build_stubbed(:character)
     )
   end
 

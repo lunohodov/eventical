@@ -11,8 +11,8 @@ describe Character, type: :model do
     it "marks the refresh token voided" do
       character = create(:character)
 
-      expect { character.void_refresh_token! }.
-        to change { character.reload.refresh_token_voided_at }.from(nil)
+      expect { character.void_refresh_token! }
+        .to change { character.reload.refresh_token_voided_at }.from(nil)
     end
   end
 
