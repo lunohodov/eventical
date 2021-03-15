@@ -38,10 +38,4 @@ namespace :scheduler do # rubocop:disable Metrics/BlockLength
       end
     end
   end
-
-  desc "Schedule removal of obsolete events"
-  task "events:clean": :environment do
-    delete_count = EventCleaner.call
-    Rails.logger.info "Removed #{delete_count} events."
-  end
 end
