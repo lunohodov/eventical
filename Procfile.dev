@@ -1,0 +1,5 @@
+web: ./bin/rails server -p 3000
+scheduler: ./bin/scheduler
+worker: ./bin/rake jobs:work
+webpack: ./bin/webpack-dev-server
+server_logs: tail -f ./log/development.log

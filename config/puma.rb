@@ -40,7 +40,7 @@ plugin :tmp_restart
 
 # Log low-level errors to Sentry
 lowlevel_error_handler do |ex, env|
-  Raven.capture_exception(
+  Sentry.capture_exception(
     ex,
     message: ex.message,
     extra: {puma: env},

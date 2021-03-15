@@ -1,18 +1,18 @@
 require "eventical/middleware/add_character_to_sentry_context"
 
-Raven.configure do |config|
+Sentry.init do |config|
   # Set by Dyno Metadata. See https://devcenter.heroku.com/articles/dyno-metadata
-  config.release = ENV.fetch("HEROKU_SLUG_COMMIT", "unknown").split(" ").first
+  config.release = ("eventical@" + ENV.fetch("HEROKU_RELEASE_VERSION", "unknown").strip)
 
-  config.async = lambda { |event|
-    SentryJob.perform_later(event)
-  }
+  config.async = lambda do |event, hint|
+    Sentry::SendEventJob.perform_later(event, hint)
+  end
 
   config.excluded_exceptions -= ["ActiveRecord::RecordNotFound"]
 end
 
 module Eventical
   class Application < Rails::Application
-    config.middleware.use(Middleware::AddCharacterToSentryContext, Raven)
+    config.middleware.use(Middleware::AddCharacterToSentryContext, Sentry)
   end
 end

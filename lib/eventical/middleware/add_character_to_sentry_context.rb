@@ -3,14 +3,14 @@ module Eventical
     class AddCharacterToSentryContext
       def initialize(app, backend)
         @app = app
-        @sentry_backend = backend
+        @sentry = backend
       end
 
       def call(env)
         session = ActionDispatch::Request.new(env).session
 
         if session[:character_id].present?
-          @sentry_backend.user_context(character_id: session[:character_id])
+          @sentry.set_user(id: session[:character_id])
         end
 
         @app.call(env)

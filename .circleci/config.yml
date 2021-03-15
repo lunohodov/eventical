@@ -37,6 +37,9 @@ jobs:
       # Setup the database
       - run: bundle exec rake db:setup
 
+      # Run linter
+      - run: bundle exec standardrb
+
       # Run the tests
       - run: bundle exec rake
 

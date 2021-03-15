@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+run_task() {
+  task_name=$1
+  echo "Running task: $task_name"
+  # The --trace flag will tell Rake to log the name of
+  # each task it executes
+  bundle exec rails "$task_name" --trace
+}
+
+current_minute() {
+  date +%M
+}
+
+current_hour() {
+  date +%H
+}
+
+main() {
+  start_minute=$(current_minute)
+  start_hour=$(current_hour)
+
+  while true; do
+    minutes=$(current_minute)
+    hours=$(current_hour)
+    echo "Checking at time: $hours:$minutes"
+
+    # 10#$var helps avoid unwanted octal number interpolations
+    if [[ $((10#$minutes % 10)) -eq $start_minute ]];then
+      run_task scheduler:every_10_minutes
+    fi
+
+    if [[ $((10#$minutes)) -eq $start_minute ]];then
+      run_task scheduler:hourly
+
+      # Add 1 hour to avoid slow-down when booting the development server
+      if [[ $((10#$hours)) -eq $((start_hour + 1)) ]];then
+        run_task scheduler:daily
+      fi
+    fi
+
+    sleep 60
+  done
+}
+
+main

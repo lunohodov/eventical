@@ -11,7 +11,7 @@ issue trackers, chatrooms, and mailing lists.
 1. Run `./bin/setup`.
 
 1. Run the tests. We only take pull requests with passing tests, and it's great
-   to know that you have a clean slate: `bundle exec rspec`
+   to know that you have a clean slate: `bundle exec rake`
 
 1. Add a test for your change. Only refactoring and documentation changes
    require no new tests. If you are adding functionality or fixing a bug,
@@ -31,7 +31,7 @@ merge the contribution.
 ## Start Application in Development
 
 Configure your local environment with `./bin/setup`.
-After that start the application with the `foreman start` command.
+After that start the application with `./bin/up`.
 
 ## Performance Improvements
 
@@ -57,8 +57,7 @@ for generating request-level performance profiles.
 
 Start reading our code and you'll get the hang of it. We optimize for readability.
 
-Additionally to [RuboCop], we use [Hound] for comments on code quality and style issues,
-allowing us to better review and maintain a clean codebase.
+We use [standard].
 
 ## Security
 
@@ -69,6 +68,5 @@ Thanks,
 Devas Weddo
 
 [commit]: http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
-[RuboCop]: https://www.rubocop.org
-[Hound]: https://www.houndci.com
+[standard]: https://github.com/testdouble/standard
 [Rack MiniProfiler]: https://github.com/MiniProfiler/rack-mini-profiler
