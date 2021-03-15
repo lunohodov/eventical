@@ -7,6 +7,24 @@ describe Character, type: :model do
     it { should validate_presence_of(:owner_hash) }
   end
 
+  describe ".voided" do
+    it "includes characters with voided refresh tokens" do
+      voided = create(:character, refresh_token_voided_at: Time.current)
+
+      result = Character.voided
+
+      expect(result).to include(voided)
+    end
+
+    it "excludes characters with valid refresh tokens" do
+      create(:character, refresh_token_voided_at: nil)
+
+      result = Character.voided
+
+      expect(result).to be_empty
+    end
+  end
+
   describe "#void_refresh_token!" do
     it "marks the refresh token voided" do
       character = create(:character)
