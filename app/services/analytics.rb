@@ -30,13 +30,14 @@ class Analytics
   end
 
   def track_access_token_used(access_token, consumer: nil)
-    action = if access_token.revoked?
-               "Revoked access token used (#{consumer})"
-             elsif access_token.expired?
-               "Expired access token used (#{consumer})"
-             else
-               "Access token used (#{consumer})"
-             end
+    action =
+      if access_token.revoked?
+        "Revoked access token used (#{consumer})"
+      elsif access_token.expired?
+        "Expired access token used (#{consumer})"
+      else
+        "Access token used (#{consumer})"
+      end
 
     if access_token.public?
       char = access_token.issuer
@@ -53,7 +54,7 @@ class Analytics
       "Upcoming events pulled",
       category: BACKGROUND_JOBS_CATEGORY,
       label: character.name,
-      non_interactive: true,
+      non_interactive: true
     )
   end
 
@@ -62,7 +63,7 @@ class Analytics
       "Event details pulled",
       category: BACKGROUND_JOBS_CATEGORY,
       label: character.name,
-      non_interactive: true,
+      non_interactive: true
     )
   end
 
@@ -74,7 +75,7 @@ class Analytics
     backend.event(
       action: event,
       user_id: character.id,
-      **default_event_properties.merge(properties),
+      **default_event_properties.merge(properties)
     )
   end
 
@@ -82,7 +83,7 @@ class Analytics
     {
       anonymize_ip: true,
       category: "All",
-      data_source: "server",
+      data_source: "server"
     }
   end
 

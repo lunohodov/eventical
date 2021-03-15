@@ -35,7 +35,7 @@ module Eve
         token: token,
         token_expires_at: token_expiration_time,
         token_type: token_type,
-        uid: character_uid,
+        uid: character_uid
       )
     end
 

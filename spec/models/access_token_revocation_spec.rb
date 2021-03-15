@@ -14,9 +14,9 @@ describe AccessTokenRevocation do
     it "creates a new access token" do
       access_token = create(:access_token)
 
-      expect { AccessTokenRevocation.new(access_token).call }.
-        to change { AccessToken.count }.
-        by(1)
+      expect { AccessTokenRevocation.new(access_token).call }
+        .to change { AccessToken.count }
+        .by(1)
     end
 
     it "returns a valid access token" do

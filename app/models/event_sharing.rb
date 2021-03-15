@@ -14,7 +14,7 @@ class EventSharing
       @access_token = AccessToken.create!(
         issuer: character,
         grantee: nil,
-        token: public_token_string,
+        token: public_token_string
       )
     end
   end
@@ -26,10 +26,10 @@ class EventSharing
   end
 
   def access_token
-    @access_token ||= AccessToken.
-      where(issuer: character, grantee: nil).
-      current.
-      last
+    @access_token ||= AccessToken
+      .where(issuer: character, grantee: nil)
+      .current
+      .last
   end
 
   private

@@ -43,14 +43,14 @@ module Eve
       character.update!(
         token: access_token.token,
         token_expires_at: Time.at(access_token.expires_at).in_time_zone,
-        refresh_token: access_token.refresh_token,
+        refresh_token: access_token.refresh_token
       )
     end
 
     def refresh_access_token
       OAuth2::AccessToken.from_hash(
         oauth_client,
-        refresh_token: character.refresh_token,
+        refresh_token: character.refresh_token
       ).refresh!
     end
 
@@ -58,7 +58,7 @@ module Eve
       @oauth_client ||= OAuth2::Client.new(
         EVE_ONLINE_CLIENT_ID,
         EVE_ONLINE_SECRET_KEY,
-        oauth_client_options,
+        oauth_client_options
       )
     end
 

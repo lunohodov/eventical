@@ -17,9 +17,9 @@ class PullUpcomingEventsJob < ApplicationJob
     Event.transaction do
       # Delete obsolete events
       keep_uids = remote_events.map(&:uid)
-      Event.upcoming_for(character, since: Time.current).
-        where.not(uid: keep_uids).
-        delete_all
+      Event.upcoming_for(character, since: Time.current)
+        .where.not(uid: keep_uids)
+        .delete_all
       # Save new or update existing
       remote_events.map { |e| Event.synchronize(e) }
     end
@@ -40,7 +40,7 @@ class PullUpcomingEventsJob < ApplicationJob
         uid: event.event_id,
         response: event.event_response,
         title: event.title,
-        starts_at: event.event_date,
+        starts_at: event.event_date
       ).freeze
     end
   end
@@ -52,7 +52,7 @@ class PullUpcomingEventsJob < ApplicationJob
   def character_calendar
     EveOnline::ESI::CharacterCalendar.new(
       token: character.token,
-      character_id: character.uid,
+      character_id: character.uid
     )
   end
 

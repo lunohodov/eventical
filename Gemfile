@@ -39,6 +39,7 @@ group :development, :test do
   gem "factory_bot_rails"
   gem "faker"
   gem "rspec-rails", ">= 4.0.0.beta3"
+  gem "standard", require: false
 end
 
 group :development do

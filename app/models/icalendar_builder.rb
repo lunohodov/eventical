@@ -52,7 +52,7 @@ class IcalendarBuilder
       cal.event do |e|
         e.dtstart = Icalendar::Values::DateTime.new(
           event.starts_at,
-          "tzid" => tz.identifier,
+          "tzid" => tz.identifier
         )
         e.summary = event.title
         # Status relates to event itself i.e confirmed by organizer.
@@ -63,7 +63,7 @@ class IcalendarBuilder
     {
       "X-WR-CALNAME" => attributes.fetch(:calendar_name, ""),
       "X-WR-CALDESC" => attributes.fetch(:calendar_description, ""),
-      "X-WR-TIMEZONE" => tz.identifier,
+      "X-WR-TIMEZONE" => tz.identifier
     }.each do |prop_name, prop_value|
       cal.append_custom_property(prop_name, prop_value)
     end

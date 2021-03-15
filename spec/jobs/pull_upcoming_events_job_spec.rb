@@ -17,10 +17,10 @@ describe PullUpcomingEventsJob, type: :job do
 
     stub_character_calendar(events: [esi_event])
 
-    expect { PullUpcomingEventsJob.perform_now(character.id) }.
-      to change { event.reload.title }.
-      from("old").
-      to("new")
+    expect { PullUpcomingEventsJob.perform_now(character.id) }
+      .to change { event.reload.title }
+      .from("old")
+      .to("new")
   end
 
   it "deletes removed upcoming events" do
@@ -28,10 +28,10 @@ describe PullUpcomingEventsJob, type: :job do
 
     stub_character_calendar(events: [])
 
-    expect { PullUpcomingEventsJob.perform_now(character.id) }.
-      to change { Event.count }.
-      from(1).
-      to(0)
+    expect { PullUpcomingEventsJob.perform_now(character.id) }
+      .to change { Event.count }
+      .from(1)
+      .to(0)
   end
 
   it "does not delete past events" do
@@ -39,8 +39,8 @@ describe PullUpcomingEventsJob, type: :job do
 
     stub_character_calendar(events: [])
 
-    expect { PullUpcomingEventsJob.perform_now(character.id) }.
-      not_to(change { Event.count })
+    expect { PullUpcomingEventsJob.perform_now(character.id) }
+      .not_to(change { Event.count })
   end
 
   it "notifies analytics that events have been pulled" do

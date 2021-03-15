@@ -7,10 +7,10 @@ describe PullEventDetailsJob, type: :job do
     stub_renew_access_token
     stub_character_calendar_event(event, importance: "new")
 
-    expect { PullEventDetailsJob.perform_now(event.id) }.
-      to change { event.reload.importance }.
-      from(nil).
-      to("new")
+    expect { PullEventDetailsJob.perform_now(event.id) }
+      .to change { event.reload.importance }
+      .from(nil)
+      .to("new")
   end
 
   it "saves owner category" do
@@ -19,10 +19,10 @@ describe PullEventDetailsJob, type: :job do
     stub_renew_access_token
     stub_character_calendar_event(event, owner_type: "character")
 
-    expect { PullEventDetailsJob.perform_now(event.id) }.
-      to change { event.reload.owner_category }.
-      from(nil).
-      to("character")
+    expect { PullEventDetailsJob.perform_now(event.id) }
+      .to change { event.reload.owner_category }
+      .from(nil)
+      .to("character")
   end
 
   it "saves owner name" do
@@ -31,10 +31,10 @@ describe PullEventDetailsJob, type: :job do
     stub_renew_access_token
     stub_character_calendar_event(event, owner_name: "new")
 
-    expect { PullEventDetailsJob.perform_now(event.id) }.
-      to change { event.reload.owner_name }.
-      from(nil).
-      to("new")
+    expect { PullEventDetailsJob.perform_now(event.id) }
+      .to change { event.reload.owner_name }
+      .from(nil)
+      .to("new")
   end
 
   it "saves owner uid" do
@@ -43,10 +43,10 @@ describe PullEventDetailsJob, type: :job do
     stub_renew_access_token
     stub_character_calendar_event(event, owner_id: 1)
 
-    expect { PullEventDetailsJob.perform_now(event.id) }.
-      to change { event.reload.owner_uid }.
-      from(nil).
-      to(1)
+    expect { PullEventDetailsJob.perform_now(event.id) }
+      .to change { event.reload.owner_uid }
+      .from(nil)
+      .to(1)
   end
 
   it "marks event details as updated" do
@@ -55,9 +55,9 @@ describe PullEventDetailsJob, type: :job do
     stub_renew_access_token
     stub_character_calendar_event(event)
 
-    expect { PullEventDetailsJob.perform_now(event.id) }.
-      to change { event.reload.details_updated_at }.
-      from(nil)
+    expect { PullEventDetailsJob.perform_now(event.id) }
+      .to change { event.reload.details_updated_at }
+      .from(nil)
   end
 
   it "notifies analytics that event details have been pulled" do
@@ -94,14 +94,14 @@ describe PullEventDetailsJob, type: :job do
       event = create(:event)
       calendar_event = stub_character_calendar_event(event)
 
-      allow(calendar_event).
-        to receive(:owner_name).
-        and_raise(EveOnline::Exceptions::ResourceNotFound.allocate)
+      allow(calendar_event)
+        .to receive(:owner_name)
+        .and_raise(EveOnline::Exceptions::ResourceNotFound.allocate)
 
-      expect { PullEventDetailsJob.perform_now(event.id) }.
-        to change { Event.count }.
-        from(1).
-        to(0)
+      expect { PullEventDetailsJob.perform_now(event.id) }
+        .to change { Event.count }
+        .from(1)
+        .to(0)
     end
   end
 
@@ -119,12 +119,12 @@ describe PullEventDetailsJob, type: :job do
     allow(stub).to receive(:owner_type).and_return(attrs[:owner_type])
     allow(stub).to receive(:importance).and_return(attrs[:importance])
 
-    allow(EveOnline::ESI::CharacterCalendarEvent).
-      to receive(:new).
-      with(character_id: event.character.uid,
-           event_id: event.uid,
-           token: event.character.token).
-      and_return(stub)
+    allow(EveOnline::ESI::CharacterCalendarEvent)
+      .to receive(:new)
+      .with(character_id: event.character.uid,
+            event_id: event.uid,
+            token: event.character.token)
+      .and_return(stub)
 
     stub
   end

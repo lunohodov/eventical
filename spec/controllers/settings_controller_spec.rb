@@ -7,7 +7,7 @@ describe SettingsController, type: :controller do
     it "redirects to :calendar_url" do
       stub_current_character
 
-      post :update, params: { time_zone: "Sofia/Europe" }
+      post :update, params: {time_zone: "Sofia/Europe"}
 
       expect(response).to redirect_to calendar_url
     end
