@@ -3,6 +3,8 @@ class Character < ApplicationRecord
   has_many :issued_access_tokens, as: :issuer
   has_many :granted_access_tokens, as: :grantee
 
+  scope :voided, -> { where.not(refresh_token_voided_at: nil) }
+
   validates :uid, presence: true
   validates :name, presence: true
   validates :owner_hash, presence: true
