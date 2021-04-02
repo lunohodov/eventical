@@ -2,15 +2,15 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# This file is the source Rails uses to define your schema when running `rails
-# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
 # be faster and is potentially less error prone than running all of your
 # migrations from scratch. Old migrations may fail to apply correctly if those
 # migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_25_171459) do
+ActiveRecord::Schema.define(version: 2021_04_02_171942) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,9 +25,18 @@ ActiveRecord::Schema.define(version: 2019_10_25_171459) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "event_owner_categories", array: true
-    t.index ["grantee_type", "grantee_id"], name: "index_access_tokens_on_grantee_type_and_grantee_id"
-    t.index ["issuer_id"], name: "index_access_tokens_on_issuer_id"
-    t.index ["token"], name: "index_access_tokens_on_token"
+  end
+
+  create_table "analytics_counters", force: :cascade do |t|
+    t.string "owner_type"
+    t.bigint "owner_id"
+    t.string "topic", null: false
+    t.bigint "value", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["owner_id", "owner_type", "topic"], name: "analytics_counters_owner_and_topic", unique: true
+    t.index ["owner_type", "owner_id"], name: "index_analytics_counters_on_owner"
+    t.index ["topic"], name: "index_analytics_counters_on_topic"
   end
 
   create_table "characters", force: :cascade do |t|
@@ -42,8 +51,6 @@ ActiveRecord::Schema.define(version: 2019_10_25_171459) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "refresh_token_voided_at"
-    t.index ["refresh_token_voided_at"], name: "index_characters_on_refresh_token_voided_at"
-    t.index ["uid"], name: "index_characters_on_uid", unique: true
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
@@ -58,7 +65,6 @@ ActiveRecord::Schema.define(version: 2019_10_25_171459) do
     t.string "queue"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
   create_table "events", force: :cascade do |t|
@@ -74,9 +80,6 @@ ActiveRecord::Schema.define(version: 2019_10_25_171459) do
     t.string "owner_category"
     t.string "owner_name"
     t.datetime "details_updated_at"
-    t.index ["character_id", "uid"], name: "index_events_on_character_id_and_uid", unique: true
-    t.index ["character_id"], name: "index_events_on_character_id"
-    t.index ["details_updated_at"], name: "index_events_on_details_updated_at"
   end
 
   create_table "settings", force: :cascade do |t|
@@ -84,7 +87,6 @@ ActiveRecord::Schema.define(version: 2019_10_25_171459) do
     t.string "time_zone"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["owner_hash"], name: "index_settings_on_owner_hash", unique: true
   end
 
 end
