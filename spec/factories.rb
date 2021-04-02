@@ -2,6 +2,13 @@ require "securerandom"
 require "ostruct"
 
 FactoryBot.define do
+  factory :analytics_counter, class: "Analytics::Counter" do
+    association :owner, factory: :character
+
+    topic { "login" }
+    value { 1 }
+  end
+
   factory :setting do
     owner_hash { SecureRandom.uuid }
     time_zone { "Europe/Amsterdam" }
