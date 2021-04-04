@@ -30,7 +30,7 @@ class PullUpcomingEventsJob < ApplicationJob
   attr_reader :character_id
 
   def track_upcoming_events_pulled
-    Analytics.new(character).track_upcoming_events_pulled
+    analytics.track_upcoming_events_pulled(character)
   end
 
   def fetch_remote_events

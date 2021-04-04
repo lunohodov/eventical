@@ -16,7 +16,7 @@ describe SessionsController, type: :controller do
 
       should redirect_to(calendar_url)
 
-      expect(analytics).to have_tracked("Logged in")
+      expect(analytics).to have_tracked("character.logged_in").times(1)
     end
 
     it "does not redirect to an outside domain" do
@@ -63,7 +63,7 @@ describe SessionsController, type: :controller do
     it "logs the current character out" do
       get(:destroy)
 
-      expect(analytics).to have_tracked("Logged out")
+      expect(analytics).to have_tracked("character.logged_out")
     end
   end
 end

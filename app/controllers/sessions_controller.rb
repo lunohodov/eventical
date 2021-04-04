@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
     if character.present?
       schedule_upcoming_events_pull_if_needed(character)
 
-      track_character_logged_in(character)
+      analytics.track_character_logged_in(character)
 
       session[:character_id] = character.id
 
@@ -22,18 +22,16 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    reset_session
+    if signed_in?
+      analytics.track_character_logged_out(current_character)
+    end
 
-    analytics.track_character_logged_out
+    reset_session
 
     redirect_to root_url
   end
 
   private
-
-  def track_character_logged_in(character)
-    Analytics.new(character).track_character_logged_in
-  end
 
   def schedule_upcoming_events_pull_if_needed(character)
     # Characters signing for the first time may see their upcoming events

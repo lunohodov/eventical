@@ -25,6 +25,9 @@ ActiveRecord::Schema.define(version: 2021_04_02_171942) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "event_owner_categories", array: true
+    t.index ["grantee_type", "grantee_id"], name: "index_access_tokens_on_grantee"
+    t.index ["issuer_id"], name: "index_access_tokens_on_issuer_id"
+    t.index ["token"], name: "index_access_tokens_on_token"
   end
 
   create_table "analytics_counters", force: :cascade do |t|
@@ -51,6 +54,8 @@ ActiveRecord::Schema.define(version: 2021_04_02_171942) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "refresh_token_voided_at"
+    t.index ["refresh_token_voided_at"], name: "index_characters_on_refresh_token_voided_at"
+    t.index ["uid"], name: "index_characters_on_uid", unique: true
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
@@ -65,6 +70,7 @@ ActiveRecord::Schema.define(version: 2021_04_02_171942) do
     t.string "queue"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
   create_table "events", force: :cascade do |t|
@@ -80,6 +86,9 @@ ActiveRecord::Schema.define(version: 2021_04_02_171942) do
     t.string "owner_category"
     t.string "owner_name"
     t.datetime "details_updated_at"
+    t.index ["character_id", "uid"], name: "index_events_on_character_id_and_uid", unique: true
+    t.index ["character_id"], name: "index_events_on_character_id"
+    t.index ["details_updated_at"], name: "index_events_on_details_updated_at"
   end
 
   create_table "settings", force: :cascade do |t|
@@ -87,6 +96,7 @@ ActiveRecord::Schema.define(version: 2021_04_02_171942) do
     t.string "time_zone"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["owner_hash"], name: "index_settings_on_owner_hash", unique: true
   end
 
 end

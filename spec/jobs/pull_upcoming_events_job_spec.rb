@@ -44,19 +44,12 @@ describe PullUpcomingEventsJob, type: :job do
   end
 
   it "notifies analytics that events have been pulled" do
-    tracker = stub_analytics_tracker
     create(:event, character: character, starts_at: 1.second.ago)
     stub_character_calendar(events: [])
 
     PullUpcomingEventsJob.perform_now(character.id)
 
-    expect(tracker).to have_received(:track_upcoming_events_pulled)
-  end
-
-  def stub_analytics_tracker
-    stub_analytics.tap do |tracker|
-      allow(tracker).to receive(:track_upcoming_events_pulled)
-    end
+    expect(analytics).to have_tracked("events.pulled").for_resource(character)
   end
 
   def character

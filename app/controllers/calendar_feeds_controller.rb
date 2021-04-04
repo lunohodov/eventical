@@ -6,7 +6,7 @@ class CalendarFeedsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   def show
-    track_access_token_used
+    analytics.track_access_token_used(access_token)
 
     if access_token.revoked? || access_token.expired?
       record_not_found
@@ -36,17 +36,6 @@ class CalendarFeedsController < ApplicationController
   end
 
   private
-
-  def track_access_token_used
-    character =
-      if access_token.public?
-        access_token.issuer
-      else
-        access_token.grantee
-      end
-    analytics_for(character)
-      .track_access_token_used(access_token, consumer: consumer)
-  end
 
   def access_token
     @access_token ||= AccessToken.by_slug!(params[:id])

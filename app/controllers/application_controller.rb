@@ -8,11 +8,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def analytics
-    analytics_for(current_character)
-  end
-
-  def analytics_for(character)
-    Analytics.new(character)
+    Analytics.new
   end
 
   def character_settings

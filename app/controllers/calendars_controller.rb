@@ -7,18 +7,15 @@ class CalendarsController < ApplicationController
   end
 
   def create
-    revoke_access_token
+    token = personal_token
+    AccessTokenRevocation.new(token).call
 
-    analytics.track_access_token_revoked
+    analytics.track_access_token_revoked(token)
 
     redirect_to calendar_url
   end
 
   private
-
-  def revoke_access_token
-    AccessTokenRevocation.new(personal_token).call
-  end
 
   def personal_token
     AccessToken.personal(current_character).current.last
