@@ -40,7 +40,7 @@ module Eve
     end
 
     def track_account_created
-      Analytics.new(character).track_account_created
+      Analytics.new.track_account_created(character)
     end
 
     def character_uid

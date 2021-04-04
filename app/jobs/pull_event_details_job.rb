@@ -29,7 +29,7 @@ class PullEventDetailsJob < ApplicationJob
   attr_reader :event_id
 
   def track_event_details_pulled
-    Analytics.new(character).track_event_details_pulled
+    analytics.track_event_details_pulled(character)
   end
 
   def ensure_valid_access_token

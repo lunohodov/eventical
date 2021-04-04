@@ -41,7 +41,7 @@ feature "subscriber resets secret address", type: :feature do
     visit calendar_path
     click_reset_button
 
-    expect(analytics).to have_tracked("Access token revoked")
+    expect(analytics).to have_tracked("access_token.revoked")
   end
 
   def click_reset_button

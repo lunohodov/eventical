@@ -1,90 +1,57 @@
 class Analytics
-  ACCOUNTS_CATEGORY = "Accounts".freeze
-  BACKGROUND_JOBS_CATEGORY = "Background jobs".freeze
-
-  class_attribute :backend
-
-  def initialize(character, backend: self.backend)
-    @backend = backend
-    @character = character
-  end
-
-  def track_account_created
-    track("Account created", category: ACCOUNTS_CATEGORY, label: character.name)
-  end
-
-  def track_access_token_revoked
-    track("Access token revoked", category: "Calendars", label: character.name)
-  end
-
-  def track_refresh_token_voided
-    track("Refresh token voided", category: "ESI", label: character.name)
-  end
-
-  def track_character_logged_in
-    track("Logged in", category: ACCOUNTS_CATEGORY, label: character.name)
-  end
-
-  def track_character_logged_out
-    track("Logged out", category: ACCOUNTS_CATEGORY, label: character.name)
-  end
-
-  def track_access_token_used(access_token, consumer: nil)
-    action =
-      if access_token.revoked?
-        "Revoked access token used (#{consumer})"
-      elsif access_token.expired?
-        "Expired access token used (#{consumer})"
-      else
-        "Access token used (#{consumer})"
-      end
-
-    if access_token.public?
-      char = access_token.issuer
-      action = "Public access token used (#{consumer})"
-      track(action, category: "Calendars", label: char.name, user_id: nil)
-    else
-      char = access_token.grantee
-      track(action, category: "Calendars", label: char.name, user_id: char.id)
+  class Backend
+    def count(*)
+      raise NotImplementedError
     end
   end
 
-  def track_upcoming_events_pulled
-    track(
-      "Upcoming events pulled",
-      category: BACKGROUND_JOBS_CATEGORY,
-      label: character.name,
-      non_interactive: true
-    )
+  class_attribute :backend
+
+  delegate :count, to: :@backend
+
+  def initialize(backend: self.backend)
+    @backend = backend
   end
 
-  def track_event_details_pulled
-    track(
-      "Event details pulled",
-      category: BACKGROUND_JOBS_CATEGORY,
-      label: character.name,
-      non_interactive: true
-    )
+  def track_account_created(character)
+    count("account.created", resource: character)
   end
 
-  private
-
-  attr_reader :character
-
-  def track(event, properties = {})
-    backend.event(
-      action: event,
-      user_id: character.id,
-      **default_event_properties.merge(properties)
-    )
+  def track_access_token_revoked(access_token)
+    count("access_token.revoked", resource: access_token.issuer)
   end
 
-  def default_event_properties
-    {
-      anonymize_ip: true,
-      category: "All",
-      data_source: "server"
-    }
+  def track_refresh_token_voided(character)
+    count("esi.refresh_token.revoked", resource: character)
+  end
+
+  def track_character_logged_in(character)
+    count("character.logged_in", resource: character)
+  end
+
+  def track_character_logged_out(character)
+    count("character.logged_out", resource: character)
+  end
+
+  def track_access_token_used(access_token)
+    kind =
+      if access_token.revoked?
+        ".revoked"
+      elsif access_token.expired?
+        ".expired"
+      else
+        ""
+      end
+
+    count("access_token#{kind}.used", resource: access_token)
+  end
+
+  def track_upcoming_events_pulled(character)
+    count("events.pulled", resource: character)
+  end
+
+  def track_event_details_pulled(character)
+    count("character.events", resource: character)
   end
 
   ActiveSupport.run_load_hooks(:analytics, self)

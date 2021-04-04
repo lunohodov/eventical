@@ -32,7 +32,7 @@ module Eve
     private
 
     def track_refresh_token_voided
-      Analytics.new(character).track_refresh_token_voided
+      Analytics.new.track_refresh_token_voided(character)
     end
 
     def should_renew?

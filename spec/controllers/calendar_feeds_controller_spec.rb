@@ -10,7 +10,8 @@ describe CalendarFeedsController, type: :controller do
 
       get :show, params: {id: access_token.token}
 
-      expect(analytics).to have_tracked("Access token used (Google)")
+      expect(analytics)
+        .to have_tracked("access_token.used").for_resource(access_token)
     end
 
     it "renders '404 Not Found', when token can not be found" do
@@ -25,7 +26,8 @@ describe CalendarFeedsController, type: :controller do
       get :show, params: {id: access_token.token}
 
       expect(response.body).to eq("404 Not Found")
-      expect(analytics).to have_tracked("Expired access token used (Google)")
+      expect(analytics)
+        .to have_tracked("access_token.expired.used").for_resource(access_token)
     end
 
     it "renders '404 Not Found', when token is revoked" do
@@ -34,7 +36,8 @@ describe CalendarFeedsController, type: :controller do
       get :show, params: {id: access_token.token}
 
       expect(response.body).to eq("404 Not Found")
-      expect(analytics).to have_tracked("Revoked access token used (Google)")
+      expect(analytics)
+        .to have_tracked("access_token.revoked.used").for_resource(access_token)
     end
   end
 end

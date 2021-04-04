@@ -33,7 +33,7 @@ describe Eve::RenewAccessToken do
         .from("old")
         .to("new")
 
-      expect(analytics).not_to have_tracked("Refresh token voided")
+      expect(analytics).not_to have_tracked("esi.refresh_token.revoked")
     end
 
     it "updates character's access token expiration time" do
@@ -98,7 +98,7 @@ describe Eve::RenewAccessToken do
         expect { Eve::RenewAccessToken.new(character, force: true).call }
           .to raise_error(OAuth2::Error) do
           expect(character).to have_received(:void_refresh_token!)
-          expect(analytics).to have_tracked("Refresh token voided")
+          expect(analytics).to have_tracked("esi.refresh_token.revoked")
         end
       end
     end

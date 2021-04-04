@@ -5,4 +5,8 @@ class ApplicationJob < ActiveJob::Base
       extra: {job: self, arguments: arguments}
     )
   end
+
+  def analytics
+    Analytics.new
+  end
 end
