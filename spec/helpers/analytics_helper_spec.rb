@@ -24,20 +24,4 @@ describe AnalyticsHelper, type: :helper do
       end
     end
   end
-
-  describe "#can_use_fathom_analytics?" do
-    subject { helper.can_use_fathom_analytics? }
-
-    it "returns true when a Fathom site is configured" do
-      ClimateControl.modify FATHOM_SITE: "abc" do
-        expect(subject).to be_truthy
-      end
-    end
-
-    context "without configured Fathom site" do
-      it "returns false" do
-        expect(subject).to be_falsey
-      end
-    end
-  end
 end
