@@ -66,9 +66,10 @@
       </footer>
     </div>
     <% if can_use_analytics? %>
-      <!-- Fathom - beautiful, simple website analytics -->
+      <script async defer data-domain="eve-calendars.com" src="https://bluebird.eve-calendars.com/js/index.js"></script>
+    <% end %>
+    <% if can_use_fathom_analytics? %>
       <script src="https://panther.eve-calendars.com/script.js" site="<%= fathom_site_token %>" defer></script>
-      <!-- / Fathom -->
     <% end %>
     <%= yield :javascript %>
   </body>
