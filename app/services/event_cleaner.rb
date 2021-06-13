@@ -13,7 +13,7 @@ class EventCleaner
   private
 
   def clean_aged
-    started_at = 1.week.ago
+    started_at = 1.month.ago
     logger.info "Removing events which took place before #{started_at}"
     Event.delete_by("starts_at < ?", started_at)
   end
