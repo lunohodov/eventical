@@ -7,7 +7,7 @@ ruby "3.0.1"
 gem "rails", "~> 6.1.3.2"
 
 gem "bootsnap", ">= 1.1.0", require: false
-gem "bootstrap", "~> 5.0.1"
+gem "bootstrap", "~> 4.6.0"
 gem "daemons"
 gem "delayed_job_active_record"
 gem "eve_online"
