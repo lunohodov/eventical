@@ -2,7 +2,7 @@ require "rails_helper"
 
 describe EventCleaner, type: :model do
   describe "#call" do
-    it "does not delete events happening in the future (minus 1 week)" do
+    it "does not delete events happening in the future" do
       create(:event, title: "3 days ago", starts_at: 3.days.ago)
       create(:event, title: "Today", starts_at: Time.current)
       create(:event, title: "Next week", starts_at: 1.week.from_now)
@@ -13,9 +13,9 @@ describe EventCleaner, type: :model do
       expect(events_left).to match_array(["3 days ago", "Today", "Next week"])
     end
 
-    it "deletes events happened over 1 week ago" do
+    it "deletes events happened more than 1 month ago" do
       create(:event, title: "left")
-      create(:event, title: "deleted", starts_at: 8.days.ago)
+      create(:event, title: "deleted", starts_at: 1.month.ago)
 
       EventCleaner.new.call
       events_left = Event.pluck(:title)
@@ -34,7 +34,7 @@ describe EventCleaner, type: :model do
     end
 
     it "returns the number of deleted events" do
-      create(:event, starts_at: 2.weeks.ago)
+      create(:event, starts_at: 1.month.ago)
       create(:event, character: create(:character, refresh_token_voided_at: Time.current))
       create(:event)
 
