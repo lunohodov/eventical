@@ -45,12 +45,11 @@ class PullEventDetailsJob < ApplicationJob
   end
 
   def character_calendar_event
-    @character_calendar_event ||= begin
+    @character_calendar_event ||=
       EveOnline::ESI::CharacterCalendarEvent.new(
         character_id: character.uid,
         event_id: event.uid,
         token: character.token
       )
-    end
   end
 end
