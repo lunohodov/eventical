@@ -34,7 +34,7 @@ main() {
       run_task scheduler:hourly
 
       # Add 1 hour to avoid slow-down when booting the development server
-      if [[ $((10#$hours)) -eq $((start_hour + 1)) ]];then
+      if [[ $((10#$hours)) -eq $((10#$start_hour + 1)) ]];then
         run_task scheduler:daily
       fi
     fi
