@@ -11,7 +11,7 @@ Rails.application.routes.draw do
 
   resource :personal_access_token, only: %i[create]
 
-  resource :calendar, only: %i[show create]
+  resource :calendar, only: %i[show]
   resources :calendars,
     controller: :calendar_feeds,
     only: %i[show],

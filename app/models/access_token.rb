@@ -19,10 +19,6 @@ class AccessToken < ApplicationRecord
       where(token: parse_slug(slug)).last!
     end
 
-    def create_personal!(char)
-      create!(issuer: char, grantee: char)
-    end
-
     def revoke!(access_token)
       raise "Access token must be persisted" unless access_token.persisted?
 

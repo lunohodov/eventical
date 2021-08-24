@@ -1,0 +1,27 @@
+<h2 class="perma__header text-center"> Getting started </h2>
+
+<section class="text-center p-4">
+  <h3 class="h4">You're only 3 steps away from having EVE Online‘s calendar into your favourite calendar app.</h3>
+
+  <dl class="onboarding-steps text-left pt-5 px-5">
+    <dt class="h5">Create your feed</dt>
+    <dd class="text-muted">Later, you can specify the time zone you want to see events in</dd>
+
+    <dt class="h5">We‘ll periodically import your upcoming events and wrap them up into
+      <span class="">a private feed</span></dt>
+    <dd class="text-muted">Events will be updated once per day.
+      <a href="https://github.com/lunohodov/eventical/discussions" rel="noopener nofollow" target="_blank">Start a
+        discussion</a> if you need this more often
+    </dd>
+
+    <dt class="h5">Subscribe to the feed with your favourite calendar app</dt>
+    <dd class="text-muted">Google Calendar, Apple Calendar, Outlook, and everything else on desktop or mobile that can understand iCal</dd>
+
+    <dt class="h5">That‘s it!</dt>
+    <dd class="text-muted">We‘ll take care of the rest. Enjoy!</dd>
+  </dl>
+
+  <%= button_to personal_access_token_path, method: :post, class: "btn btn-primary btn-lg w-50 p-2" do %>
+    CREATE FEED
+  <% end %>
+</section>
