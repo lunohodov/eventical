@@ -71,9 +71,9 @@
     <strong>Don’t share feed’s address with other people.</strong>
     To make the current one invalid, you can
     <%= link_to "reset it",
-        calendar_url,
-        method: :post,
-        class: "text-danger",
-        data: { confirm: "Are you sure you want to reset the secret address?" } %>.
+      personal_access_token_path,
+      method: :post,
+      class: "text-danger",
+      data: {confirm: "Are you sure you want to reset the secret address?"} %>.
   </p>
 </section>

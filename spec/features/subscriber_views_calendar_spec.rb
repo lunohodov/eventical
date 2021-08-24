@@ -1,9 +1,9 @@
 require "rails_helper"
 
 feature "user views calendar", type: :feature do
-  scenario "and sees Google Calendar export option" do
-    sign_in
+  before { sign_in }
 
+  scenario "and sees Google Calendar export option" do
     access_token = create(:access_token, :personal, issuer: current_character)
 
     visit calendar_path
@@ -13,8 +13,6 @@ feature "user views calendar", type: :feature do
   end
 
   scenario "and sees Apple Calendar export option" do
-    sign_in
-
     access_token = create(:access_token, :personal, issuer: current_character)
 
     visit calendar_path
@@ -23,8 +21,6 @@ feature "user views calendar", type: :feature do
   end
 
   scenario "and sees Outlook export option" do
-    sign_in
-
     access_token = create(:access_token, :personal, issuer: current_character)
 
     visit calendar_path
@@ -33,8 +29,6 @@ feature "user views calendar", type: :feature do
   end
 
   scenario "and sees browser export option" do
-    sign_in
-
     access_token = create(:access_token, :personal, issuer: current_character)
 
     visit calendar_path
@@ -43,8 +37,6 @@ feature "user views calendar", type: :feature do
   end
 
   scenario "and sees a button to reset the private address" do
-    sign_in
-
     create(:access_token, :personal, issuer: current_character)
 
     visit calendar_path
@@ -53,7 +45,7 @@ feature "user views calendar", type: :feature do
   end
 
   scenario "and can change preferred time zone" do
-    sign_in
+    create(:access_token, :personal, issuer: current_character)
 
     visit calendar_path
 
@@ -61,5 +53,13 @@ feature "user views calendar", type: :feature do
     click_on("Update time zone")
 
     expect(page).to have_select(:time_zone, selected: "(GMT+00:00) London")
+  end
+
+  context "without an issued personal access token" do
+    scenario "sees onboarding step" do
+      visit calendar_path
+
+      expect(page).to have_selector(".onboarding-steps")
+    end
   end
 end

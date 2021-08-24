@@ -23,6 +23,28 @@ body {
   padding-bottom: 0.7rem;
 }
 
+.onboarding-steps {
+  counter-reset: my-badass-counter;
+}
+.onboarding-steps dt {
+  position: relative;
+  padding: 4px 0 10px 0;
+}
+.onboarding-steps dt:before {
+  content: counter(my-badass-counter);
+  counter-increment: my-badass-counter;
+  position: absolute;
+  left: 0;
+  top: 0;
+  font: bold 50px/1 Sans-Serif;
+}
+.onboarding-steps dd {
+  margin: 0 0 50px 0;
+}
+.onboarding-steps dt, .onboarding-steps dd {
+  padding-left: 50px;
+}
+
 .feed-option {
   background-image: image-url("calendar_format_browser.png");
   background-position: left center;
