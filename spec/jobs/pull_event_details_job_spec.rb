@@ -118,8 +118,8 @@ describe PullEventDetailsJob, type: :job do
     allow(EveOnline::ESI::CharacterCalendarEvent)
       .to receive(:new)
       .with(character_id: event.character.uid,
-            event_id: event.uid,
-            token: event.character.token)
+        event_id: event.uid,
+        token: event.character.token)
       .and_return(stub)
 
     stub
