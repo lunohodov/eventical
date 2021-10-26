@@ -63,7 +63,7 @@ module Eve
     end
 
     def oauth_client_options
-      OmniAuth::Strategies::EveOnlineSso.default_options["client_options"].deep_symbolize_keys
+      OmniAuth::Strategies::EveOnlineSso.default_options["client_options"].to_hash.symbolize_keys
     end
   end
 end
