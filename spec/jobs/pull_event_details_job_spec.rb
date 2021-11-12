@@ -70,19 +70,16 @@ describe PullEventDetailsJob, type: :job do
     expect(analytics).to have_tracked("character.events").for_resource(event.character)
   end
 
-  context "with expired access token" do
-    it "renews the access token" do
-      character = create(:character, token_expires_at: 1.day.ago)
-      event = create(:event, character: character)
-      renew_token = stub_renew_access_token
+  it "ensures ESI access token not expired" do
+    character = create(:character, :with_expired_token)
+    event = create(:event, character: character)
+    renew_token = stub_renew_access_token
 
-      allow(renew_token).to receive(:call)
-      stub_character_calendar_event(event)
+    stub_character_calendar_event(event)
 
-      PullEventDetailsJob.perform_now(event.id)
+    PullEventDetailsJob.perform_now(event.id)
 
-      expect(renew_token).to have_received(:call)
-    end
+    expect(renew_token).to have_received(:renew!)
   end
 
   context "when ESI can not find the event" do
@@ -102,8 +99,8 @@ describe PullEventDetailsJob, type: :job do
   end
 
   def stub_renew_access_token
-    instance_spy(Eve::RenewAccessToken).tap do |t|
-      allow(Eve::RenewAccessToken).to receive(:new).and_return(t)
+    instance_spy(Eve::AccessToken, renew!: true).tap do |t|
+      allow(Eve::AccessToken).to receive(:new).and_return(t)
     end
   end
 

@@ -22,6 +22,10 @@ class Character < ApplicationRecord
     token_expires_at?(Time.current)
   end
 
+  def ensure_token_not_expired!
+    Eve::AccessToken.new(self).renew!
+  end
+
   def token_expires_at?(time)
     token_expires_at.nil? || time >= token_expires_at
   end
