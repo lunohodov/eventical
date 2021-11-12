@@ -122,23 +122,29 @@ FactoryBot.define do
     skip_create
 
     transient do
-      character { build(:character) }
+      uid { 1 }
+      character_name { "Good Character" }
+      character_owner_hash { SecureRandom.uuid }
+      character_token_type { "Bearer" }
+      refresh_token { SecureRandom.uuid }
+      token { SecureRandom.uuid }
+      token_expires_at { 20.minutes.from_now }
     end
 
     initialize_with do
       new(
         provider: "eve_online_sso",
-        uid: character.uid,
+        uid: uid,
         info: {
-          character_id: character.uid,
-          character_owner_hash: character.owner_hash,
-          name: character.name,
-          token_type: character.token_type
+          character_id: uid,
+          character_owner_hash: character_owner_hash,
+          name: character_name,
+          token_type: character_token_type
         },
         credentials: {
-          token: character.token,
-          refresh_token: character.refresh_token,
-          expires_at: character.token_expires_at
+          token: token,
+          refresh_token: refresh_token,
+          expires_at: token_expires_at
         }
       )
     end
