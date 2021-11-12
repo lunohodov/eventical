@@ -2,6 +2,10 @@ require "securerandom"
 require "ostruct"
 
 FactoryBot.define do
+  factory :eve_access_token, class: 'Eve::AccessToken' do
+
+  end
+
   factory :analytics_counter, class: "Analytics::Counter" do
     association :owner, factory: :character
 
@@ -100,6 +104,10 @@ FactoryBot.define do
     token_type { "Bearer" }
 
     sequence(:uid)
+
+    trait :with_expired_token do
+      token_expires_at { 1.day.ago }
+    end
 
     trait :with_voided_refresh_token do
       refresh_token_voided_at { 1.minute.ago }
