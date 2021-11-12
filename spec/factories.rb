@@ -2,8 +2,7 @@ require "securerandom"
 require "ostruct"
 
 FactoryBot.define do
-  factory :eve_access_token, class: 'Eve::AccessToken' do
-
+  factory :eve_access_token, class: "Eve::AccessToken" do
   end
 
   factory :analytics_counter, class: "Analytics::Counter" do
