@@ -56,10 +56,6 @@ class AccessToken < ApplicationRecord
     revoked_at.present?
   end
 
-  def expired?
-    expires_at.present? && expires_at < Time.current
-  end
-
   private
 
   def generate_token_if_needed

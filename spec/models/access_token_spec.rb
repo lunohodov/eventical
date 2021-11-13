@@ -145,24 +145,4 @@ describe AccessToken, type: :model do
       expect(token.personal?).to eq(false)
     end
   end
-
-  describe "#expired?" do
-    it "returns true, when expiration time is in the past" do
-      token = build(:access_token, expires_at: 1.minute.ago)
-
-      expect(token.expired?).to eq(true)
-    end
-
-    it "returns false, when expiration time is in the future" do
-      token = build(:access_token, expires_at: Date.tomorrow)
-
-      expect(token.expired?).to eq(false)
-    end
-
-    it "returns false, when expiration time is not specified" do
-      token = build(:access_token, expires_at: nil)
-
-      expect(token.expired?).to eq(false)
-    end
-  end
 end

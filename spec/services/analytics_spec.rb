@@ -60,16 +60,6 @@ describe Analytics do
         .to have_tracked("access_token.used").for_resource(access_token)
     end
 
-    it "tracks that an expired access token has been used" do
-      analytics_instance = Analytics.new(backend: Analytics::InMemoryBackend.new)
-      access_token = build_stubbed(:access_token, expires_at: 1.hour.ago)
-
-      analytics_instance.track_access_token_used(access_token)
-
-      expect(analytics_instance.backend)
-        .to have_tracked("access_token.expired.used").for_resource(access_token)
-    end
-
     it "tracks that a revoked access token has been used" do
       analytics_instance = Analytics.new(backend: Analytics::InMemoryBackend.new)
       access_token = build_stubbed(:access_token, revoked_at: 1.hour.ago)
