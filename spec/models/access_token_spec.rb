@@ -10,24 +10,6 @@ describe AccessToken, type: :model do
     it { validate_presence_of :grantee }
     it { validate_presence_of :issuer }
     it { validate_presence_of :scope }
-
-    describe "#event_owner_categories" do
-      it { is_expected.to allow_value(nil).for(:event_owner_categories) }
-      it { is_expected.to allow_value("").for(:event_owner_categories) }
-      it { is_expected.to allow_value([]).for(:event_owner_categories) }
-      it { is_expected.to allow_value("faction").for(:event_owner_categories) }
-      it do
-        is_expected.to allow_value(["faction"]).for(:event_owner_categories)
-      end
-      it do
-        is_expected.to allow_value(%w[faction character])
-          .for(:event_owner_categories)
-      end
-      it do
-        is_expected.not_to allow_value(%w[faction something])
-          .for(:event_owner_categories)
-      end
-    end
   end
 
   describe "personal scope" do
