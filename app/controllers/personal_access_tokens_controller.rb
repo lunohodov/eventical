@@ -2,7 +2,7 @@ class PersonalAccessTokensController < ApplicationController
   before_action :authenticate
 
   def create
-    token = AccessToken.personal(current_character).current.last
+    token = AccessToken.private.where(issuer: current_character).current.last
 
     AccessToken.transaction do
       # There should be only one active private access token.
@@ -10,7 +10,7 @@ class PersonalAccessTokensController < ApplicationController
       if token
         AccessToken.revoke!(token)
       end
-      AccessToken.personal(current_character).create!
+      AccessToken.create!(issuer: current_character, grantee: current_character)
     end
 
     if token

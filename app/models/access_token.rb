@@ -4,11 +4,14 @@ class AccessToken < ApplicationRecord
 
   before_create :generate_token_if_needed
 
-  scope :personal, ->(c) { where(issuer: c, grantee: c) }
   scope :current, -> {
     where("expires_at > ? OR expires_at IS NULL", Time.current)
       .where(revoked_at: nil)
   }
+
+  def self.private
+    where("issuer_id = grantee_id")
+  end
 
   class << self
     def by_slug!(slug)
@@ -33,7 +36,7 @@ class AccessToken < ApplicationRecord
   end
 
   def slug
-    if personal?
+    if private?
       "private-#{token}"
     else
       "public-#{token}"
@@ -44,7 +47,7 @@ class AccessToken < ApplicationRecord
     slug
   end
 
-  def personal?
+  def private?
     issuer == grantee
   end
 
