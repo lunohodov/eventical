@@ -23,7 +23,7 @@ Rails.application.configure do # rubocop:disable Metrics/BlockLength
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
 
-  config.active_storage.service = :local
+  # config.active_storage.service = :local
 
   # Force all access to the app over SSL, use Strict-Transport-Security,
   # and use secure cookies.
