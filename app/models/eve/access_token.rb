@@ -35,12 +35,6 @@ module Eve
         )
       end
     rescue OAuth2::Error => e
-      # We are only interested in:
-      #   - 'invalid_token' - token expired, revoked or character owner changed
-      # Other errors include:
-      #   - 'invalid_request' - token may be malformed
-      #   - 'invalid_client', 'invalid_grant', 'unsupported_grant_type',
-      #     'invalid_scope'
       if /invalid_token/.match?(e.code)
         void!
       end
