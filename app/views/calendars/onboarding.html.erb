@@ -18,12 +18,16 @@
     <dd class="text-muted">Google Calendar, Apple Calendar, Outlook, and everything else on desktop or mobile that can
       understand iCal
     </dd>
-
-    <dt class="h5">That‘s it!</dt>
-    <dd class="text-muted">We‘ll take care of the rest. Enjoy!</dd>
   </dl>
 
-  <%= button_to personal_access_token_path, method: :post, class: "btn btn-primary btn-lg w-50 p-2" do %>
-    CREATE FEED
-  <% end %>
+  <div class="py-1">
+    <span class="display-4 d-block">That‘s it!</span>
+    <span class="lead text-muted">We‘ll take care of the rest. Enjoy!</span>
+  </div>
+
+  <div class="py-1">
+    <%= button_to personal_access_token_path, method: :post, class: "btn btn-primary btn-lg w-50 p-2" do %>
+      CREATE FEED
+    <% end %>
+  </div>
 </section>

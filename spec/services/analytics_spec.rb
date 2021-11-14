@@ -1,18 +1,6 @@
 require "rails_helper"
 
 describe Analytics do
-  describe "#track_account_created" do
-    it "tracks that a new account was created" do
-      analytics_instance = Analytics.new(backend: Analytics::InMemoryBackend.new)
-      character = build_stubbed(:character)
-
-      analytics_instance.track_account_created(character)
-
-      expect(analytics_instance.backend)
-        .to have_tracked("account.created").for_resource(character).times(1)
-    end
-  end
-
   describe "#track_access_token_revoked" do
     it "tracks that an access token has been revoked" do
       analytics_instance = Analytics.new(backend: Analytics::InMemoryBackend.new)

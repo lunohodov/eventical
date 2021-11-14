@@ -6,7 +6,7 @@ class PullEventDetailsJob < ApplicationJob
   def perform(event_id)
     @event_id = event_id
 
-    ensure_valid_access_token
+    character.ensure_token_not_expired!
 
     event.update!(
       details_updated_at: Time.current,
@@ -30,10 +30,6 @@ class PullEventDetailsJob < ApplicationJob
 
   def track_event_details_pulled
     analytics.track_event_details_pulled(character)
-  end
-
-  def ensure_valid_access_token
-    Eve::RenewAccessToken.new(character, force: false).call
   end
 
   def event

@@ -8,7 +8,7 @@ class PullUpcomingEventsJob < ApplicationJob
   def perform(character_id)
     @character_id = character_id
 
-    ensure_valid_access_token
+    character.ensure_token_not_expired!
 
     remote_events = fetch_remote_events
 
@@ -43,10 +43,6 @@ class PullUpcomingEventsJob < ApplicationJob
         starts_at: event.event_date
       ).freeze
     end
-  end
-
-  def ensure_valid_access_token
-    Eve::RenewAccessToken.new(character, force: false).call
   end
 
   def character_calendar

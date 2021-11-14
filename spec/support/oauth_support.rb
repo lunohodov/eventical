@@ -1,8 +1,19 @@
 module OAuthSupport
   def stub_valid_oauth_hash(character = nil)
-    OmniAuth.config.mock_auth[:eve_online_sso] = build(
+    OmniAuth.config.mock_auth[:eve_online_sso] =
+      oauth_hash_for_character(character || FactoryBot.build_stubbed(:character))
+  end
+
+  def oauth_hash_for_character(character)
+    FactoryBot.build(
       :oauth_hash,
-      character: character || build_stubbed(:character)
+      uid: character.uid,
+      character_name: character.name,
+      character_owner_hash: character.owner_hash,
+      character_token_type: character.token_type,
+      refresh_token: character.refresh_token,
+      token: character.token,
+      token_expires_at: character.token_expires_at
     )
   end
 

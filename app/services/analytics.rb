@@ -13,10 +13,6 @@ class Analytics
     @backend = backend
   end
 
-  def track_account_created(character)
-    count("account.created", resource: character)
-  end
-
   def track_access_token_revoked(access_token)
     count("access_token.revoked", resource: access_token.issuer)
   end

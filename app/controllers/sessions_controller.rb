@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
 
     auth_hash = request.env["omniauth.auth"]
 
-    character = Eve::SignIn.new(auth_hash).call
+    character = SignIn.new(auth_hash).save!
 
     if character.present?
       schedule_upcoming_events_pull_if_needed(character)
