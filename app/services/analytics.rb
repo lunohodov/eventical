@@ -33,8 +33,6 @@ class Analytics
     kind =
       if access_token.revoked?
         ".revoked"
-      elsif access_token.expired?
-        ".expired"
       else
         ""
       end

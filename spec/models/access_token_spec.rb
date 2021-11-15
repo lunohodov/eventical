@@ -10,34 +10,18 @@ describe AccessToken, type: :model do
     it { validate_presence_of :grantee }
     it { validate_presence_of :issuer }
     it { validate_presence_of :scope }
-
-    describe "#event_owner_categories" do
-      it { is_expected.to allow_value(nil).for(:event_owner_categories) }
-      it { is_expected.to allow_value("").for(:event_owner_categories) }
-      it { is_expected.to allow_value([]).for(:event_owner_categories) }
-      it { is_expected.to allow_value("faction").for(:event_owner_categories) }
-      it do
-        is_expected.to allow_value(["faction"]).for(:event_owner_categories)
-      end
-      it do
-        is_expected.to allow_value(%w[faction character])
-          .for(:event_owner_categories)
-      end
-      it do
-        is_expected.not_to allow_value(%w[faction something])
-          .for(:event_owner_categories)
-      end
-    end
   end
 
-  describe "personal scope" do
-    it "returns where issuer is the grantee" do
+  describe "private scope" do
+    it "returns records where issuer and grantee are the same" do
       issuer = create(:character)
-      create(:access_token, issuer: issuer)
-      personal_token = create(:access_token, issuer: issuer, grantee: issuer)
+      expected = create(:private_access_token, issuer: issuer)
+      create(:public_access_token, issuer: issuer)
 
-      expect(AccessToken.personal(issuer).count).to eq(1)
-      expect(AccessToken.personal(issuer).all).to eq([personal_token])
+      result = AccessToken.private.where(issuer: issuer)
+
+      expect(result.count).to eq 1
+      expect(result.first).to eq expected
     end
   end
 
@@ -73,8 +57,8 @@ describe AccessToken, type: :model do
     end
 
     it "revokes current tokens" do
-      access_token = create(:access_token, :personal)
-      create(:access_token, :personal, issuer: access_token.issuer)
+      access_token = create(:private_access_token)
+      create(:private_access_token, issuer: access_token.issuer)
 
       expect { AccessToken.revoke!(access_token) }
         .to change { AccessToken.where(revoked_at: nil).count }
@@ -99,7 +83,7 @@ describe AccessToken, type: :model do
 
   describe ".by_slug!" do
     it "finds the token, when personal" do
-      access_token = create(:access_token, :personal)
+      access_token = create(:private_access_token)
 
       found = AccessToken.by_slug!(access_token.slug)
 
@@ -145,42 +129,33 @@ describe AccessToken, type: :model do
     end
   end
 
-  describe "#personal?" do
-    it "returns true, when grantee is the issuer" do
-      issuer = Character.new(id: 1)
+  describe "#private?" do
+    context "when issuer is also the grantee" do
+      it "is true" do
+        issuer = build_stubbed(:character)
+        token = build(:access_token, issuer: issuer, grantee: issuer)
 
-      token = build(:access_token, issuer: issuer, grantee: issuer)
-
-      expect(token.personal?).to eq(true)
+        expect(token).to be_private
+      end
     end
 
-    it "returns false, when grantee is not issuer" do
-      issuer = Character.new(id: 1)
-      grantee = Character.new(id: 2)
+    context "when grantee not specified" do
+      it "is false" do
+        issuer = build_stubbed(:character)
+        token = build(:access_token, issuer: issuer, grantee: nil)
 
-      token = build(:access_token, issuer: issuer, grantee: grantee)
-
-      expect(token.personal?).to eq(false)
-    end
-  end
-
-  describe "#expired?" do
-    it "returns true, when expiration time is in the past" do
-      token = build(:access_token, expires_at: 1.minute.ago)
-
-      expect(token.expired?).to eq(true)
+        expect(token).not_to be_private
+      end
     end
 
-    it "returns false, when expiration time is in the future" do
-      token = build(:access_token, expires_at: Date.tomorrow)
+    context "when grantee other than issuer" do
+      it "is false" do
+        issuer = build_stubbed(:character)
+        grantee = build_stubbed(:character)
+        token = build(:access_token, issuer: issuer, grantee: grantee)
 
-      expect(token.expired?).to eq(false)
-    end
-
-    it "returns false, when expiration time is not specified" do
-      token = build(:access_token, expires_at: nil)
-
-      expect(token.expired?).to eq(false)
+        expect(token).not_to be_private
+      end
     end
   end
 end

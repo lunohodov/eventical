@@ -2,7 +2,7 @@ class CalendarsController < ApplicationController
   before_action :authenticate
 
   def show
-    @personal_token = AccessToken.personal(current_character).current.last
+    @personal_token = AccessToken.private.where(issuer: current_character).current.last
     @time_zone = character_settings.time_zone
 
     if @personal_token.present?

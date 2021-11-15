@@ -8,7 +8,7 @@ class CalendarFeedsController < ApplicationController
   def show
     analytics.track_access_token_used(access_token)
 
-    if access_token.revoked? || access_token.expired?
+    if access_token.revoked?
       record_not_found
       return
     end

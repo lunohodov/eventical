@@ -23,7 +23,7 @@ Rails.application.configure do # rubocop:disable Metrics/BlockLength
     config.cache_store = :null_store
   end
 
-  config.active_storage.service = :local
+  # config.active_storage.service = :local
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log

@@ -201,6 +201,7 @@ GEM
       ast (~> 2.4.1)
     pg (1.2.3)
     popper_js (1.16.0)
+    poro-rails (0.2.1)
     pry (0.13.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -388,6 +389,7 @@ DEPENDENCIES
   omniauth-eve_online-sso
   omniauth-rails_csrf_protection (~> 1.0)
   pg
+  poro-rails
   pry-byebug
   pry-rails
   puma (~> 5.5)

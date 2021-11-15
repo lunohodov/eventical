@@ -113,6 +113,7 @@
     <orderEntry type="library" scope="PROVIDED" name="parser (v3.0.1.1, asdf: 3.0.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="pg (v1.2.3, asdf: 3.0.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="popper_js (v1.16.0, asdf: 3.0.1) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="poro-rails (v0.2.1, asdf: 3.0.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="pry (v0.13.1, asdf: 3.0.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="pry-byebug (v3.9.0, asdf: 3.0.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="pry-rails (v0.3.9, asdf: 3.0.1) [gem]" level="application" />
