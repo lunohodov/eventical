@@ -11,20 +11,11 @@ describe Event, type: :model do
     travel_back
   end
 
-  it "specifies owner categories" do
-    expect(Event::OWNER_CATEGORIES)
-      .to eq %w[alliance character corporation eve_server faction]
-  end
-
   describe "validations" do
     it { should validate_presence_of(:uid) }
     it { should validate_presence_of(:title) }
     it { should validate_presence_of(:starts_at) }
-    it do
-      is_expected.to validate_inclusion_of(:owner_category)
-        .in_array(Event::OWNER_CATEGORIES)
-        .allow_nil
-    end
+    it { should allow_value(nil).for(:owner_category) }
   end
 
   describe ".upcoming_for" do
