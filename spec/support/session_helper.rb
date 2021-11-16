@@ -10,7 +10,8 @@ module SessionHelper
   def sign_in_as(character)
     @current_character = character
 
-    stub_valid_oauth_hash(@current_character)
+    auth_hash = build(:oauth_hash, uid: character.uid)
+    stub_oauth_hash(auth_hash)
 
     visit auth_eve_online_sso_callback_path(as: @current_character)
   end

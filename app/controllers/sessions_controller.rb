@@ -8,17 +8,17 @@ class SessionsController < ApplicationController
 
     character = SignIn.new(auth_hash).save!
 
-    if character.present?
-      schedule_upcoming_events_pull_if_needed(character)
-
-      analytics.track_character_logged_in(character)
-
-      session[:character_id] = character.id
-
-      redirect_to calendar_url
-    else
-      redirect_to login_url
+    # Pull upcoming events as soon as possible to improve
+    # new-user experience.
+    if new_signup?(character)
+      pull_upcoming_events(character)
     end
+
+    analytics.track_character_logged_in(character)
+
+    session[:character_id] = character.id
+
+    redirect_to calendar_url
   end
 
   def destroy
@@ -33,14 +33,11 @@ class SessionsController < ApplicationController
 
   private
 
-  def schedule_upcoming_events_pull_if_needed(character)
-    # Characters signing for the first time may see their upcoming events
-    # with a significant delay as we use a scheduled job to pull the
-    # events from ESI.
-    #
-    # Pull upcoming events as soon as possible to improve new-user experience.
-    if character.created_at > NEW_SIGNUP_THRESHOLD.ago
-      PullUpcomingEventsJob.set(wait: 3.seconds).perform_later(character.id)
-    end
+  def new_signup?(character)
+    character.created_at > NEW_SIGNUP_THRESHOLD.ago
+  end
+
+  def pull_upcoming_events(character)
+    PullUpcomingEventsJob.perform_later(character.id)
   end
 end
