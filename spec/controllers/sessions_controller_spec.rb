@@ -1,53 +1,44 @@
 require "rails_helper"
 
 describe SessionsController, type: :controller do
-  include StubCurrentCharacterHelper
-
   before { ActiveJob::Base.queue_adapter = :test }
 
-  context "#create" do
-    it "redirects to calendar path" do
-      stub_valid_oauth_hash
+  describe "#create" do
+    subject { post :create, params: {provider: "eve_online_sso"} }
 
-      request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:eve_online_sso]
-      request.env["omniauth.origin"] = nil
+    it "redirects to calendar" do
+      stub_oauth_request
 
-      get :create, params: {provider: "eve_online_sso"}
-
-      should redirect_to(calendar_url)
-
-      expect(analytics).to have_tracked("character.logged_in").times(1)
+      expect(subject).to redirect_to calendar_url
     end
 
-    it "does not redirect to an outside domain" do
-      stub_valid_oauth_hash
+    it "tracks character's login" do
+      stub_oauth_request
 
-      request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:eve_online_sso]
-      request.env["omniauth.origin"] = "//google.com"
-
-      get :create, params: {provider: "eve_online_sso"}
-
-      should redirect_to(calendar_url)
+      expect(subject).to satisfy do
+        expect(analytics).to have_tracked("character.logged_in").times(1)
+      end
     end
 
-    it "schedules upcoming events pull, when character is new" do
-      stub_valid_oauth_hash(build(:character))
+    it "does not redirect to an outside OAuth origin" do
+      stub_oauth_request(origin: "//google.com")
 
-      request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:eve_online_sso]
-      request.env["omniauth.origin"] = nil
-
-      expect { get(:create, params: {provider: "eve_online_sso"}) }
-        .to have_enqueued_job(PullUpcomingEventsJob)
+      expect(subject).to redirect_to(calendar_url)
     end
 
-    it "does not schedule upcoming events pull, when character exists" do
-      stub_valid_oauth_hash(create(:character, created_at: 1.hour.ago))
+    it "pulls upcoming events" do
+      stub_oauth_request
 
-      request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:eve_online_sso]
-      request.env["omniauth.origin"] = nil
+      expect { subject }.to have_enqueued_job(PullUpcomingEventsJob)
+    end
 
-      expect { get(:create, params: {provider: "eve_online_sso"}) }
-        .not_to have_enqueued_job(PullUpcomingEventsJob)
+    context "when existing account signs in" do
+      it "does not pull upcoming events" do
+        character = create(:character, created_at: 1.day.ago)
+        stub_oauth_request(build(:oauth_hash, uid: character.uid))
+
+        expect { subject }.not_to have_enqueued_job(PullUpcomingEventsJob)
+      end
     end
   end
 
@@ -55,9 +46,11 @@ describe SessionsController, type: :controller do
     before { stub_current_character }
 
     it "resets the current session" do
-      expect(controller).to receive(:reset_session)
+      allow(controller).to receive(:reset_session)
 
       get(:destroy)
+
+      expect(controller).to have_received(:reset_session)
     end
 
     it "logs the current character out" do
@@ -65,5 +58,10 @@ describe SessionsController, type: :controller do
 
       expect(analytics).to have_tracked("character.logged_out")
     end
+  end
+
+  def stub_oauth_request(auth_hash = nil, origin: nil)
+    request.env["omniauth.auth"] = stub_oauth_hash(auth_hash)
+    request.env["omniauth.origin"] = origin
   end
 end
