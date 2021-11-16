@@ -5,7 +5,7 @@ describe CalendarsController, type: :controller do
 
   describe "#show" do
     it "renders the view" do
-      create(:access_token, :personal, issuer: current_character)
+      create(:private_access_token, issuer: current_character)
 
       get :show
 
@@ -13,10 +13,10 @@ describe CalendarsController, type: :controller do
     end
 
     context "without a personal access token" do
-      it "renders an empty state view" do
+      it "redirects to onboarding" do
         get :show
 
-        expect(response).to render_template("onboarding")
+        expect(response).to redirect_to(onboarding_path)
       end
     end
   end
