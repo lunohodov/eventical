@@ -35,11 +35,11 @@ module Eve
         )
       end
     rescue OAuth2::Error => e
-      if /invalid_token/.match?(e.code)
+      if /invalid_(token|grant)/.match?(e.code)
         void!
       end
 
-      raise self.class::Error, e.code, cause: e
+      raise Error, e.code, cause: e
     end
 
     private

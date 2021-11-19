@@ -8,6 +8,8 @@ class PullEventDetailsJob < ApplicationJob
 
     character.ensure_token_not_expired!
 
+    Sentry.set_user(id: character.id, username: character.name)
+
     event.update!(
       details_updated_at: Time.current,
       importance: character_calendar_event.importance,

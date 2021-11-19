@@ -66,8 +66,8 @@ describe Eve::AccessToken, type: :model do
       end
     end
 
-    context "when ESI responds with invalid token error" do
-      let(:oauth_error) { stubbed_oauth_error(:invalid_token) }
+    shared_examples "voids character's refresh token" do |error_code:|
+      let(:oauth_error) { stubbed_oauth_error(error_code) }
 
       before do
         allow(oauth_token).to receive(:refresh!).and_raise(oauth_error)
@@ -85,8 +85,16 @@ describe Eve::AccessToken, type: :model do
       end
 
       it "raises an error" do
-        expect { subject }.to raise_error(described_class::Error, "invalid_token")
+        expect { subject }.to raise_error(described_class::Error, error_code.to_s)
       end
+    end
+
+    context "when esi responds with invalid token error" do
+      it_behaves_like "voids character's refresh token", error_code: :invalid_token
+    end
+
+    context "when esi responds with invalid token error" do
+      it_behaves_like "voids character's refresh token", error_code: :invalid_grant
     end
   end
 

@@ -1,12 +1,7 @@
 require "eventical/middleware/add_character_to_sentry_context"
 
 Sentry.init do |config|
-  # Set by Dyno Metadata. See https://devcenter.heroku.com/articles/dyno-metadata
-  config.release = ("eventical@" + ENV.fetch("HEROKU_RELEASE_VERSION", "unknown").strip)
-
-  config.async = lambda do |event, hint|
-    Sentry::SendEventJob.perform_later(event, hint)
-  end
+  config.release = "eventical@#{Eventical.release_version}"
 
   config.excluded_exceptions -= ["ActiveRecord::RecordNotFound"]
 end

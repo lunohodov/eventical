@@ -19,6 +19,9 @@ Bundler.require(*Rails.groups)
 
 module Eventical
   class Application < Rails::Application
+    # Load `lib/eventical.rb`
+    require "eventical"
+
     config.load_defaults 6.0
 
     config.skylight.environments += %w[development staging]

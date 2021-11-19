@@ -8,6 +8,8 @@ class PullUpcomingEventsJob < ApplicationJob
   def perform(character_id)
     @character_id = character_id
 
+    Sentry.set_user(id: character_id, username: character.name)
+
     character.ensure_token_not_expired!
 
     remote_events = fetch_remote_events

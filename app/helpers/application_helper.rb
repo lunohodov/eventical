@@ -4,7 +4,7 @@ module ApplicationHelper
   end
 
   def app_version
-    ENV["HEROKU_RELEASE_VERSION"]
+    Eventical.release_version
   end
 
   def body_class
