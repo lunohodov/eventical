@@ -1,9 +1,9 @@
 require "eventical/middleware/add_character_to_sentry_context"
 
 Sentry.init do |config|
-  config.release = "eventical@#{Eventical.release_version}"
-
+  config.breadcrumbs_logger = [:active_support_logger]
   config.excluded_exceptions -= ["ActiveRecord::RecordNotFound"]
+  config.release = "eventical@#{Eventical.release_version}"
 end
 
 module Eventical
