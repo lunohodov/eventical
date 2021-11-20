@@ -16,7 +16,10 @@ class ApplicationController < ActionController::Base
   end
 
   def set_sentry_context
-    Sentry.set_user(id: current_character&.uid)
     Sentry.set_extras(params: params.to_unsafe_h, url: request.url)
+
+    if signed_in?
+      Sentry.set_user(id: current_character.id, username: current_character.name)
+    end
   end
 end

@@ -66,35 +66,50 @@ describe Eve::AccessToken, type: :model do
       end
     end
 
-    shared_examples "voids character's refresh token" do |error_code:|
-      let(:oauth_error) { stubbed_oauth_error(error_code) }
-
-      before do
-        allow(oauth_token).to receive(:refresh!).and_raise(oauth_error)
-      end
-
-      it "voids character's refresh token" do
-        begin
-          subject
-          fail("Error expected")
-        rescue described_class::Error => _
-          # Pass
+    %w[
+      invalid_token
+      invalid_grant
+    ].each do |error_code|
+      context "when esi responds with #{error_code} error" do
+        before do
+          oauth_error = stubbed_oauth_error(error_code)
+          allow(oauth_token).to receive(:refresh!).and_raise(oauth_error)
         end
 
-        expect(character).to be_refresh_token_voided
-      end
+        it "voids character's refresh token" do
+          expect { subject }.to raise_error do
+            expect(character).to be_refresh_token_voided
+          end
+        end
 
-      it "raises an error" do
-        expect { subject }.to raise_error(described_class::Error, error_code.to_s)
+        it "raises an error" do
+          expect { subject }.to raise_error(described_class::Error, /#{error_code}/)
+        end
       end
     end
 
-    context "when esi responds with invalid token error" do
-      it_behaves_like "voids character's refresh token", error_code: :invalid_token
-    end
+    %w[
+      invalid_request
+      invalid_client
+      unsupported_grant_type
+      invalid_scope
+    ].each do |error_code|
+      context "when esi responds with #{error_code} error" do
+        before do
+          oauth_error = stubbed_oauth_error(error_code)
+          allow(oauth_token).to receive(:refresh!).and_raise(oauth_error)
+        end
 
-    context "when esi responds with invalid token error" do
-      it_behaves_like "voids character's refresh token", error_code: :invalid_grant
+        it "raises an error" do
+          expect { subject }.to raise_error(described_class::Error, /#{error_code}/)
+        end
+
+        it "does not void character's refresh token" do
+          expect { subject }.to raise_error do
+            expect(character).not_to be_refresh_token_voided
+          end
+        end
+      end
     end
   end
 

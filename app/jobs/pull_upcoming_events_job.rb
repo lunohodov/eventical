@@ -5,6 +5,8 @@ require "ostruct"
 class PullUpcomingEventsJob < ApplicationJob
   queue_as :default
 
+  retry_on EveOnline::Exceptions::BadGateway, wait: :exponentially_longer, attempts: 5
+
   def perform(character_id)
     @character_id = character_id
 
