@@ -30,10 +30,10 @@ class PullUpcomingEventsJob < ApplicationJob
     track_upcoming_events_pulled
 
     Event.transaction do
+      uids_to_keep = remote_events.map(&:uid)
       # Delete obsolete events
-      keep_uids = remote_events.map(&:uid)
       Event.upcoming_for(character, since: Time.current)
-        .where.not(uid: keep_uids)
+        .where.not(uid: uids_to_keep)
         .delete_all
       # Save new or update existing
       remote_events.map { |e| Event.synchronize(e) }

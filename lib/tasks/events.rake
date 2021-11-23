@@ -22,13 +22,7 @@ namespace :events do
 
   desc "Schedule pull of event details for all upcoming events"
   task "details:pull": :environment do
-    excluded_characters, entitled_characters =
-      Character.all.partition(&:refresh_token_voided?)
-
-    excluded_characters.each do |c|
-      Rails.logger.info "Skip events:details:pull for character (id = #{c.id})."
-    end
-
+    entitled_characters = Character.where(refresh_token_voided_at: nil)
     character_ids = entitled_characters.pluck(:id)
 
     unless character_ids.empty?
