@@ -11,24 +11,18 @@ namespace :events do
       Character.all.partition(&:refresh_token_voided?)
 
     excluded_characters.each do |c|
-      Rails.logger.info "Skip pull of events for character (id = #{c.id})."
+      Rails.logger.info "Skip event sync for character with voided token (id = #{c.id})."
     end
 
     entitled_characters.each_with_index do |c, index|
-      delay = (5 + index).minutes
+      delay = index.minutes
       PullUpcomingEventsJob.set(wait: delay).perform_later(c.id)
     end
   end
 
   desc "Schedule pull of event details for all upcoming events"
   task "details:pull": :environment do
-    excluded_characters, entitled_characters =
-      Character.all.partition(&:refresh_token_voided?)
-
-    excluded_characters.each do |c|
-      Rails.logger.info "Skip events:details:pull for character (id = #{c.id})."
-    end
-
+    entitled_characters = Character.where(refresh_token_voided_at: nil)
     character_ids = entitled_characters.pluck(:id)
 
     unless character_ids.empty?

@@ -12,26 +12,33 @@ class PullUpcomingEventsJob < ApplicationJob
 
     Sentry.set_user(id: character_id, username: character.name)
 
-    character.ensure_token_not_expired!
-
-    remote_events = fetch_remote_events
-
-    track_upcoming_events_pulled
-
-    Event.transaction do
-      # Delete obsolete events
-      keep_uids = remote_events.map(&:uid)
-      Event.upcoming_for(character, since: Time.current)
-        .where.not(uid: keep_uids)
-        .delete_all
-      # Save new or update existing
-      remote_events.map { |e| Event.synchronize(e) }
+    if character.refresh_token_voided?
+      logger.info "Skip event sync for character with voided token (id = #{character.id})."
+    else
+      character.ensure_token_not_expired!
+      sync_events
     end
   end
 
   private
 
   attr_reader :character_id
+
+  def sync_events
+    remote_events = fetch_remote_events
+
+    track_upcoming_events_pulled
+
+    Event.transaction do
+      uids_to_keep = remote_events.map(&:uid)
+      # Delete obsolete events
+      Event.upcoming_for(character, since: Time.current)
+        .where.not(uid: uids_to_keep)
+        .delete_all
+      # Save new or update existing
+      remote_events.map { |e| Event.synchronize(e) }
+    end
+  end
 
   def track_upcoming_events_pulled
     analytics.track_upcoming_events_pulled(character)

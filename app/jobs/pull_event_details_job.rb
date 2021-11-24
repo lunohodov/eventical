@@ -6,19 +6,24 @@ class PullEventDetailsJob < ApplicationJob
   def perform(event_id)
     @event_id = event_id
 
-    character.ensure_token_not_expired!
+    if event.present?
+      character.ensure_token_not_expired!
 
-    Sentry.set_user(id: character.id, username: character.name)
+      Sentry.set_user(id: character.id, username: character.name)
 
-    event.update!(
-      details_updated_at: Time.current,
-      importance: character_calendar_event.importance,
-      owner_category: character_calendar_event.owner_type,
-      owner_name: character_calendar_event.owner_name,
-      owner_uid: character_calendar_event.owner_id
-    )
+      event.update!(
+        details_updated_at: Time.current,
+        importance: character_calendar_event.importance,
+        owner_category: character_calendar_event.owner_type,
+        owner_name: character_calendar_event.owner_name,
+        owner_uid: character_calendar_event.owner_id
+      )
 
-    track_event_details_pulled
+      track_event_details_pulled
+    else
+      # Upcoming event synchronization has removed the event
+      logger.info "Stale event (id: #{@event_id}). Aborting."
+    end
   rescue EveOnline::Exceptions::ResourceNotFound => e
     # Pass. Log the error to keep an eye on such situations
     report_error(e)
@@ -35,7 +40,7 @@ class PullEventDetailsJob < ApplicationJob
   end
 
   def event
-    @event ||= Event.includes(:character).find(event_id)
+    @event ||= Event.includes(:character).find_by(id: event_id)
   end
 
   def character
