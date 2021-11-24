@@ -13,7 +13,7 @@ class PullUpcomingEventsJob < ApplicationJob
     Sentry.set_user(id: character_id, username: character.name)
 
     if character.refresh_token_voided?
-      Rails.logger.info "Skip event sync for character with voided token (id = #{character.id})."
+      logger.info "Skip event sync for character with voided token (id = #{character.id})."
     else
       character.ensure_token_not_expired!
       sync_events

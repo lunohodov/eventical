@@ -22,9 +22,8 @@ class PullEventDetailsJob < ApplicationJob
       track_event_details_pulled
     else
       # Upcoming event synchronization has removed the event
-      Rails.logger.info "Stale event (id: #{@event_id}). Aborting."
+      logger.info "Stale event (id: #{@event_id}). Aborting."
     end
-
   rescue EveOnline::Exceptions::ResourceNotFound => e
     # Pass. Log the error to keep an eye on such situations
     report_error(e)
