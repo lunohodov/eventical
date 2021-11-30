@@ -4,6 +4,6 @@ class OnboardingsController < ApplicationController
   before_action :authenticate
 
   def show
-    redirect_to calendar_path if onboarding_complete?
+    redirect_to secret_token_path if onboarding_complete?
   end
 end

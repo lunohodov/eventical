@@ -18,7 +18,7 @@ class SessionsController < ApplicationController
 
     session[:character_id] = character.id
 
-    redirect_to calendar_url
+    redirect_to secret_token_url
   end
 
   def destroy

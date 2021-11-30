@@ -4,7 +4,7 @@ class SettingsController < ApplicationController
   def update
     character_settings.update!(settings_params)
 
-    redirect_to calendar_url
+    redirect_back(fallback_location: secret_token_path)
   end
 
   private
