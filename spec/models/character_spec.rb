@@ -87,4 +87,24 @@ describe Character, type: :model do
       expect(c.token_expired?).to eq(false)
     end
   end
+
+  describe "#time_zone" do
+    it "defaults to EVE Online time zone" do
+      character = described_class.new
+
+      expect(character.time_zone).to eq Eve.time_zone
+    end
+
+    it "accepts a string value" do
+      character = create(:character, time_zone: "Sofia")
+
+      expect(character.time_zone).to eq ActiveSupport::TimeZone["Sofia"]
+    end
+
+    it "accepts a TimeZone value" do
+      character = create(:character, time_zone: ActiveSupport::TimeZone["Sofia"])
+
+      expect(character.time_zone).to eq ActiveSupport::TimeZone["Sofia"]
+    end
+  end
 end

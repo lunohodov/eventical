@@ -50,7 +50,7 @@ class CalendarFeedsController < ApplicationController
       if params[:tz].present?
         ActiveSupport::TimeZone[params[:tz]]
       elsif access_token.grantee
-        Setting.for_character(access_token.grantee)&.time_zone
+        access_token.grantee.time_zone
       end
     time_zone.presence || Eve.time_zone
   end

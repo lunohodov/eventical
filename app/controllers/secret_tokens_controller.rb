@@ -6,7 +6,7 @@ class SecretTokensController < ApplicationController
 
   def show
     @secret_token = access_token
-    @time_zone = character_settings.time_zone
+    @time_zone = current_character.time_zone
   end
 
   def create

@@ -13,13 +13,8 @@ feature "subscriber views iCal feed", type: :feature do
   end
 
   scenario "and preferred time zone is not used" do
-    character = create(:character)
+    character = create(:character, time_zone: "Europe/Sofia")
     access_token = create(:access_token, :personal, issuer: character)
-    create(
-      :setting,
-      owner_hash: character.owner_hash,
-      time_zone: "Europe/Sofia"
-    )
     create(:event, character: character)
     create(:event, character: character)
 

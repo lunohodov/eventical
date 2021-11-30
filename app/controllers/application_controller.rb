@@ -11,10 +11,6 @@ class ApplicationController < ActionController::Base
     Analytics.new
   end
 
-  def character_settings
-    Setting.for_character(current_character)
-  end
-
   def set_sentry_context
     Sentry.set_extras(params: params.to_unsafe_h, url: request.url)
 

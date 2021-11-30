@@ -27,9 +27,9 @@ feature "subscriber views upcoming events", type: :feature do
   end
 
   scenario "and sees time in preferred time zone" do
-    access_token = create_access_token
+    character = create(:character, time_zone: "Sofia")
+    access_token = create_access_token(character)
     character = access_token.issuer
-    create(:setting, owner_hash: character.owner_hash, time_zone: "Sofia")
     event = create(:event, character: character, starts_at: 1.month.from_now)
 
     visit_calendar_feed_path(access_token)
