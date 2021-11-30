@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_02_171942) do
+ActiveRecord::Schema.define(version: 2021_11_30_054941) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 2021_04_02_171942) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "refresh_token_voided_at"
+    t.string "time_zone"
     t.index ["refresh_token_voided_at"], name: "index_characters_on_refresh_token_voided_at"
     t.index ["uid"], name: "index_characters_on_uid", unique: true
   end
