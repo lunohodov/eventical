@@ -4,7 +4,7 @@ feature "Public events feed management", type: :feature do
   before { sign_in }
 
   scenario "enabling" do
-    visit sharing_url
+    visit public_access_url
     click_on "Start publishing"
 
     expect(page).to have_text(/Feed published/)
@@ -14,7 +14,7 @@ feature "Public events feed management", type: :feature do
   scenario "disabling" do
     create(:access_token, :public, issuer: current_character)
 
-    visit sharing_url
+    visit public_access_url
     click_on "Stop publishing"
 
     expect(page).to have_text(/Nothing published/)

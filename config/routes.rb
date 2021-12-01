@@ -12,11 +12,11 @@ Rails.application.routes.draw do
   resource :onboarding, only: :show
 
   resource :private_access, only: %i[show create]
+  resource :public_access, only: %i[show update]
 
   resources :calendars,
     controller: :calendar_feeds,
     only: %i[show],
     as: :calendar_feeds
   resource :settings, only: %i[update]
-  resource :sharing, only: %i[show update]
 end

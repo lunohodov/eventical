@@ -10,18 +10,22 @@ class EventSharing
   end
 
   def activate!
-    unless active?
-      @access_token = AccessToken.create!(
-        issuer: character,
-        grantee: nil,
-        token: public_token_string
-      )
-    end
+    @access_token = AccessToken.create!(
+      issuer: character,
+      grantee: nil,
+      token: public_token_string
+    )
   end
 
   def deactivate!
+    AccessToken.revoke!(access_token)
+  end
+
+  def toggle!
     if active?
-      AccessToken.revoke!(access_token)
+      deactivate!
+    else
+      activate!
     end
   end
 

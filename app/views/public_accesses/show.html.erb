@@ -18,7 +18,7 @@
   <% if @event_sharing.active? %>
     <p class="text-center h5 my-4">
       Feed published. Subscribers can see your public events.
-      <%= link_to "Stop publishing", sharing_url, method: :patch, class: "btn btn-outline-danger btn-sm ml-2" %>
+      <%= link_to "Stop publishing", public_access_url, method: :patch, class: "btn btn-outline-danger btn-sm ml-2" %>
     </p>
 
     <div class="alert alert-secondary text-left my-3" role="alert">
@@ -40,7 +40,7 @@
   <% else %>
     <p class="text-center h5 my-4">
       Nothing published and nobody can see your public events
-      <%= link_to "Start publishing", sharing_url, method: :patch, class: "btn btn-outline-primary btn-sm ml-2" %>
+      <%= link_to "Start publishing", public_access_url, method: :patch, class: "btn btn-outline-primary btn-sm ml-2" %>
     </p>
   <% end %>
 </section>

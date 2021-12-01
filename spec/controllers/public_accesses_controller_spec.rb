@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe SharingsController, type: :controller do
+describe PublicAccessesController, type: :controller do
   include StubCurrentCharacterHelper
 
   describe "#show" do
