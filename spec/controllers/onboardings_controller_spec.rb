@@ -22,7 +22,7 @@ describe OnboardingsController, type: :controller do
 
         get :show
 
-        expect(response).to redirect_to(secret_token_path)
+        expect(response).to redirect_to(private_access_path)
       end
     end
   end

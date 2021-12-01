@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe SecretTokensController, type: :controller do
+describe PrivateAccessesController, type: :controller do
   before { stub_current_character }
 
   describe "#show" do

@@ -36,7 +36,7 @@
 <section class="my-5">
   <h2>Give eve-calendars a try.</h2>
   <% if signed_in? %>
-    <%= link_to "Go to calendar", secret_token_url %>
+    <%= link_to "Go to calendar", private_access_url %>
   <% else %>
     <%= eve_online_sso_button(:large) %>
     <p class="m-2"><%= link_to_eve_online_sso_help %></p>

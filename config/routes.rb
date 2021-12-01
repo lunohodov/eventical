@@ -11,7 +11,7 @@ Rails.application.routes.draw do
 
   resource :onboarding, only: :show
 
-  resource :secret_token, only: %i[show create]
+  resource :private_access, only: %i[show create]
 
   resources :calendars,
     controller: :calendar_feeds,

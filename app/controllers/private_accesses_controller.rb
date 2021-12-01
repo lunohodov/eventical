@@ -1,4 +1,4 @@
-class SecretTokensController < ApplicationController
+class PrivateAccessesController < ApplicationController
   include Onboarding
 
   before_action :authenticate
@@ -18,7 +18,7 @@ class SecretTokensController < ApplicationController
       analytics.track_access_token_revoked(access_token) if access_token
     end
 
-    redirect_to secret_token_path
+    redirect_to private_access_path
   end
 
   private

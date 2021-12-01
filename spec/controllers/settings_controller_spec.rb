@@ -8,7 +8,7 @@ describe SettingsController, type: :controller do
 
       post :update, params: {time_zone: "Sofia/Europe"}
 
-      expect(response).to redirect_to secret_token_url
+      expect(response).to redirect_to private_access_url
     end
   end
 end
