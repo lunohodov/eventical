@@ -2,9 +2,9 @@ class SettingsController < ApplicationController
   before_action :authenticate
 
   def update
-    character_settings.update!(settings_params)
+    current_character.update!(settings_params)
 
-    redirect_to calendar_url
+    redirect_back(fallback_location: private_access_path)
   end
 
   private

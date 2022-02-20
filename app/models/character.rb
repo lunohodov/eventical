@@ -3,6 +3,8 @@ class Character < ApplicationRecord
 
   scope :voided, -> { where.not(refresh_token_voided_at: nil) }
 
+  attribute :time_zone, TimeZoneType.new, default: Eve.time_zone
+
   validates :uid, presence: true
   validates :name, presence: true
   validates :owner_hash, presence: true

@@ -9,7 +9,7 @@ describe SessionsController, type: :controller do
     it "redirects to calendar" do
       stub_oauth_request
 
-      expect(subject).to redirect_to calendar_url
+      expect(subject).to redirect_to private_access_path
     end
 
     it "tracks character's login" do
@@ -23,7 +23,7 @@ describe SessionsController, type: :controller do
     it "does not redirect to an outside OAuth origin" do
       stub_oauth_request(origin: "//google.com")
 
-      expect(subject).to redirect_to(calendar_url)
+      expect(subject).to redirect_to(private_access_path)
     end
 
     it "pulls upcoming events" do
