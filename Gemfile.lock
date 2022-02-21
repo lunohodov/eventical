@@ -326,7 +326,7 @@ GEM
       faraday
     shoulda-matchers (5.1.0)
       activesupport (>= 5.2.0)
-    skylight (5.1.1)
+    skylight (5.3.0)
       activesupport (>= 5.2.0)
     spring (2.1.1)
     spring-watcher-listen (2.0.1)
