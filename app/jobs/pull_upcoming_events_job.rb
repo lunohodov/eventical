@@ -37,6 +37,8 @@ class PullUpcomingEventsJob < ApplicationJob
         .delete_all
       # Save new or update existing
       remote_events.map { |e| Event.synchronize(e) }
+
+      character.update!(last_event_pull_at: Time.current)
     end
   end
 

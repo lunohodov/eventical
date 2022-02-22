@@ -35,6 +35,13 @@ describe PullUpcomingEventsJob, type: :job do
       .to change { event.reload.title }.from("old").to("new")
   end
 
+  it "updates last event pull timestamp" do
+    stub_character_calendar
+
+    expect { described_class.perform_now(character.id) }
+      .to change { character.reload.last_event_pull_at }
+  end
+
   it "deletes removed upcoming events" do
     create(:event, character: character, starts_at: 1.second.from_now)
     stub_character_calendar
