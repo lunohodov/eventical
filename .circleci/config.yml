@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: cimg/ruby:3.0.1-browsers
+      - image: cimg/ruby:3.1-browsers
         environment:
           PGHOST: localhost
           PGUSER: evecal
@@ -11,7 +11,7 @@ jobs:
       - image: postgres:10.1-alpine
         environment:
           POSTGRES_USER: evecal
-          POSTGRES_DB: ruby27
+          POSTGRES_DB: ruby311
           POSTGRES_PASSWORD: ""
     steps:
       - checkout
