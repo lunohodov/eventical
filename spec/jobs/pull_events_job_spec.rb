@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe PullUpcomingEventsJob, type: :job do
+describe PullEventsJob, type: :job do
   let(:stubbed_eve_access_token) { instance_double(Eve::AccessToken) }
 
   before do

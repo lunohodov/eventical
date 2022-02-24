@@ -16,7 +16,7 @@ namespace :events do
 
     entitled_characters.each_with_index do |c, index|
       delay = index.minutes
-      PullUpcomingEventsJob.set(wait: delay).perform_later(c.id)
+      PullEventsJob.set(wait: delay).perform_later(c.id)
     end
   end
 

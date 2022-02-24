@@ -38,6 +38,6 @@ class SessionsController < ApplicationController
   end
 
   def pull_upcoming_events(character)
-    PullUpcomingEventsJob.perform_later(character.id)
+    PullEventsJob.perform_later(character.id)
   end
 end
