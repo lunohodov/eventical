@@ -1,80 +1,46 @@
 require "rails_helper"
 
 describe PullEventsJob, type: :job do
-  let(:stubbed_eve_access_token) { instance_double(Eve::AccessToken) }
+  include EveOnlineHelper
+
+  let(:character) { create_character }
 
   before do
-    allow(stubbed_eve_access_token).to receive(:renew!)
-    allow(Eve::AccessToken).to receive(:new).and_return(stubbed_eve_access_token)
+    allow(Character).to receive(:find).and_return(character)
   end
 
-  it "ensures ESI access token not expired" do
-    stub_character_calendar
+  it "pulls character events" do
+    esi_events = [1, 2].map { |id| build(:esi_event, event_id: id) }
+    stub_character_calendar(esi_events)
 
-    described_class.perform_now(character.id)
+    PullEventsJob.perform_now(character.id)
 
-    expect(stubbed_eve_access_token).to have_received(:renew!)
+    expect(Event.where(uid: [1, 2]).count).to eq 2
   end
 
-  it "saves new events" do
-    esi_event = build(:esi_event, event_id: 123)
-    stub_character_calendar(esi_event)
+  it "tracks pull in analytics" do
+    stub_character_calendar([])
 
-    described_class.perform_now(character.id)
-
-    expect(Event.find_by(uid: 123)).to be_present
-  end
-
-  it "updates existing events" do
-    event = create(:event, character: character, uid: 123, title: "old")
-    esi_event = build(:esi_event, event_id: 123, title: "new")
-
-    stub_character_calendar(esi_event)
-
-    expect { described_class.perform_now(character.id) }
-      .to change { event.reload.title }.from("old").to("new")
-  end
-
-  it "updates last event pull timestamp" do
-    stub_character_calendar
-
-    expect { described_class.perform_now(character.id) }
-      .to change { character.reload.last_event_pull_at }
-  end
-
-  it "deletes removed upcoming events" do
-    create(:event, character: character, starts_at: 1.second.from_now)
-    stub_character_calendar
-
-    expect { described_class.perform_now(character.id) }
-      .to change { Event.count }.from(1).to(0)
-  end
-
-  it "does not delete past events" do
-    create(:event, character: character, starts_at: 1.second.ago)
-    stub_character_calendar
-
-    expect { described_class.perform_now(character.id) }
-      .not_to(change { Event.count })
-  end
-
-  it "notifies analytics that events have been pulled" do
-    create(:event, character: character, starts_at: 1.second.ago)
-    stub_character_calendar
-
-    described_class.perform_now(character.id)
+    PullEventsJob.perform_now(character.id)
 
     expect(analytics).to have_tracked("events.pulled").for_resource(character)
   end
 
-  def character
-    @character ||= create(:character)
-  end
+  context "when character's refresh token is voided" do
+    before do
+      allow(character).to receive(:refresh_token_voided?).and_return(true)
+    end
 
-  def stub_character_calendar(*events)
-    instance_spy(EveOnline::ESI::CharacterCalendar).tap do |cal|
-      allow(EveOnline::ESI::CharacterCalendar).to receive(:new).and_return(cal)
-      allow(cal).to receive(:events).and_return(events)
+    it "does not pull events" do
+      PullEventsJob.perform_now(character.id)
+
+      expect(Event.count).to be_zero
+    end
+
+    it "does not track in analytics" do
+      PullEventsJob.perform_now(character.id)
+
+      expect(analytics).not_to have_tracked("events.pulled")
     end
   end
 end

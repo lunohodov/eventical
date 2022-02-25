@@ -24,24 +24,24 @@ class Event < ApplicationRecord
   def self.synchronize(data_source)
     character = data_source.character
 
-    event = Event.lock.where(uid: data_source.uid, character: character).first
-    if event.nil?
-      event = Event.new(character: character, uid: data_source.uid)
-    end
+    attributes = {
+      importance: data_source.importance,
+      owner_category: data_source.owner_category,
+      owner_name: data_source.owner_name,
+      owner_uid: data_source.owner_uid,
+      response: data_source.response,
+      starts_at: data_source.starts_at,
+      title: data_source.title
+    }
 
-    %i[
-      importance
-      owner_category
-      owner_name
-      owner_uid
-      response
-      starts_at
-      title
-    ].each do |attr|
-      value = data_source.public_send(attr).presence
-      event[attr] = value if value
+    # Not atomic and has a race condition between SELECT and INSERT.
+    # Yet, duplicate records are not a concern as there is a unique index
+    # on `character_id` and `uid`.
+    Event.find_or_create_by!(character: character, uid: data_source.uid) do |e|
+      e.assign_attributes(attributes)
+    end.tap do |e|
+      e.assign_attributes(attributes)
+      e.save!
     end
-
-    event.save!
   end
 end
