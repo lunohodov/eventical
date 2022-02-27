@@ -29,7 +29,7 @@ describe SessionsController, type: :controller do
     it "pulls upcoming events" do
       stub_oauth_request
 
-      expect { subject }.to have_enqueued_job(PullUpcomingEventsJob)
+      expect { subject }.to have_enqueued_job(PullEventsJob)
     end
 
     context "when existing account signs in" do
@@ -37,7 +37,7 @@ describe SessionsController, type: :controller do
         character = create(:character, created_at: 1.day.ago)
         stub_oauth_request(build(:oauth_hash, uid: character.uid))
 
-        expect { subject }.not_to have_enqueued_job(PullUpcomingEventsJob)
+        expect { subject }.not_to have_enqueued_job(PullEventsJob)
       end
     end
   end

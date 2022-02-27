@@ -13,22 +13,14 @@ class CalendarFeedsController < ApplicationController
       return
     end
 
-    character = access_token.issuer
-    events =
-      if access_token.public?
-        Event.public_by(character)
-      else
-        Event.upcoming_for(character)
-      end.limit(PAGE_SIZE)
-
     render_headers
 
     respond_to do |format|
       format.ics do
-        render_ical(build_ical(events))
+        render_ical(build_ical(calendar_events))
       end
       format.html do
-        @events = events
+        @events = calendar_events
         @time_zone = preferred_time_zone
         @access_token = access_token
       end
@@ -36,6 +28,19 @@ class CalendarFeedsController < ApplicationController
   end
 
   private
+
+  def calendar_events
+    character = access_token.issuer
+
+    scoped =
+      if access_token.public?
+        Event.public_by(character)
+      else
+        Event.upcoming_for(character)
+      end
+
+    scoped.in_chronological_order.limit(PAGE_SIZE)
+  end
 
   def access_token
     @access_token ||= AccessToken.by_slug!(params[:id])
