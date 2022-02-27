@@ -5,20 +5,31 @@ class Event < ApplicationRecord
   validates :title, presence: true
   validates :uid, presence: true
 
-  def self.upcoming_for(character, since: nil)
-    since ||= Date.current
-    where(character: character)
-      .where("starts_at >= ?", since)
-      .order(starts_at: :asc)
+  def self.upcoming
+    where("starts_at >= ?", Time.current)
   end
 
-  def self.public_by(character, since: nil)
-    since ||= Date.current
-    where(character: character)
-      .where("starts_at >= ?", since)
-      .where("title LIKE '[PUBLIC]%'")
-      .where(owner_category: "character", owner_uid: character.uid)
-      .order(starts_at: :asc)
+  def self.upcoming_for(character)
+    upcoming.where(character: character)
+  end
+
+  def self.public
+    where("title LIKE '[PUBLIC]%'")
+  end
+
+  def self.public_by(character)
+    upcoming
+      .public
+      .owned_by(character)
+      .where(character: character)
+  end
+
+  def self.owned_by(character)
+    where(owner_category: "character", owner_uid: character.uid)
+  end
+
+  def self.in_chronological_order
+    order(starts_at: :asc)
   end
 
   def self.synchronize(data_source)
