@@ -17,7 +17,6 @@ gem "omniauth", "~> 2.0"
 gem "omniauth-eve_online-sso"
 gem "omniauth-rails_csrf_protection", "~> 1.0"
 gem "pg"
-gem "pry-byebug"
 gem "pry-rails"
 gem "puma", "~> 5.6"
 gem "rack-timeout"
@@ -31,9 +30,7 @@ gem "uglifier", ">= 1.3.0"
 gem "webpacker"
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get
-  # a debugger console
-  gem "byebug", platforms: %i[mri mingw x64_mingw]
+  gem "break"
   gem "climate_control"
   gem "dotenv-rails"
   gem "factory_bot_rails"
