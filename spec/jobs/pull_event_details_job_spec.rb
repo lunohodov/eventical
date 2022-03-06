@@ -1,124 +1,91 @@
 require "rails_helper"
 
 describe PullEventDetailsJob, type: :job do
-  it "saves importance" do
-    event = create(:event, importance: nil)
+  include EveOnlineHelper
 
+  before do
     stub_renew_access_token
-    stub_character_calendar_event(event, importance: "new")
-
-    expect { PullEventDetailsJob.perform_now(event.id) }
-      .to change { event.reload.importance }
-      .from(nil)
-      .to("new")
   end
 
-  it "saves owner category" do
-    event = create(:event, owner_category: nil)
+  it "updates importance" do
+    event = create(:event, importance: nil, uid: 123)
+    stub_character_calendar_event(event, importance: "1")
 
-    stub_renew_access_token
+    expect { PullEventDetailsJob.perform_now(event.uid) }
+      .to change { event.reload.importance }.to("1")
+  end
+
+  it "updates owner category" do
+    event = create(:event, owner_category: nil, uid: 123)
     stub_character_calendar_event(event, owner_type: "character")
 
-    expect { PullEventDetailsJob.perform_now(event.id) }
-      .to change { event.reload.owner_category }
-      .from(nil)
-      .to("character")
+    expect { PullEventDetailsJob.perform_now(event.uid) }
+      .to change { event.reload.owner_category }.to("character")
   end
 
-  it "saves owner name" do
-    event = create(:event, owner_name: nil)
+  it "updates owner name" do
+    event = create(:event, owner_name: nil, uid: 123)
+    stub_character_calendar_event(event, owner_name: "abc")
 
-    stub_renew_access_token
-    stub_character_calendar_event(event, owner_name: "new")
-
-    expect { PullEventDetailsJob.perform_now(event.id) }
-      .to change { event.reload.owner_name }
-      .from(nil)
-      .to("new")
+    expect { PullEventDetailsJob.perform_now(event.uid) }
+      .to change { event.reload.owner_name }.to("abc")
   end
 
   it "saves owner uid" do
-    event = create(:event, owner_uid: nil)
+    event = create(:event, owner_uid: nil, uid: 123)
+    stub_character_calendar_event(event, owner_id: 123)
 
-    stub_renew_access_token
-    stub_character_calendar_event(event, owner_id: 1)
-
-    expect { PullEventDetailsJob.perform_now(event.id) }
-      .to change { event.reload.owner_uid }
-      .from(nil)
-      .to(1)
+    expect { PullEventDetailsJob.perform_now(event.uid) }
+      .to change { event.reload.owner_uid }.to(123)
   end
 
   it "marks event details as updated" do
-    event = create(:event, details_updated_at: nil)
-
-    stub_renew_access_token
+    event = create(:event, details_updated_at: nil, uid: 123)
     stub_character_calendar_event(event)
 
-    expect { PullEventDetailsJob.perform_now(event.id) }
-      .to change { event.reload.details_updated_at }
-      .from(nil)
+    expect { PullEventDetailsJob.perform_now(event.uid) }
+      .to change { event.reload.details_updated_at }.from(nil)
   end
 
   it "notifies analytics that event details have been pulled" do
-    event = create(:event, details_updated_at: nil)
-    stub_renew_access_token
+    event = create(:event, details_updated_at: nil, uid: 123)
     stub_character_calendar_event(event)
 
-    PullEventDetailsJob.perform_now(event.id)
+    PullEventDetailsJob.perform_now(event.uid)
 
     expect(analytics).to have_tracked("character.events").for_resource(event.character)
   end
 
-  it "ensures ESI access token not expired" do
-    character = create(:character, :with_expired_token)
-    event = create(:event, character: character)
-    renew_token = stub_renew_access_token
-
-    stub_character_calendar_event(event)
-
-    PullEventDetailsJob.perform_now(event.id)
-
-    expect(renew_token).to have_received(:renew!)
-  end
-
   context "when ESI can not find the event" do
-    it "deletes the event" do
-      event = create(:event)
-      calendar_event = stub_character_calendar_event(event)
+    it "does not delete existing events" do
+      create(:event, uid: 123)
+      stub_character_calendar_event_not_found
 
-      allow(calendar_event)
-        .to receive(:owner_name)
-        .and_raise(EveOnline::Exceptions::ResourceNotFound.allocate)
-
-      expect { PullEventDetailsJob.perform_now(event.id) }
-        .to change { Event.count }
-        .from(1)
-        .to(0)
+      expect { PullEventDetailsJob.perform_now(123) }.not_to change { Event.count }
     end
   end
 
-  def stub_renew_access_token
-    instance_spy(Eve::AccessToken, renew!: true).tap do |t|
-      allow(Eve::AccessToken).to receive(:new).and_return(t)
+  context "when one of the event owner characters has refresh token voided" do
+    it "tries again using the next character" do
+      voided_character = create(:character, :with_voided_refresh_token)
+      create(:event, character: voided_character, uid: 123)
+      active_character = create(:character)
+      create(:event, character: active_character, uid: 123)
+      stub_character_calendar_event
+
+      PullEventDetailsJob.perform_now(123)
+
+      expect(EveOnline::ESI::CharacterCalendarEvent).not_to have_received(:new).with(
+        character_id: voided_character.uid,
+        token: voided_character.token,
+        event_id: 123
+      )
+
+      expect(EveOnline::ESI::CharacterCalendarEvent).to have_received(:new).with(
+        character_id: active_character.uid,
+        token: active_character.token,
+        event_id: 123
+      )
     end
-  end
-
-  def stub_character_calendar_event(event, **attrs)
-    stub = instance_double(EveOnline::ESI::CharacterCalendarEvent)
-
-    allow(stub).to receive(:owner_id).and_return(attrs[:owner_id])
-    allow(stub).to receive(:owner_name).and_return(attrs[:owner_name])
-    allow(stub).to receive(:owner_type).and_return(attrs[:owner_type])
-    allow(stub).to receive(:importance).and_return(attrs[:importance])
-
-    allow(EveOnline::ESI::CharacterCalendarEvent)
-      .to receive(:new)
-      .with(character_id: event.character.uid,
-            event_id: event.uid,
-            token: event.character.token)
-      .and_return(stub)
-
-    stub
   end
 end

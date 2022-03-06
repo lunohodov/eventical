@@ -22,19 +22,11 @@ namespace :events do
 
   desc "Schedule pull of event details for all upcoming events"
   task "details:pull": :environment do
-    entitled_characters = Character.where(refresh_token_voided_at: nil)
-    character_ids = entitled_characters.pluck(:id)
+    event_uids = Event.distinct.without_details.pluck(:uid)
 
-    unless character_ids.empty?
-      event_ids =
-        Event
-          .where(details_updated_at: nil, character_id: character_ids)
-          .pluck(:id)
-
-      event_ids.each_with_index do |event_id, index|
-        delay = (5 + index).minutes
-        PullEventDetailsJob.set(wait: delay).perform_later(event_id)
-      end
+    event_uids.each_with_index do |event_uid, index|
+      delay = (10 * index).seconds
+      PullEventDetailsJob.set(wait: delay).perform_later(event_uid)
     end
   end
 end

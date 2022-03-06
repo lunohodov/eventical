@@ -2,6 +2,7 @@ class Character < ApplicationRecord
   has_many :events
 
   scope :voided, -> { where.not(refresh_token_voided_at: nil) }
+  scope :active, -> { where(refresh_token_voided_at: nil) }
 
   attribute :time_zone, TimeZoneType.new, default: Eve.time_zone
 

@@ -34,13 +34,13 @@ FactoryBot.define do
 
     date { rand(4).day.from_now }
     duration { 1.hour.to_i }
-    event_response { "attending" }
     importance { nil }
-    owner_type { "character" }
     owner_id { 123_456 }
-    owner_name { "Devas Weddo" }
-    text { "Minins ops with the casual Atron." }
-    title { "Mining ops in Hevris" }
+    owner_name { Faker::Name.name }
+    owner_type { "character" }
+    response { "attending" }
+    text { "Casual mining with Atrons." }
+    title { "Mining Ops in Hevris" }
   end
 
   factory :event do

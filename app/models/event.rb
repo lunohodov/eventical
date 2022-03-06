@@ -32,6 +32,10 @@ class Event < ApplicationRecord
     order(starts_at: :asc)
   end
 
+  def self.without_details
+    where(details_updated_at: nil)
+  end
+
   def self.synchronize(data_source)
     character = data_source.character
 

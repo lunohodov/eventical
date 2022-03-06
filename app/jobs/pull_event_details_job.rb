@@ -3,56 +3,53 @@
 class PullEventDetailsJob < ApplicationJob
   queue_as :default
 
-  def perform(event_id)
-    @event_id = event_id
+  def perform(event_uid)
+    characters = Character.active.distinct.joins(:events).where(events: {uid: event_uid})
 
-    if event.present?
-      character.ensure_token_not_expired!
-
+    updated = false
+    characters.each do |character|
       Sentry.set_user(id: character.id, username: character.name)
 
-      event.update!(
-        details_updated_at: Time.current,
-        importance: character_calendar_event.importance,
-        owner_category: character_calendar_event.owner_type,
-        owner_name: character_calendar_event.owner_name,
-        owner_uid: character_calendar_event.owner_id
-      )
+      # Will pull details as long as `updated` is nil or false
+      updated ||= pull_details(character, event_uid)
 
-      track_event_details_pulled
-    else
-      # Upcoming event synchronization has removed the event
-      logger.info "Stale event (id: #{@event_id}). Aborting."
+      analytics.track_event_details_pulled(character)
     end
-  rescue EveOnline::Exceptions::ResourceNotFound => e
-    # Pass. Log the error to keep an eye on such situations
-    report_error(e)
-    # Drop the event, it has been deleted
-    event.destroy!
   end
 
   private
 
-  attr_reader :event_id
+  def pull_details(character, event_uid)
+    character.ensure_token_not_expired!
 
-  def track_event_details_pulled
-    analytics.track_event_details_pulled(character)
+    esi_event = EveOnline::ESI::CharacterCalendarEvent.new(
+      character_id: character.uid,
+      event_id: event_uid,
+      token: character.token
+    )
+
+    update_for_everyone(esi_event)
+
+    true
+  rescue EveOnline::Exceptions::ResourceNotFound
+    # The event may not be available for this particular character.
+    false
+  rescue Eve::AccessToken::Error
+    # Character may have revoked it's refresh token during the time
+    # this job was in the queue.
+    false
   end
 
-  def event
-    @event ||= Event.includes(:character).find_by(id: event_id)
-  end
-
-  def character
-    @character ||= event.character
-  end
-
-  def character_calendar_event
-    @character_calendar_event ||=
-      EveOnline::ESI::CharacterCalendarEvent.new(
-        character_id: character.uid,
-        event_id: event.uid,
-        token: character.token
+  def update_for_everyone(esi_event)
+    Event
+      .where(uid: esi_event.event_id)
+      .update_all(
+        details_updated_at: Time.current,
+        importance: esi_event.importance,
+        owner_category: esi_event.owner_type,
+        owner_name: esi_event.owner_name,
+        owner_uid: esi_event.owner_id,
+        updated_at: Time.current
       )
   end
 end
