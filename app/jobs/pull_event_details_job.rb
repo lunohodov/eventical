@@ -44,6 +44,7 @@ class PullEventDetailsJob < ApplicationJob
     Event
       .where(uid: esi_event.event_id)
       .update_all(
+        starts_at: esi_event.date,
         details_updated_at: Time.current,
         importance: esi_event.importance,
         owner_category: esi_event.owner_type,
