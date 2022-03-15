@@ -7,6 +7,14 @@ describe PullEventDetailsJob, type: :job do
     stub_renew_access_token
   end
 
+  it "updates start time" do
+    event = create(:event, starts_at: Date.yesterday, uid: 123)
+    stub_character_calendar_event(event, date: Date.tomorrow)
+
+    expect { PullEventDetailsJob.perform_now(event.uid) }
+      .to change { event.reload.starts_at }.to(Date.tomorrow.to_datetime)
+  end
+
   it "updates importance" do
     event = create(:event, importance: nil, uid: 123)
     stub_character_calendar_event(event, importance: "1")

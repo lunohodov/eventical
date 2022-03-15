@@ -22,7 +22,7 @@ namespace :events do
 
   desc "Schedule pull of event details for all upcoming events"
   task "details:pull": :environment do
-    event_uids = Event.distinct.without_details.pluck(:uid)
+    event_uids = Event.distinct.upcoming.pluck(:uid)
 
     event_uids.each_with_index do |event_uid, index|
       delay = (10 * index).seconds
