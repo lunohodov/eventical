@@ -3,6 +3,8 @@
 class PullEventDetailsJob < ApplicationJob
   queue_as :default
 
+  retry_on EveOnline::Exceptions::ServiceUnavailable, wait: :exponentially_longer
+
   def perform(event_uid)
     characters = Character.active.distinct.joins(:events).where(events: {uid: event_uid})
 
