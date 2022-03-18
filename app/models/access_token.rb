@@ -21,11 +21,11 @@ class AccessToken < ApplicationRecord
     def revoke!(access_token)
       raise "Access token must be persisted" unless access_token.persisted?
 
-      where(issuer: access_token.issuer,
-            grantee: access_token.grantee,
-            revoked_at: nil)
-        .lock
-        .update_all(revoked_at: Time.current)
+      where(
+        issuer: access_token.issuer,
+        grantee: access_token.grantee,
+        revoked_at: nil
+      ).lock.update_all(revoked_at: Time.current)
     end
 
     private
