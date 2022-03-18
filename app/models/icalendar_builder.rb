@@ -25,7 +25,6 @@ class IcalendarBuilder
     ATTRIBUTES.include?(name)
   end
 
-  # rubocop:disable Style/MethodMissingSuper
   def method_missing(name, *args, &_block)
     attributes[name] = args[0]
   end
