@@ -70,7 +70,7 @@
     <strong>Don’t share feed’s address with other people.</strong>
     To make the current one invalid, you can
     <%= link_to "reset it",
-      private_access_path,
+      secret_calendar_path,
       method: :post,
       class: "text-danger",
       data: {confirm: "Are you sure you want to reset the secret address?"} %>.

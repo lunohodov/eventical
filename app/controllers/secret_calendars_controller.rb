@@ -1,4 +1,4 @@
-class PrivateAccessesController < ApplicationController
+class SecretCalendarsController < ApplicationController
   include Onboarding
 
   before_action :authenticate
@@ -18,7 +18,7 @@ class PrivateAccessesController < ApplicationController
       analytics.track_access_token_revoked(access_token) if access_token
     end
 
-    redirect_to private_access_path
+    redirect_to secret_calendar_path
   end
 
   private

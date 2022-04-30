@@ -4,7 +4,7 @@ class SettingsController < ApplicationController
   def update
     current_character.update!(settings_params)
 
-    redirect_back(fallback_location: private_access_path)
+    redirect_back(fallback_location: secret_calendar_path)
   end
 
   private

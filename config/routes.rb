@@ -11,9 +11,16 @@ Rails.application.routes.draw do
 
   resource :onboarding, only: :show
 
-  resource :private_access, only: %i[show create]
   resource :public_access, only: %i[show update]
 
+  resource :secret_calendar, only: %i[show create]
+
+  # resource :public_calendar
+  #
+  # resource :secret_calendar_feed
+  # resource :public_calendar_feed
+
+  # get "calendars/private-:id", to: "secret_calendar_feeds#show", as: :secret_calendar_feeds
   resources :calendars,
     controller: :calendar_feeds,
     only: %i[show],

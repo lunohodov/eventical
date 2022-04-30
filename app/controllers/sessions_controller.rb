@@ -18,7 +18,7 @@ class SessionsController < ApplicationController
 
     session[:character_id] = character.id
 
-    redirect_to private_access_url
+    redirect_to secret_calendar_url
   end
 
   def destroy

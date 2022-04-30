@@ -6,7 +6,7 @@ feature "user views calendar", type: :feature do
   scenario "and sees Google Calendar export option" do
     access_token = create(:access_token, :personal, issuer: current_character)
 
-    visit private_access_path
+    visit secret_calendar_path
 
     expect(page).to have_link("Google Calendar", href: "#")
     expect(page).to have_field(with: /#{access_token.token}\.ics$/)
@@ -15,7 +15,7 @@ feature "user views calendar", type: :feature do
   scenario "and sees Apple Calendar export option" do
     access_token = create(:access_token, :personal, issuer: current_character)
 
-    visit private_access_path
+    visit secret_calendar_path
 
     expect(page).to have_link("Apple Calendar", href: /#{access_token.token}\.ics$/)
   end
@@ -23,7 +23,7 @@ feature "user views calendar", type: :feature do
   scenario "and sees Outlook export option" do
     access_token = create(:access_token, :personal, issuer: current_character)
 
-    visit private_access_path
+    visit secret_calendar_path
 
     expect(page).to have_link("Outlook", href: /#{access_token.token}\.ics$/)
   end
@@ -31,7 +31,7 @@ feature "user views calendar", type: :feature do
   scenario "and sees browser export option" do
     access_token = create(:access_token, :personal, issuer: current_character)
 
-    visit private_access_path
+    visit secret_calendar_path
 
     expect(page).to have_link("Browser", href: /#{access_token.token}$/)
   end
@@ -39,7 +39,7 @@ feature "user views calendar", type: :feature do
   scenario "and sees a button to reset the private address" do
     create(:access_token, :personal, issuer: current_character)
 
-    visit private_access_path
+    visit secret_calendar_path
 
     expect(page).to have_link("reset it")
   end
@@ -47,7 +47,7 @@ feature "user views calendar", type: :feature do
   scenario "and can change preferred time zone" do
     create(:access_token, :personal, issuer: current_character)
 
-    visit private_access_path
+    visit secret_calendar_path
 
     select("London", from: :time_zone)
     click_on("Update time zone")
@@ -57,7 +57,7 @@ feature "user views calendar", type: :feature do
 
   context "without an issued personal access token" do
     scenario "sees onboarding step" do
-      visit private_access_path
+      visit secret_calendar_path
 
       expect(page).to have_selector(".onboarding-steps")
     end

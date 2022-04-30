@@ -4,6 +4,6 @@ class OnboardingsController < ApplicationController
   before_action :authenticate
 
   def show
-    redirect_to private_access_path if onboarding_complete?
+    redirect_to secret_calendar_path if onboarding_complete?
   end
 end
