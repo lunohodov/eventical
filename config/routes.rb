@@ -11,12 +11,9 @@ Rails.application.routes.draw do
 
   resource :onboarding, only: :show
 
-  resource :public_access, only: %i[show update]
-
   resource :secret_calendar, only: %i[show create]
+  resource :public_calendar, only: %i[show update]
 
-  # resource :public_calendar
-  #
   # resource :secret_calendar_feed
   # resource :public_calendar_feed
 
