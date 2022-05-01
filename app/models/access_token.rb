@@ -13,9 +13,13 @@ class AccessToken < ApplicationRecord
     where("issuer_id = grantee_id")
   end
 
+  def self.public
+    where(grantee: nil)
+  end
+
   class << self
     def by_slug!(slug)
-      where(token: parse_slug(slug)).last!
+      where(token: slug).last!
     end
 
     def revoke!(access_token)
@@ -27,20 +31,10 @@ class AccessToken < ApplicationRecord
         revoked_at: nil
       ).lock.update_all(revoked_at: Time.current)
     end
-
-    private
-
-    def parse_slug(slug)
-      slug.sub(/(private|public)-/i, "")
-    end
   end
 
   def slug
-    if private?
-      "private-#{token}"
-    else
-      "public-#{token}"
-    end
+    token
   end
 
   def to_param

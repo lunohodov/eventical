@@ -1,9 +1,9 @@
 require "rails_helper"
 
-feature "Public events feed management", type: :feature do
+feature "Character manages public feed", type: :feature do
   before { sign_in }
 
-  scenario "enabling" do
+  scenario "and can enable it" do
     visit public_calendar_url
     click_on "Start publishing"
 
@@ -11,7 +11,7 @@ feature "Public events feed management", type: :feature do
     expect(page).to have_link("Stop publishing")
   end
 
-  scenario "disabling" do
+  scenario "and can disable it" do
     create(:access_token, :public, issuer: current_character)
 
     visit public_calendar_url

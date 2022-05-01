@@ -1,6 +1,6 @@
 require "icalendar/tzinfo"
 
-class CalendarFeedsController < ApplicationController
+class SecretFeedsController < ApplicationController
   PAGE_SIZE = 50
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
@@ -30,27 +30,16 @@ class CalendarFeedsController < ApplicationController
   private
 
   def calendar_events
-    character = access_token.issuer
-
-    scoped =
-      if access_token.public?
-        Event.public_by(character)
-      else
-        Event.upcoming_for(character)
-      end
-
-    scoped.in_chronological_order.limit(PAGE_SIZE)
+    Event
+      .upcoming_for(access_token.issuer)
+      .in_chronological_order.limit(PAGE_SIZE)
   end
 
   def access_token
-    @access_token ||= AccessToken.by_slug!(params[:id])
+    @access_token ||= AccessToken.private.find_by!(token: params[:id])
   end
 
   def preferred_time_zone
-    @preferred_time_zone ||= resolve_time_zone
-  end
-
-  def resolve_time_zone
     time_zone =
       if params[:tz].present?
         ActiveSupport::TimeZone[params[:tz]]
@@ -87,9 +76,5 @@ class CalendarFeedsController < ApplicationController
 
   def record_not_found
     render plain: "404 Not Found", status: :not_found
-  end
-
-  def consumer
-    request.headers["User-Agent"]
   end
 end

@@ -24,7 +24,7 @@
     <div class="alert alert-secondary text-left my-3" role="alert">
       <p>
         <input type="text"
-              value="<%= calendar_feed_url(@event_sharing.access_token, format: :ics) %>"
+              value="<%= public_feeds_url(@event_sharing.access_token, format: :ics) %>"
               class="form-control"
               autofocus="true"
               readonly="readonly" />

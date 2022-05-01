@@ -1,11 +1,11 @@
 require "rails_helper"
 
-feature "subscriber views upcoming public events", type: :feature do
+feature "Subscriber views upcoming public events", type: :feature do
   scenario "and sees events grouped by date" do
     access_token = create_access_token
     event = create(:event, :public, character: access_token.issuer)
 
-    visit_calendar_feed_path(access_token)
+    visit_feed_path(access_token)
 
     within date_group_selector(event.starts_at) do
       expect(page).to have_event_details(event)
@@ -17,7 +17,7 @@ feature "subscriber views upcoming public events", type: :feature do
     character = access_token.issuer
     event = create(:event, :public, character: character, starts_at: 1.month.from_now)
 
-    visit_calendar_feed_path(access_token, time_zone: "Sofia")
+    visit_feed_path(access_token, time_zone: "Sofia")
 
     within("tr.event") do
       expect(page).to have_content(
@@ -27,14 +27,14 @@ feature "subscriber views upcoming public events", type: :feature do
   end
 
   scenario "and sees informative text, when there are no upcoming events" do
-    visit_calendar_feed_path(create_access_token)
+    visit_feed_path(create_access_token)
 
     expect(page).not_to have_events
     expect(page).to have_content(/no upcoming events/i)
   end
 
   scenario "and sees iCal link, when there are no upcoming events" do
-    visit_calendar_feed_path(create_access_token)
+    visit_feed_path(create_access_token)
 
     expect(page).not_to have_events
     expect(page).to have_ical_link
@@ -45,7 +45,7 @@ feature "subscriber views upcoming public events", type: :feature do
     character = access_token.issuer
     create(:event, character: character, starts_at: 1.day.from_now)
 
-    visit_calendar_feed_path(access_token)
+    visit_feed_path(access_token)
 
     expect(page).to have_ical_link
   end
@@ -58,7 +58,7 @@ feature "subscriber views upcoming public events", type: :feature do
     create(:event, :alliance, character: access_token.issuer)
     create(:event, :ccp, character: access_token.issuer)
 
-    visit_calendar_feed_path(access_token)
+    visit_feed_path(access_token)
 
     expect(page).not_to have_events
   end
@@ -70,13 +70,13 @@ feature "subscriber views upcoming public events", type: :feature do
     create(:event, :public, :alliance, character: access_token.issuer)
     create(:event, :public, :ccp, character: access_token.issuer)
 
-    visit_calendar_feed_path(access_token)
+    visit_feed_path(access_token)
 
     expect(page).not_to have_events
   end
 
-  def visit_calendar_feed_path(access_token, time_zone: nil)
-    visit calendar_feed_path(id: access_token.token, params: {tz: time_zone})
+  def visit_feed_path(access_token, time_zone: nil)
+    visit public_feeds_path(id: access_token.token, params: {tz: time_zone})
   end
 
   def create_access_token(character = nil)

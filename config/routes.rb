@@ -14,13 +14,8 @@ Rails.application.routes.draw do
   resource :secret_calendar, only: %i[show create]
   resource :public_calendar, only: %i[show update]
 
-  # resource :secret_calendar_feed
-  # resource :public_calendar_feed
-
-  # get "calendars/private-:id", to: "secret_calendar_feeds#show", as: :secret_calendar_feeds
-  resources :calendars,
-    controller: :calendar_feeds,
-    only: %i[show],
-    as: :calendar_feeds
   resource :settings, only: %i[update]
+
+  get "calendars/private-:id", to: "secret_feeds#show", as: :secret_feeds
+  get "calendars/public-:id", to: "public_feeds#show", as: :public_feeds
 end

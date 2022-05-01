@@ -1,26 +1,18 @@
-<% if @access_token.public? %>
-  <% content_for :page_title, "Events by #{@access_token.issuer.name}" %>
-<% else %>
-  <% content_for :page_title, "Upcoming for #{@access_token.grantee.name}" %>
-<% end %>
+<% content_for :page_title, "Upcoming events for #{@access_token.issuer.name}" %>
 
 <div class="d-flex">
   <div class="flex-fill text-left">
     <small class="text-muted">Primary time zone <span class="text-monospace"><%= @time_zone.to_s %></span></small>
   </div>
   <div class="flex-fill text-right">
-    <small class="text-monospace"><%= link_to("iCal", calendar_feed_url(@access_token, format: :ics, protocol: 'webcal')) %> </small>
+    <small class="text-monospace">
+      <%= link_to("iCal", secret_feeds_url(@access_token, format: :ics, protocol: 'webcal')) %>
+    </small>
   </div>
 </div>
 <% if @events.empty? %>
   <section class="text-center p-5">
-    <h3>
-      <% if @access_token.public? %>
-        There are no upcoming events.
-      <% else %>
-        You have no upcoming events.
-      <% end %>
-    </h3>
+    <h3>There are no upcoming events.</h3>
   </section>
 <% else %>
   <section class="text-left">

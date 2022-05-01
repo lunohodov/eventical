@@ -1,11 +1,11 @@
 require "rails_helper"
 
-describe CalendarFeedsController, type: :controller do
+describe SecretFeedsController, type: :controller do
   before { request.headers["User-Agent"] = "Google" }
 
-  describe "#show" do
+  describe "GET :show" do
     it "notifies analytics that the access token has been used" do
-      access_token = create(:access_token)
+      access_token = create(:access_token, :personal)
 
       get :show, params: {id: access_token.token}
 
@@ -16,15 +16,15 @@ describe CalendarFeedsController, type: :controller do
     it "renders '404 Not Found', when token can not be found" do
       get :show, params: {id: SecureRandom.uuid}
 
-      expect(response.body).to eq("404 Not Found")
+      expect(response).to have_http_status :not_found
     end
 
     it "renders '404 Not Found', when token is revoked" do
-      access_token = create(:access_token, revoked_at: 1.hour.ago)
+      access_token = create(:access_token, :personal, revoked_at: 1.hour.ago)
 
       get :show, params: {id: access_token.token}
 
-      expect(response.body).to eq("404 Not Found")
+      expect(response).to have_http_status :not_found
       expect(analytics)
         .to have_tracked("access_token.revoked.used").for_resource(access_token)
     end
