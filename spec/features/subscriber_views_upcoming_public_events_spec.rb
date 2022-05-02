@@ -105,9 +105,11 @@ feature "Subscriber views upcoming public events", type: :feature do
 
   matcher :have_event_details do |e|
     match do |page|
-      page.has_content?(e.starts_at.strftime("%H:%M")) &&
-        page.has_content?(e.title) &&
-        page.has_content?(e.starts_at.utc.strftime("%Y-%m-%d %H:%M"))
+      within("tr.event") do
+        page.has_content?(e.starts_at.strftime("%H:%M")) &&
+          page.has_content?(e.title) &&
+          page.has_content?(e.starts_at.in_time_zone(Eve.time_zone).strftime("%Y-%m-%d %H:%M"))
+      end
     end
   end
 end
