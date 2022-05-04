@@ -32,7 +32,7 @@ describe "home index page" do
     it "shows link to character's calendar page" do
       visit "/"
 
-      expect(page).to have_link(href: private_access_url)
+      expect(page).to have_link(href: secret_calendar_url)
     end
   end
 end

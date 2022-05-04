@@ -23,15 +23,15 @@
     <%= link_to("#", class: "feed-option feed-option__google", id: "google-instructions-toggle") do %>
       Google Calendar
     <% end %>
-    <%= link_to(calendar_feed_url(@secret_token, format: :ics, protocol: 'webcal'),
+    <%= link_to(secret_feeds_url(@secret_token, format: :ics, protocol: 'webcal'),
                 class: "feed-option feed-option__apple") do %>
       Apple Calendar
     <% end %>
-    <%= link_to(calendar_feed_url(@secret_token, format: :ics, protocol: 'webcal'),
+    <%= link_to(secret_feeds_url(@secret_token, format: :ics, protocol: 'webcal'),
                 class: "feed-option feed-option__outlook") do %>
       Outlook
     <% end %>
-    <%= link_to(calendar_feed_url(@secret_token), class: "feed-option feed-option__browser") do %>
+    <%= link_to(secret_feeds_url(@secret_token), class: "feed-option feed-option__browser") do %>
       Browser
     <% end %>
   </div>
@@ -39,7 +39,7 @@
   <div class="alert alert-secondary text-left my-3 d-none" role="alert" id="google-instructions">
     <p>
       <input type="text"
-            value="<%= calendar_feed_url(@secret_token, format: :ics) %>"
+            value="<%= secret_feeds_url(@secret_token, format: :ics) %>"
             class="form-control"
             autofocus="true"
             readonly="readonly" />
@@ -70,7 +70,7 @@
     <strong>Don’t share feed’s address with other people.</strong>
     To make the current one invalid, you can
     <%= link_to "reset it",
-      private_access_path,
+      secret_calendar_path,
       method: :post,
       class: "text-danger",
       data: {confirm: "Are you sure you want to reset the secret address?"} %>.

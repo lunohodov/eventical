@@ -20,14 +20,14 @@
           <nav class="navbar navbar-expand pl-0">
             <ul class="navbar-nav font-weight-bolder">
               <li class="nav-item">
-                <%= link_to "My Feed", private_access_url, class: "nav-link pl-0" %>
+                <%= link_to "My Feed", secret_calendar_url, class: "nav-link pl-0" %>
               </li>
               <li class="nav-item">
-                <%= link_to "Sharing", public_access_url, class: "nav-link" %>
+                <%= link_to "Sharing", public_calendar_url, class: "nav-link" %>
               </li>
             </ul>
           </nav>
-          <%= link_to private_access_url do %>
+          <%= link_to secret_calendar_url do %>
             <img src="https://image.eveonline.com/Character/<%= current_character.uid %>_256.jpg"
                 class="rounded avatar"
                 title="<%= current_character.name %>"

@@ -1,4 +1,4 @@
-class PublicAccessesController < ApplicationController
+class PublicCalendarsController < ApplicationController
   def show
     @event_sharing = event_sharing
   end
@@ -6,7 +6,7 @@ class PublicAccessesController < ApplicationController
   def update
     event_sharing.toggle!
 
-    redirect_to public_access_url
+    redirect_to public_calendar_path
   end
 
   private

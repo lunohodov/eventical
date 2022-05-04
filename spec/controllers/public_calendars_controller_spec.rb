@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe PublicAccessesController, type: :controller do
+describe PublicCalendarsController, type: :controller do
   include StubCurrentCharacterHelper
 
   describe "#show" do

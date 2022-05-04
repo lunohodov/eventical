@@ -1,12 +1,12 @@
 require "rails_helper"
 
-feature "subscriber resets secret address", type: :feature do
+feature "Subscriber resets secret address", type: :feature do
   before { sign_in }
 
   scenario "and makes current address invalid" do
     access_token = create(:private_access_token, issuer: current_character)
 
-    visit private_access_path
+    visit secret_calendar_path
     click_reset_button
 
     expect(page).not_to have_field(with: /#{access_token.token}\.ics$/)
@@ -16,7 +16,7 @@ feature "subscriber resets secret address", type: :feature do
   scenario "and receives a new address" do
     create(:private_access_token, issuer: current_character)
 
-    visit private_access_path
+    visit secret_calendar_path
     click_reset_button
 
     access_token = AccessToken.private.where(issuer: current_character).current.last
@@ -25,20 +25,10 @@ feature "subscriber resets secret address", type: :feature do
     expect(page).to have_link(href: /#{access_token.token}$/)
   end
 
-  scenario "and can not access the reset address" do
-    initial_token = create(:private_access_token, issuer: current_character)
-
-    visit private_access_path
-    click_reset_button
-    visit calendar_feed_path(id: initial_token.token)
-
-    expect(page).to have_text(/not found/i)
-  end
-
-  scenario "and analytics receives a revokation event" do
+  scenario "and triggers revocation analytics event" do
     create(:private_access_token, issuer: current_character)
 
-    visit private_access_path
+    visit secret_calendar_path
     click_reset_button
 
     expect(analytics).to have_tracked("access_token.revoked")
