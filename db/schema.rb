@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_21_083051) do
+ActiveRecord::Schema.define(version: 2022_10_10_163142) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,8 @@ ActiveRecord::Schema.define(version: 2022_02_21_083051) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "event_owner_categories", array: true
+    t.text "character_owner_hash"
+    t.index ["character_owner_hash"], name: "index_access_tokens_on_character_owner_hash"
     t.index ["grantee_type", "grantee_id"], name: "index_access_tokens_on_grantee"
     t.index ["issuer_id"], name: "index_access_tokens_on_issuer_id"
     t.index ["token"], name: "index_access_tokens_on_token"
@@ -88,9 +90,12 @@ ActiveRecord::Schema.define(version: 2022_02_21_083051) do
     t.string "owner_category"
     t.string "owner_name"
     t.datetime "details_updated_at"
+    t.text "character_owner_hash"
     t.index ["character_id", "uid"], name: "index_events_on_character_id_and_uid", unique: true
     t.index ["character_id"], name: "index_events_on_character_id"
+    t.index ["character_owner_hash"], name: "index_events_on_character_owner_hash"
     t.index ["details_updated_at"], name: "index_events_on_details_updated_at"
+    t.index ["uid", "character_owner_hash"], name: "index_events_on_uid_and_character_owner_hash", unique: true
   end
 
   create_table "settings", force: :cascade do |t|
