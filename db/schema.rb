@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_10_163142) do
+ActiveRecord::Schema.define(version: 2022_10_11_060415) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,6 +60,13 @@ ActiveRecord::Schema.define(version: 2022_10_10_163142) do
     t.datetime "last_event_pull_at"
     t.index ["refresh_token_voided_at"], name: "index_characters_on_refresh_token_voided_at"
     t.index ["uid"], name: "index_characters_on_uid", unique: true
+  end
+
+  create_table "data_migration_records", force: :cascade do |t|
+    t.string "version", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["version"], name: "index_data_migration_records_on_version", unique: true
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
