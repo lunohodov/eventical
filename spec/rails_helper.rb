@@ -12,6 +12,7 @@ end
 require "rspec/rails"
 require "shoulda/matchers"
 require "capybara/rails"
+require "monarch_migrate/rspec"
 
 Dir[Rails.root.join("spec", "support", "**", "*.rb")].sort.each { |f| require f }
 

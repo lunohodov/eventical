@@ -176,6 +176,8 @@ GEM
     mini_mime (1.1.2)
     mini_portile2 (2.8.0)
     minitest (5.16.2)
+    monarch_migrate (0.6.0)
+      rails (>= 5.2.0)
     msgpack (1.5.4)
     multi_json (1.15.0)
     multi_xml (0.6.0)
@@ -386,6 +388,7 @@ DEPENDENCIES
   icalendar
   jbuilder (~> 2.11)
   listen (>= 3.0.5, < 3.8)
+  monarch_migrate (~> 0.6)
   omniauth (~> 2.1)
   omniauth-eve_online-sso
   omniauth-rails_csrf_protection (~> 1.0)
