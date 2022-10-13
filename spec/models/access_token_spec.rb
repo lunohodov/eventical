@@ -7,9 +7,10 @@ describe AccessToken, type: :model do
   end
 
   describe "validations" do
-    it { validate_presence_of :grantee }
-    it { validate_presence_of :issuer }
-    it { validate_presence_of :scope }
+    it { validate_presence_of(:grantee) }
+    it { validate_presence_of(:issuer) }
+    it { validate_presence_of(:scope) }
+    it { validate_presence_of(:character_owner_hash) }
   end
 
   describe "private scope" do
@@ -157,5 +158,23 @@ describe AccessToken, type: :model do
         expect(token).not_to be_private
       end
     end
+  end
+
+  it "assigns character owner hash from issuer on create" do
+    character = build_stubbed(:character, owner_hash: "abc")
+    token = build(:private_access_token, issuer: character, character_owner_hash: nil)
+
+    token.save!
+
+    expect(token.character_owner_hash).to eq("abc")
+  end
+
+  it "does not overwrite character owner hash on update" do
+    character = build_stubbed(:character, owner_hash: "initial")
+    token = create(:private_access_token, issuer: character)
+
+    token.update!(issuer: build_stubbed(:character, owner_hash: "abc"))
+
+    expect(token.reload.character_owner_hash).to eq("initial")
   end
 end

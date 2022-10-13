@@ -2,7 +2,10 @@ class AccessToken < ApplicationRecord
   belongs_to :issuer, class_name: "Character"
   belongs_to :grantee, polymorphic: true, optional: true
 
+  validates :character_owner_hash, presence: true, allow_blank: false
+
   before_create :generate_token_if_needed
+  before_validation :ensure_character_owner_hash
 
   scope :current, -> {
     where("expires_at > ? OR expires_at IS NULL", Time.current)
@@ -57,5 +60,9 @@ class AccessToken < ApplicationRecord
 
   def generate_token_if_needed
     self.token = SecureRandom.uuid if token.blank?
+  end
+
+  def ensure_character_owner_hash
+    self.character_owner_hash = issuer&.owner_hash if character_owner_hash.blank?
   end
 end

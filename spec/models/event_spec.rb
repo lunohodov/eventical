@@ -15,6 +15,7 @@ describe Event, type: :model do
     it { should validate_presence_of(:uid) }
     it { should validate_presence_of(:title) }
     it { should validate_presence_of(:starts_at) }
+    it { should validate_presence_of(:character_owner_hash) }
     it { should allow_value(nil).for(:owner_category) }
   end
 
