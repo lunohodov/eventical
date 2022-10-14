@@ -63,10 +63,6 @@ FactoryBot.define do
       owner_uid { nil }
     end
 
-    trait :public do
-      title { "[PUBLIC] #{Faker::Name.name}" }
-    end
-
     trait :corporate do
       owner_category { "corporation" }
       owner_name { "#{character.name} Corporation" }
