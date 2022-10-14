@@ -9,7 +9,7 @@ if Rails.env.development? || Rails.env.test?
       create(:character)
 
       create(:character, :with_scopes).tap do |owner|
-        create(:access_token, :personal, issuer: owner)
+        create(:private_access_token, issuer: owner)
         create_events(owner)
       end
     end

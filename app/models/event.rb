@@ -16,17 +16,6 @@ class Event < ApplicationRecord
     upcoming.where(character: character)
   end
 
-  def self.public
-    where("title LIKE '[PUBLIC]%'")
-  end
-
-  def self.public_by(character)
-    upcoming
-      .public
-      .owned_by(character)
-      .where(character: character)
-  end
-
   def self.owned_by(character)
     where(owner_category: "character", owner_uid: character.uid)
   end

@@ -5,7 +5,7 @@ describe SecretFeedsController, type: :controller do
 
   describe "GET :show" do
     it "notifies analytics that the access token has been used" do
-      access_token = create(:access_token, :personal)
+      access_token = create(:private_access_token)
 
       get :show, params: {id: access_token.token}
 
@@ -19,8 +19,16 @@ describe SecretFeedsController, type: :controller do
       expect(response).to have_http_status :not_found
     end
 
+    it "renders '404 Not Found', when token is not private" do
+      access_token = create(:access_token, :public)
+
+      get :show, params: {id: access_token.token}
+
+      expect(response).to have_http_status :not_found
+    end
+
     it "renders '404 Not Found', when token is revoked" do
-      access_token = create(:access_token, :personal, revoked_at: 1.hour.ago)
+      access_token = create(:private_access_token, revoked_at: 1.hour.ago)
 
       get :show, params: {id: access_token.token}
 

@@ -16,15 +16,7 @@ class AccessToken < ApplicationRecord
     where("issuer_id = grantee_id")
   end
 
-  def self.public
-    where(grantee: nil)
-  end
-
   class << self
-    def by_slug!(slug)
-      where(token: slug).last!
-    end
-
     def revoke!(access_token)
       raise "Access token must be persisted" unless access_token.persisted?
 
@@ -36,20 +28,8 @@ class AccessToken < ApplicationRecord
     end
   end
 
-  def slug
-    token
-  end
-
   def to_param
-    slug
-  end
-
-  def private?
-    issuer == grantee
-  end
-
-  def public?
-    grantee.nil?
+    token
   end
 
   def revoked?

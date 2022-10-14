@@ -63,10 +63,6 @@ FactoryBot.define do
       owner_uid { nil }
     end
 
-    trait :public do
-      title { "[PUBLIC] #{Faker::Name.name}" }
-    end
-
     trait :corporate do
       owner_category { "corporation" }
       owner_name { "#{character.name} Corporation" }
@@ -157,16 +153,6 @@ FactoryBot.define do
     revoked_at { nil }
 
     factory :private_access_token do
-      issuer { create(:character) }
-      grantee { issuer }
-    end
-
-    factory :public_access_token do
-      issuer { create(:character) }
-      grantee { nil }
-    end
-
-    trait :personal do
       issuer { create(:character) }
       grantee { issuer }
     end
