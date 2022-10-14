@@ -1,5 +1,8 @@
 class Character < ApplicationRecord
-  has_many :events
+  has_many :events,
+    foreign_key: :character_owner_hash,
+    primary_key: :owner_hash,
+    inverse_of: :character
 
   scope :voided, -> { where.not(refresh_token_voided_at: nil) }
   scope :active, -> { where(refresh_token_voided_at: nil) }

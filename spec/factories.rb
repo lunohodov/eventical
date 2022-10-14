@@ -146,20 +146,9 @@ FactoryBot.define do
   end
 
   factory :access_token do
-    issuer { create(:character) }
-    grantee { create(:character) }
+    character
     token { nil }
     expires_at { 1.month.from_now }
     revoked_at { nil }
-
-    factory :private_access_token do
-      issuer { create(:character) }
-      grantee { issuer }
-    end
-
-    trait :public do
-      issuer { create(:character) }
-      grantee { nil }
-    end
   end
 end

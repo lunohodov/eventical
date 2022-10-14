@@ -3,7 +3,7 @@ require "rails_helper"
 feature "Subscriber views upcoming events", type: :feature do
   scenario "and sees events grouped by date" do
     access_token = create_access_token
-    event = create(:event, character: access_token.issuer)
+    event = create(:event, character: access_token.character)
 
     visit_secret_feed_path(access_token)
 
@@ -14,8 +14,7 @@ feature "Subscriber views upcoming events", type: :feature do
 
   scenario "and sees time in given time zone" do
     access_token = create_access_token
-    character = access_token.issuer
-    event = create(:event, character: character, starts_at: 1.month.from_now)
+    event = create(:event, character: access_token.character, starts_at: 1.month.from_now)
 
     visit_secret_feed_path(access_token, time_zone: "Sofia")
 
@@ -29,8 +28,7 @@ feature "Subscriber views upcoming events", type: :feature do
   scenario "and sees time in preferred time zone" do
     character = create(:character, time_zone: "Sofia")
     access_token = create_access_token(character)
-    character = access_token.issuer
-    event = create(:event, character: character, starts_at: 1.month.from_now)
+    event = create(:event, character: access_token.character, starts_at: 1.month.from_now)
 
     visit_secret_feed_path(access_token)
 
@@ -55,8 +53,7 @@ feature "Subscriber views upcoming events", type: :feature do
 
   scenario "and sees link to iCal feed" do
     access_token = create_access_token
-    character = access_token.issuer
-    create(:event, character: character, starts_at: 1.day.from_now)
+    create(:event, character: access_token.character, starts_at: 1.day.from_now)
 
     visit_secret_feed_path(access_token)
 
@@ -68,7 +65,7 @@ feature "Subscriber views upcoming events", type: :feature do
   end
 
   def create_access_token(character = nil)
-    create(:private_access_token, issuer: character || create(:character))
+    create(:access_token, character: character || create(:character))
   end
 
   def date_group_selector(date)

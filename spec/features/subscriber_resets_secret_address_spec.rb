@@ -4,7 +4,7 @@ feature "Subscriber resets secret address", type: :feature do
   before { sign_in }
 
   scenario "and makes current address invalid" do
-    access_token = create(:private_access_token, issuer: current_character)
+    access_token = create(:access_token, character: current_character)
 
     visit secret_calendar_path
     click_reset_button
@@ -14,19 +14,19 @@ feature "Subscriber resets secret address", type: :feature do
   end
 
   scenario "and receives a new address" do
-    create(:private_access_token, issuer: current_character)
+    create(:access_token, character: current_character)
 
     visit secret_calendar_path
     click_reset_button
 
-    access_token = AccessToken.private.where(issuer: current_character).current.last
+    access_token = AccessToken.for(current_character)
 
     expect(page).to have_field(with: /#{access_token.token}\.ics$/)
     expect(page).to have_link(href: /#{access_token.token}$/)
   end
 
   scenario "and triggers revocation analytics event" do
-    create(:private_access_token, issuer: current_character)
+    create(:access_token, character: current_character)
 
     visit secret_calendar_path
     click_reset_button

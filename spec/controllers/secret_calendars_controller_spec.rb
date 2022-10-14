@@ -5,7 +5,7 @@ describe SecretCalendarsController, type: :controller do
 
   describe "#show" do
     it "renders the view" do
-      create(:private_access_token, issuer: current_character)
+      create(:access_token, character: current_character)
 
       get :show
 

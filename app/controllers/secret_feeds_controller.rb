@@ -29,22 +29,24 @@ class SecretFeedsController < ApplicationController
 
   private
 
+  delegate :character, to: :access_token
+
   def calendar_events
     Event
-      .upcoming_for(access_token.issuer)
+      .upcoming_for(character)
       .in_chronological_order.limit(PAGE_SIZE)
   end
 
   def access_token
-    @access_token ||= AccessToken.private.find_by!(token: params[:id])
+    @access_token ||= AccessToken.find_by!(token: params[:id])
   end
 
   def preferred_time_zone
     time_zone =
       if params[:tz].present?
         ActiveSupport::TimeZone[params[:tz]]
-      elsif access_token.grantee
-        access_token.grantee.time_zone
+      else
+        character.time_zone
       end
     time_zone.presence || Eve.time_zone
   end
@@ -57,12 +59,10 @@ class SecretFeedsController < ApplicationController
   end
 
   def build_ical(events)
-    issuer = access_token.issuer
-    grantee = access_token.grantee
-
+    character_name = character.name
     IcalendarBuilder.build do
-      calendar_name("#{issuer.name}'s Calendar")
-      calendar_description("Upcoming events for #{grantee.name}") if grantee
+      calendar_name("#{character_name}'s Calendar")
+      calendar_description("Upcoming events for #{character_name}")
       events(events)
     end
   end

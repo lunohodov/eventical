@@ -2,31 +2,14 @@ require "rails_helper"
 
 describe AccessToken, type: :model do
   describe "associations" do
-    it { should belong_to(:issuer) }
-    it { should belong_to(:grantee).optional }
+    it { should belong_to(:character) }
   end
 
   describe "validations" do
-    it { validate_presence_of(:grantee) }
-    it { validate_presence_of(:issuer) }
-    it { validate_presence_of(:scope) }
-    it { validate_presence_of(:character_owner_hash) }
+    it { validate_presence_of(:character) }
   end
 
-  describe "private scope" do
-    it "returns records where issuer and grantee are the same" do
-      issuer = create(:character)
-      expected = create(:private_access_token, issuer: issuer)
-      create(:access_token, issuer: issuer, grantee: nil)
-
-      result = AccessToken.private.where(issuer: issuer)
-
-      expect(result.count).to eq 1
-      expect(result.first).to eq expected
-    end
-  end
-
-  describe "current scope" do
+  describe "active scope" do
     it "excludes already expired records" do
       create(:access_token, expires_at: 1.day.ago)
 
@@ -48,6 +31,18 @@ describe AccessToken, type: :model do
     end
   end
 
+  describe ".for" do
+    it "returns the last current token" do
+      character = create(:character)
+      create_list(:access_token, 2, character: character)
+      create(:access_token)
+
+      token = AccessToken.for(character)
+
+      expect(token).to eq(AccessToken.where(character: character).last)
+    end
+  end
+
   describe ".revoke!" do
     it "revokes given token" do
       access_token = create(:access_token)
@@ -58,8 +53,8 @@ describe AccessToken, type: :model do
     end
 
     it "revokes current tokens" do
-      access_token = create(:private_access_token)
-      create(:private_access_token, issuer: access_token.issuer)
+      access_token = create(:access_token)
+      create(:access_token, character: access_token.character)
 
       expect { AccessToken.revoke!(access_token) }
         .to change { AccessToken.where(revoked_at: nil).count }
@@ -94,23 +89,5 @@ describe AccessToken, type: :model do
 
       expect(token.revoked?).to eq(false)
     end
-  end
-
-  it "assigns character owner hash from issuer on create" do
-    character = build_stubbed(:character, owner_hash: "abc")
-    token = build(:private_access_token, issuer: character, character_owner_hash: nil)
-
-    token.save!
-
-    expect(token.character_owner_hash).to eq("abc")
-  end
-
-  it "does not overwrite character owner hash on update" do
-    character = build_stubbed(:character, owner_hash: "initial")
-    token = create(:private_access_token, issuer: character)
-
-    token.update!(issuer: build_stubbed(:character, owner_hash: "abc"))
-
-    expect(token.reload.character_owner_hash).to eq("initial")
   end
 end
