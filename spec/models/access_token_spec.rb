@@ -17,7 +17,7 @@ describe AccessToken, type: :model do
     it "returns records where issuer and grantee are the same" do
       issuer = create(:character)
       expected = create(:private_access_token, issuer: issuer)
-      create(:public_access_token, issuer: issuer)
+      create(:access_token, issuer: issuer, grantee: nil)
 
       result = AccessToken.private.where(issuer: issuer)
 
@@ -82,40 +82,6 @@ describe AccessToken, type: :model do
     end
   end
 
-  describe ".by_slug!" do
-    it "finds the token, when personal" do
-      access_token = create(:private_access_token)
-
-      found = AccessToken.by_slug!(access_token.slug)
-
-      expect(found).to eq(access_token)
-    end
-
-    it "finds the token, when public" do
-      access_token = create(:access_token, :public)
-
-      found = AccessToken.by_slug!(access_token.slug)
-
-      expect(found).to eq(access_token)
-    end
-
-    it "finds the last record when many" do
-      access_token = create_list(:access_token, 2, token: "abc123").last
-
-      found = AccessToken.by_slug!(access_token.slug)
-
-      expect(found).to eq AccessToken.where(token: "abc123").last!
-    end
-
-    context "when token does not exist" do
-      it "raises an error" do
-        expect do
-          AccessToken.by_slug!("non-existing")
-        end.to raise_error(ActiveRecord::RecordNotFound)
-      end
-    end
-  end
-
   describe "#revoked?" do
     it "returns true, when revocation time present" do
       token = build(:access_token, revoked_at: Time.current)
@@ -127,36 +93,6 @@ describe AccessToken, type: :model do
       token = build(:access_token, revoked_at: nil)
 
       expect(token.revoked?).to eq(false)
-    end
-  end
-
-  describe "#private?" do
-    context "when issuer is also the grantee" do
-      it "is true" do
-        issuer = build_stubbed(:character)
-        token = build(:access_token, issuer: issuer, grantee: issuer)
-
-        expect(token).to be_private
-      end
-    end
-
-    context "when grantee not specified" do
-      it "is false" do
-        issuer = build_stubbed(:character)
-        token = build(:access_token, issuer: issuer, grantee: nil)
-
-        expect(token).not_to be_private
-      end
-    end
-
-    context "when grantee other than issuer" do
-      it "is false" do
-        issuer = build_stubbed(:character)
-        grantee = build_stubbed(:character)
-        token = build(:access_token, issuer: issuer, grantee: grantee)
-
-        expect(token).not_to be_private
-      end
     end
   end
 

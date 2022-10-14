@@ -161,16 +161,6 @@ FactoryBot.define do
       grantee { issuer }
     end
 
-    factory :public_access_token do
-      issuer { create(:character) }
-      grantee { nil }
-    end
-
-    trait :personal do
-      issuer { create(:character) }
-      grantee { issuer }
-    end
-
     trait :public do
       issuer { create(:character) }
       grantee { nil }

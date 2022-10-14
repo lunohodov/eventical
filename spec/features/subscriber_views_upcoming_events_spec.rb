@@ -68,11 +68,7 @@ feature "Subscriber views upcoming events", type: :feature do
   end
 
   def create_access_token(character = nil)
-    create(
-      :access_token,
-      :personal,
-      issuer: character || create(:character)
-    )
+    create(:private_access_token, issuer: character || create(:character))
   end
 
   def date_group_selector(date)
