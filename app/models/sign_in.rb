@@ -29,8 +29,7 @@ class SignIn
       refresh_token_voided_at: nil,
       token: auth_hash.dig("credentials", "token"),
       token_expires_at: Time.zone.at(auth_hash.dig("credentials", "expires_at")),
-      token_type: auth_hash.dig("info", "token_type"),
-      uid: character_uid
+      token_type: auth_hash.dig("info", "token_type")
     }
   end
 end

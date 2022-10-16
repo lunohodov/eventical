@@ -9,7 +9,7 @@ describe Analytics do
       analytics_instance.track_access_token_revoked(access_token)
 
       expect(analytics_instance.backend)
-        .to have_tracked("access_token.revoked").for_resource(access_token.issuer).times(1)
+        .to have_tracked("access_token.revoked").for_resource(access_token.character).times(1)
     end
   end
 

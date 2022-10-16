@@ -8,6 +8,6 @@ module Onboarding
   end
 
   def onboarding_complete?
-    AccessToken.private.where(issuer: current_character).current.exists?
+    AccessToken.for(current_character).present?
   end
 end

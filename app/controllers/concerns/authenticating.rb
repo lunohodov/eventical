@@ -9,7 +9,7 @@ module Authenticating
   protected
 
   def authenticate
-    redirect_to login_url unless signed_in?
+    redirect_to root_url unless signed_in?
   end
 
   def current_character

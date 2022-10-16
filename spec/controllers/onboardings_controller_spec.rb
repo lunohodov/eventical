@@ -16,9 +16,9 @@ describe OnboardingsController, type: :controller do
       expect(response).to have_http_status(:success)
     end
 
-    context "when the current character already has private access token" do
+    context "when the current character already has an access token" do
       it "redirects to character's calendar" do
-        create(:private_access_token, issuer: current_character)
+        create(:access_token, character: current_character)
 
         get :show
 

@@ -13,7 +13,7 @@ class SecretCalendarsController < ApplicationController
     AccessToken.transaction do
       AccessToken.revoke!(access_token) if access_token
 
-      AccessToken.create!(issuer: current_character, grantee: current_character)
+      AccessToken.create!(character: current_character)
 
       analytics.track_access_token_revoked(access_token) if access_token
     end
@@ -24,6 +24,6 @@ class SecretCalendarsController < ApplicationController
   private
 
   def access_token
-    @access_token ||= AccessToken.private.where(issuer: current_character).current.last
+    @access_token ||= AccessToken.for(current_character)
   end
 end

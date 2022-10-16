@@ -14,7 +14,7 @@ class Analytics
   end
 
   def track_access_token_revoked(access_token)
-    count("access_token.revoked", resource: access_token.issuer)
+    count("access_token.revoked", resource: access_token.character)
   end
 
   def track_refresh_token_voided(character)

@@ -26,6 +26,7 @@ class CharacterEvents::Replacement
 
   def removed_events
     uids_to_keep = upcoming_events.map(&:uid)
+
     Event
       .where("starts_at >= ?", Time.current)
       .where(character: character)

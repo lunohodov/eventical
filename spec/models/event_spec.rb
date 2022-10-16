@@ -15,8 +15,11 @@ describe Event, type: :model do
     it { should validate_presence_of(:uid) }
     it { should validate_presence_of(:title) }
     it { should validate_presence_of(:starts_at) }
-    it { should validate_presence_of(:character_owner_hash) }
     it { should allow_value(nil).for(:owner_category) }
+  end
+
+  describe "associations" do
+    it { should belong_to(:character) }
   end
 
   describe ".upcoming_for" do
@@ -62,7 +65,9 @@ describe Event, type: :model do
 
       Event.synchronize(data_source)
 
-      expect(Event.find_by(uid: data_source.uid).attributes)
+      event = character.events.find_by(uid: data_source.uid)
+
+      expect(event.attributes)
         .to include(data_source.attributes.slice(:title, :starts_at, :response))
     end
 

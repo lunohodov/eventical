@@ -19,8 +19,7 @@ class EventCleaner
   end
 
   def clean_for_voided_characters
-    voided_ids = Character.voided.pluck(:id)
-    logger.info "Removing events belonging to voided characters: #{voided_ids}"
-    Event.delete_by(character: voided_ids)
+    logger.info "Removing events belonging to voided characters"
+    Event.delete_by(character: Character.voided)
   end
 end

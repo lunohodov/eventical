@@ -1,28 +1,23 @@
 class AccessToken < ApplicationRecord
-  belongs_to :issuer, class_name: "Character"
-  belongs_to :grantee, polymorphic: true, optional: true
-
-  validates :character_owner_hash, presence: true, allow_blank: false
+  belongs_to :character, foreign_key: :character_owner_hash, primary_key: :owner_hash
 
   before_create :generate_token_if_needed
-  before_validation :ensure_character_owner_hash
 
-  scope :current, -> {
+  def self.current
     where("expires_at > ? OR expires_at IS NULL", Time.current)
       .where(revoked_at: nil)
-  }
-
-  def self.private
-    where("issuer_id = grantee_id")
   end
 
   class << self
+    def for(character)
+      current.where(character: character).last
+    end
+
     def revoke!(access_token)
       raise "Access token must be persisted" unless access_token.persisted?
 
       where(
-        issuer: access_token.issuer,
-        grantee: access_token.grantee,
+        character: access_token.character,
         revoked_at: nil
       ).lock.update_all(revoked_at: Time.current)
     end
@@ -40,9 +35,5 @@ class AccessToken < ApplicationRecord
 
   def generate_token_if_needed
     self.token = SecureRandom.uuid if token.blank?
-  end
-
-  def ensure_character_owner_hash
-    self.character_owner_hash = issuer&.owner_hash if character_owner_hash.blank?
   end
 end

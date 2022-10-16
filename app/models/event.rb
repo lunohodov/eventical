@@ -1,12 +1,9 @@
 class Event < ApplicationRecord
-  belongs_to :character
+  belongs_to :character, foreign_key: :character_owner_hash, primary_key: :owner_hash
 
   validates :starts_at, presence: true
   validates :title, presence: true
   validates :uid, presence: true
-  validates :character_owner_hash, presence: true, allow_blank: false
-
-  before_validation :ensure_character_owner_hash
 
   def self.upcoming
     where("starts_at >= ?", Time.current)
@@ -50,11 +47,5 @@ class Event < ApplicationRecord
       e.assign_attributes(attributes)
       e.save!
     end
-  end
-
-  private
-
-  def ensure_character_owner_hash
-    self.character_owner_hash = character&.owner_hash if character_owner_hash.blank?
   end
 end

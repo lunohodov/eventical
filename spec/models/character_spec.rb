@@ -1,6 +1,10 @@
 require "rails_helper"
 
 describe Character, type: :model do
+  describe "associations" do
+    it { should have_many(:events) }
+  end
+
   describe "validations" do
     it { should validate_presence_of(:name) }
     it { should validate_presence_of(:token) }

@@ -4,7 +4,7 @@ feature "user manages her secret feed", type: :feature do
   before { sign_in }
 
   scenario "and sees a Google Calendar option" do
-    access_token = create(:private_access_token, issuer: current_character)
+    access_token = create(:access_token, character: current_character)
 
     visit secret_calendar_path
 
@@ -13,7 +13,7 @@ feature "user manages her secret feed", type: :feature do
   end
 
   scenario "and sees an Apple Calendar option" do
-    access_token = create(:private_access_token, issuer: current_character)
+    access_token = create(:access_token, character: current_character)
 
     visit secret_calendar_path
 
@@ -21,7 +21,7 @@ feature "user manages her secret feed", type: :feature do
   end
 
   scenario "and sees an Outlook Calendar option" do
-    access_token = create(:private_access_token, issuer: current_character)
+    access_token = create(:access_token, character: current_character)
 
     visit secret_calendar_path
 
@@ -29,7 +29,7 @@ feature "user manages her secret feed", type: :feature do
   end
 
   scenario "and sees a browser option" do
-    access_token = create(:private_access_token, issuer: current_character)
+    access_token = create(:access_token, character: current_character)
 
     visit secret_calendar_path
 
@@ -37,7 +37,7 @@ feature "user manages her secret feed", type: :feature do
   end
 
   scenario "and sees a reset button" do
-    create(:private_access_token, issuer: current_character)
+    create(:access_token, character: current_character)
 
     visit secret_calendar_path
 
@@ -45,7 +45,7 @@ feature "user manages her secret feed", type: :feature do
   end
 
   scenario "and can change the preferred time zone" do
-    create(:private_access_token, issuer: current_character)
+    create(:access_token, character: current_character)
 
     visit secret_calendar_path
 
