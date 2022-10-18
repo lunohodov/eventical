@@ -82,16 +82,4 @@ describe Analytics do
         .to have_tracked("events.pulled").for_resource(character)
     end
   end
-
-  describe "#track_event_details_pulled" do
-    it "tracks that event details have been pulled" do
-      analytics_instance = Analytics.new(backend: Analytics::InMemoryBackend.new)
-      character = build_stubbed(:character)
-
-      analytics_instance.track_event_details_pulled(character)
-
-      expect(analytics_instance.backend)
-        .to have_tracked("character.events").for_resource(character)
-    end
-  end
 end
