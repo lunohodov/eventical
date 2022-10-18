@@ -15,7 +15,6 @@ describe Event, type: :model do
     it { should validate_presence_of(:uid) }
     it { should validate_presence_of(:title) }
     it { should validate_presence_of(:starts_at) }
-    it { should allow_value(nil).for(:owner_category) }
   end
 
   describe "associations" do
@@ -80,42 +79,6 @@ describe Event, type: :model do
 
         expect { Event.synchronize(data_source) }
           .to change { event.reload.response }
-          .to "new"
-      end
-
-      it "updates owner_uid" do
-        event = create(:event, character: character, owner_uid: nil)
-        data_source = build(
-          :event, character: character, uid: event.uid, owner_uid: 123_456
-        )
-
-        expect { Event.synchronize(data_source) }
-          .to change { event.reload.owner_uid }
-          .to 123_456
-      end
-
-      it "updates owner_category" do
-        event = create(:event, character: character, owner_category: nil)
-        data_source = build(
-          :event,
-          character: character,
-          uid: event.uid,
-          owner_category: "character"
-        )
-
-        expect { Event.synchronize(data_source) }
-          .to change { event.reload.owner_category }
-          .to "character"
-      end
-
-      it "updates owner_name" do
-        event = create(:event, character: character, owner_name: nil)
-        data_source = build(
-          :event, character: character, uid: event.uid, owner_name: "new"
-        )
-
-        expect { Event.synchronize(data_source) }
-          .to change { event.reload.owner_name }
           .to "new"
       end
 

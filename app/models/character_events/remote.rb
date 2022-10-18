@@ -2,9 +2,6 @@ class CharacterEvents::Remote
   Entry = Struct.new(
     :character,
     :importance,
-    :owner_category,
-    :owner_name,
-    :owner_uid,
     :response,
     :starts_at,
     :title,
@@ -50,7 +47,8 @@ class CharacterEvents::Remote
         uid: event.event_id,
         response: event.event_response,
         title: event.title,
-        starts_at: event.event_date
+        starts_at: event.event_date,
+        importance: event.importance
       ).freeze
     end
   end
