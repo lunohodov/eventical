@@ -19,14 +19,4 @@ namespace :events do
       PullEventsJob.set(wait: delay).perform_later(c.id)
     end
   end
-
-  desc "Schedule pull of event details for all upcoming events"
-  task "details:pull": :environment do
-    event_uids = Event.distinct.upcoming.pluck(:uid)
-
-    event_uids.each_with_index do |event_uid, index|
-      delay = (10 * index).seconds
-      PullEventDetailsJob.set(wait: delay).perform_later(event_uid)
-    end
-  end
 end

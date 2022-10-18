@@ -13,16 +13,8 @@ class Event < ApplicationRecord
     upcoming.where(character: character)
   end
 
-  def self.owned_by(character)
-    where(owner_category: "character", owner_uid: character.uid)
-  end
-
   def self.in_chronological_order
     order(starts_at: :asc)
-  end
-
-  def self.without_details
-    where(details_updated_at: nil)
   end
 
   def self.synchronize(data_source)
@@ -30,9 +22,6 @@ class Event < ApplicationRecord
 
     attributes = {
       importance: data_source.importance,
-      owner_category: data_source.owner_category,
-      owner_name: data_source.owner_name,
-      owner_uid: data_source.owner_uid,
       response: data_source.response,
       starts_at: data_source.starts_at,
       title: data_source.title

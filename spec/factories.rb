@@ -24,68 +24,18 @@ FactoryBot.define do
 
     event_date { rand(4).day.from_now }
     event_response { "attending" }
+    importance { 1 }
     title { "Event #{event_id}" }
-  end
-
-  factory :esi_event_details, class: "OpenStruct" do
-    skip_create
-
-    sequence(:event_id)
-
-    date { rand(4).day.from_now }
-    duration { 1.hour.to_i }
-    importance { nil }
-    owner_id { 123_456 }
-    owner_name { Faker::Name.name }
-    owner_type { "character" }
-    response { "attending" }
-    text { "Casual mining with Atrons." }
-    title { "Mining Ops in Hevris" }
   end
 
   factory :event do
     sequence(:uid)
 
     character
-    details_updated_at { created_at }
-    importance { nil }
-    owner_category { "character" }
-    owner_name { character.name }
-    owner_uid { character.uid }
+    importance { 1 }
     response { "attending" }
     starts_at { rand(2..7).days.from_now }
     title { Faker::Name.name }
-
-    trait :without_details do
-      details_updated_at { nil }
-      owner_category { nil }
-      owner_name { nil }
-      owner_uid { nil }
-    end
-
-    trait :corporate do
-      owner_category { "corporation" }
-      owner_name { "#{character.name} Corporation" }
-      owner_uid { character.uid * 10 }
-    end
-
-    trait :alliance do
-      owner_category { "alliance" }
-      owner_name { "#{character.name} Alliance" }
-      owner_uid { character.uid * 100 }
-    end
-
-    trait :faction do
-      owner_category { "faction" }
-      owner_name { "Gallente Federation" }
-      owner_uid { character.uid * 1000 }
-    end
-
-    trait :ccp do
-      owner_category { "eve_server" }
-      owner_name { "CCP" }
-      owner_uid { character.uid * 10_000 }
-    end
   end
 
   factory :character do

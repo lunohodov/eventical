@@ -44,9 +44,5 @@ class Analytics
     count("events.pulled", resource: character)
   end
 
-  def track_event_details_pulled(character)
-    count("character.events", resource: character)
-  end
-
   ActiveSupport.run_load_hooks(:analytics, self)
 end
