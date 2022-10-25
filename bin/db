@@ -10,7 +10,7 @@ else
     printf "PostgreSQL interactive terminal is not installed.\n"
   fi
 
-  dsn="$(heroku config:get DATABASE_URL -r $1)"
+  dsn="$(heroku config:get DATABASE_URI -r $1)"
   psql "$dsn"
 fi
 
