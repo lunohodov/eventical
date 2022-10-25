@@ -8,7 +8,7 @@ if Rails.env.development? || Rails.env.test?
 
       create(:character)
 
-      create(:character, :with_scopes).tap do |owner|
+      create(:character).tap do |owner|
         create(:access_token, character: owner)
         create_events(owner)
       end
