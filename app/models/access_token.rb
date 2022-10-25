@@ -1,11 +1,18 @@
 class AccessToken < ApplicationRecord
+  self.ignored_columns += %w[
+    event_owner_categories
+    expires_at
+    grantee_id
+    grantee_type
+    issuer_id
+  ]
+
   belongs_to :character, foreign_key: :character_owner_hash, primary_key: :owner_hash
 
   before_create :generate_token_if_needed
 
   def self.current
-    where("expires_at > ? OR expires_at IS NULL", Time.current)
-      .where(revoked_at: nil)
+    where(revoked_at: nil)
   end
 
   class << self

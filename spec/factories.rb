@@ -92,7 +92,6 @@ FactoryBot.define do
   factory :access_token do
     character
     token { nil }
-    expires_at { 1.month.from_now }
     revoked_at { nil }
   end
 end
