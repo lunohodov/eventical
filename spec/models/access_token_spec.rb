@@ -9,22 +9,16 @@ describe AccessToken, type: :model do
     it { validate_presence_of(:character) }
   end
 
-  describe "active scope" do
-    it "excludes already expired records" do
-      create(:access_token, expires_at: 1.day.ago)
-
-      expect(AccessToken.current.count).to eq(0)
-    end
-
+  describe "current scope" do
     it "excludes revoked records" do
       create(:access_token, revoked_at: 1.day.ago)
 
       expect(AccessToken.current.count).to eq(0)
     end
 
-    it "includes yet to expire records" do
-      create(:access_token, expires_at: Date.today)
-      expected = create(:access_token, expires_at: Date.tomorrow)
+    it "includes non revoked records" do
+      create(:access_token, revoked_at: Time.current)
+      expected = create(:access_token, revoked_at: nil)
 
       expect(AccessToken.current.count).to eq(1)
       expect(AccessToken.current.all).to match_array([expected])

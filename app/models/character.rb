@@ -1,4 +1,6 @@
 class Character < ApplicationRecord
+  self.ignored_columns += %w[scopes token_type]
+
   has_many :events,
     foreign_key: :character_owner_hash,
     primary_key: :owner_hash,

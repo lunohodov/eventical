@@ -10,25 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_11_060415) do
+ActiveRecord::Schema.define(version: 2022_10_26_081840) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "access_tokens", force: :cascade do |t|
-    t.bigint "issuer_id"
-    t.string "grantee_type"
-    t.bigint "grantee_id"
     t.string "token"
-    t.datetime "expires_at"
     t.datetime "revoked_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "event_owner_categories", array: true
     t.text "character_owner_hash"
     t.index ["character_owner_hash"], name: "index_access_tokens_on_character_owner_hash"
-    t.index ["grantee_type", "grantee_id"], name: "index_access_tokens_on_grantee"
-    t.index ["issuer_id"], name: "index_access_tokens_on_issuer_id"
     t.index ["token"], name: "index_access_tokens_on_token"
   end
 
@@ -50,8 +43,6 @@ ActiveRecord::Schema.define(version: 2022_10_11_060415) do
     t.string "token"
     t.string "refresh_token"
     t.datetime "token_expires_at"
-    t.string "scopes"
-    t.string "token_type"
     t.string "owner_hash"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -85,7 +76,6 @@ ActiveRecord::Schema.define(version: 2022_10_11_060415) do
   end
 
   create_table "events", force: :cascade do |t|
-    t.bigint "character_id"
     t.bigint "uid", null: false
     t.string "title", null: false
     t.datetime "starts_at", null: false
@@ -93,15 +83,8 @@ ActiveRecord::Schema.define(version: 2022_10_11_060415) do
     t.string "response"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "owner_uid"
-    t.string "owner_category"
-    t.string "owner_name"
-    t.datetime "details_updated_at"
     t.text "character_owner_hash"
-    t.index ["character_id", "uid"], name: "index_events_on_character_id_and_uid", unique: true
-    t.index ["character_id"], name: "index_events_on_character_id"
     t.index ["character_owner_hash"], name: "index_events_on_character_owner_hash"
-    t.index ["details_updated_at"], name: "index_events_on_details_updated_at"
     t.index ["uid", "character_owner_hash"], name: "index_events_on_uid_and_character_owner_hash", unique: true
   end
 
