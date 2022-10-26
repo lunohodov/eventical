@@ -1,4 +1,12 @@
 class Event < ApplicationRecord
+  self.ignored_columns += %w[
+    character_id
+    details_updated_at
+    owner_category
+    owner_name
+    owner_uid
+  ]
+
   belongs_to :character, foreign_key: :character_owner_hash, primary_key: :owner_hash
 
   validates :starts_at, presence: true

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_25_193217) do
+ActiveRecord::Schema.define(version: 2022_10_26_081840) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -76,7 +76,6 @@ ActiveRecord::Schema.define(version: 2022_10_25_193217) do
   end
 
   create_table "events", force: :cascade do |t|
-    t.bigint "character_id"
     t.bigint "uid", null: false
     t.string "title", null: false
     t.datetime "starts_at", null: false
@@ -84,15 +83,8 @@ ActiveRecord::Schema.define(version: 2022_10_25_193217) do
     t.string "response"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "owner_uid"
-    t.string "owner_category"
-    t.string "owner_name"
-    t.datetime "details_updated_at"
     t.text "character_owner_hash"
-    t.index ["character_id", "uid"], name: "index_events_on_character_id_and_uid", unique: true
-    t.index ["character_id"], name: "index_events_on_character_id"
     t.index ["character_owner_hash"], name: "index_events_on_character_owner_hash"
-    t.index ["details_updated_at"], name: "index_events_on_details_updated_at"
     t.index ["uid", "character_owner_hash"], name: "index_events_on_uid_and_character_owner_hash", unique: true
   end
 
