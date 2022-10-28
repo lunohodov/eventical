@@ -17,7 +17,7 @@ class CharacterEvents::Replacement
   attr_reader :upcoming_events
 
   def replace_events
-    removed_events.destroy_all
+    removed_events.delete_all
 
     upcoming_events.map do |event|
       Event.synchronize(event)
