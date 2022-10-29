@@ -2,6 +2,9 @@ require "securerandom"
 require "ostruct"
 
 FactoryBot.define do
+  factory :audit_log, class: "Audit::Log" do
+  end
+
   factory :eve_access_token, class: "Eve::AccessToken" do
   end
 
