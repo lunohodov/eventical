@@ -1,4 +1,8 @@
 class Character < ApplicationRecord
+  include Auditable
+
+  self.auditable_attributes += %w[owner_hash time_zone token]
+
   self.ignored_columns += %w[scopes token_type]
 
   has_many :events,
