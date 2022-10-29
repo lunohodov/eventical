@@ -1,4 +1,8 @@
 class AccessToken < ApplicationRecord
+  include Auditable
+
+  self.auditable_attributes += %w[character_owner_hash revoked_at]
+
   self.ignored_columns += %w[
     event_owner_categories
     expires_at
@@ -26,8 +30,14 @@ class AccessToken < ApplicationRecord
       where(
         character: access_token.character,
         revoked_at: nil
-      ).lock.update_all(revoked_at: Time.current)
+      ).lock.find_each do |token|
+        token.update!(revoked_at: Time.current)
+      end
     end
+  end
+
+  def log_used
+    log_event :used
   end
 
   def to_param
