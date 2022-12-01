@@ -1,6 +1,8 @@
 require "rails_helper"
 
 describe Character, type: :model do
+  it { is_expected.to be_a(Auditable) }
+
   describe "associations" do
     it { should have_many(:events) }
   end
@@ -9,6 +11,10 @@ describe Character, type: :model do
     it { should validate_presence_of(:name) }
     it { should validate_presence_of(:token) }
     it { should validate_presence_of(:owner_hash) }
+  end
+
+  describe "auditable attributes" do
+    it { expect(described_class.auditable_attributes).to eq %w[owner_hash time_zone token] }
   end
 
   describe ".voided" do

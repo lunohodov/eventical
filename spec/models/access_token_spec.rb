@@ -1,12 +1,18 @@
 require "rails_helper"
 
 describe AccessToken, type: :model do
+  it { is_expected.to be_a(Auditable) }
+
   describe "associations" do
     it { should belong_to(:character) }
   end
 
   describe "validations" do
     it { validate_presence_of(:character) }
+  end
+
+  describe "auditable attributes" do
+    it { expect(described_class.auditable_attributes).to eq %w[character_owner_hash revoked_at] }
   end
 
   describe "current scope" do

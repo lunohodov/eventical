@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   before_action :set_sentry_context
+  before_action :set_current_request_details
 
   protected
 
@@ -17,5 +18,11 @@ class ApplicationController < ActionController::Base
     if signed_in?
       Sentry.set_user(id: current_character.id, username: current_character.name)
     end
+  end
+
+  def set_current_request_details
+    Current.ip_address = request.ip
+    Current.request_id = request.uuid
+    Current.user_agent = request.user_agent
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_26_081840) do
+ActiveRecord::Schema.define(version: 2022_10_29_081153) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,19 @@ ActiveRecord::Schema.define(version: 2022_10_26_081840) do
     t.index ["owner_id", "owner_type", "topic"], name: "analytics_counters_owner_and_topic", unique: true
     t.index ["owner_type", "owner_id"], name: "index_analytics_counters_on_owner"
     t.index ["topic"], name: "index_analytics_counters_on_topic"
+  end
+
+  create_table "audit_logs", force: :cascade do |t|
+    t.string "auditable_type"
+    t.bigint "auditable_id"
+    t.bigint "character_id"
+    t.text "action", null: false
+    t.text "details"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["action"], name: "index_audit_logs_on_action"
+    t.index ["auditable_type", "auditable_id"], name: "index_audit_logs_on_auditable"
+    t.index ["character_id"], name: "index_audit_logs_on_character_id"
   end
 
   create_table "characters", force: :cascade do |t|
